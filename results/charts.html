@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pulsar vs GCP Batch: Runtime Comparison</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #f5f7fa;
+    color: #1a1a2e;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  h1 {
+    font-size: 1.8rem;
+    margin-bottom: 0.3rem;
+  }
+  .subtitle {
+    color: #666;
+    font-size: 0.95rem;
+    margin-bottom: 2rem;
+  }
+  .summary-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 1.2rem 1.5rem;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  }
+  .card .label { font-size: 0.8rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em; }
+  .card .value { font-size: 1.8rem; font-weight: 700; margin-top: 0.2rem; }
+  .card .detail { font-size: 0.85rem; color: #666; margin-top: 0.2rem; }
+  .card.batch .value { color: #3b82f6; }
+  .card.pulsar .value { color: #f59e0b; }
+  .card.overhead .value { color: #ef4444; }
+  .chart-container {
+    background: #fff;
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  }
+  .chart-container h2 {
+    font-size: 1.1rem;
+    margin-bottom: 0.3rem;
+  }
+  .chart-container .chart-desc {
+    font-size: 0.85rem;
+    color: #888;
+    margin-bottom: 1rem;
+  }
+  .chart-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+  @media (max-width: 800px) {
+    .chart-row { grid-template-columns: 1fr; }
+  }
+  .footer {
+    text-align: center;
+    color: #aaa;
+    font-size: 0.8rem;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e5e7eb;
+  }
+</style>
+</head>
+<body>
+
+<h1>Pulsar vs Direct GCP Batch</h1>
+<p class="subtitle">Variant analysis on WGS PE data &mdash; 12-step workflow &mdash; 2026-03-07</p>
+
+<div class="summary-cards">
+  <div class="card batch">
+    <div class="label">GCP Batch (direct)</div>
+    <div class="value">19.2 min</div>
+    <div class="detail">12 steps, all succeeded</div>
+  </div>
+  <div class="card pulsar">
+    <div class="label">Pulsar (AMQP sidecar)</div>
+    <div class="value">30.5 min</div>
+    <div class="detail">12 steps, all succeeded</div>
+  </div>
+  <div class="card overhead">
+    <div class="label">Pulsar Overhead</div>
+    <div class="value">+11.3 min</div>
+    <div class="detail">+59% &mdash; ~57s per step (median)</div>
+  </div>
+</div>
+
+<div class="chart-container">
+  <h2>Per-Step Execution Time</h2>
+  <p class="chart-desc">Time from previous step completion to this step's completion. Includes scheduling, staging, compute, and output collection.</p>
+  <canvas id="barChart" height="100"></canvas>
+</div>
+
+<div class="chart-row">
+  <div class="chart-container">
+    <h2>Per-Step Overhead (seconds)</h2>
+    <p class="chart-desc">Additional time Pulsar takes compared to direct Batch for each step. Negative = Pulsar was faster.</p>
+    <canvas id="overheadChart" height="140"></canvas>
+  </div>
+  <div class="chart-container">
+    <h2>Cumulative Workflow Time</h2>
+    <p class="chart-desc">Running total of elapsed time as each step completes.</p>
+    <canvas id="cumulativeChart" height="140"></canvas>
+  </div>
+</div>
+
+<div class="chart-row">
+  <div class="chart-container">
+    <h2>Time Breakdown</h2>
+    <p class="chart-desc">Total workflow time split across tools.</p>
+    <canvas id="pieChartBatch" height="160"></canvas>
+  </div>
+  <div class="chart-container">
+    <h2>Time Breakdown</h2>
+    <p class="chart-desc">Total workflow time split across tools.</p>
+    <canvas id="pieChartPulsar" height="160"></canvas>
+  </div>
+</div>
+
+<div class="footer">
+  Galaxy 26.1 &middot; GCP Batch us-east4 &middot; Input: ERR3485802 + genome.genbank
+</div>
+
+<script>
+const tools = [
+  'fastp', 'snpEff_build_gb', 'bwa_mem', 'samtools_view', 'samtools_stats',
+  'picard_MarkDup', 'lofreq_viterbi', 'multiqc', 'lofreq_indelqual',
+  'lofreq_call', 'lofreq_filter', 'snpEff'
+];
+
+const batchTimes  = [137, 35, 109, 116, 114, 3, 114, 28, 94, 137, 116, 148];
+const pulsarTimes = [205, 23, 185, 195, 205, 20, 187, 12, 187, 204, 194, 216];
+const overhead = pulsarTimes.map((p, i) => p - batchTimes[i]);
+
+const blue = '#3b82f6';
+const blueLight = '#93bbfd';
+const amber = '#f59e0b';
+const amberLight = '#fcd679';
+const red = '#ef4444';
+const green = '#22c55e';
+
+const chartFont = { family: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" };
+Chart.defaults.font.family = chartFont.family;
+Chart.defaults.font.size = 12;
+
+// --- Bar chart: side by side ---
+new Chart(document.getElementById('barChart'), {
+  type: 'bar',
+  data: {
+    labels: tools,
+    datasets: [
+      {
+        label: 'GCP Batch (direct)',
+        data: batchTimes,
+        backgroundColor: blue,
+        borderRadius: 4,
+      },
+      {
+        label: 'Pulsar (AMQP sidecar)',
+        data: pulsarTimes,
+        backgroundColor: amber,
+        borderRadius: 4,
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { position: 'top' },
+      tooltip: {
+        callbacks: {
+          label: ctx => `${ctx.dataset.label}: ${ctx.raw}s (${(ctx.raw/60).toFixed(1)}m)`
+        }
+      }
+    },
+    scales: {
+      y: {
+        title: { display: true, text: 'Seconds' },
+        beginAtZero: true,
+      },
+      x: {
+        ticks: { maxRotation: 45, minRotation: 45 }
+      }
+    }
+  }
+});
+
+// --- Overhead bar chart ---
+new Chart(document.getElementById('overheadChart'), {
+  type: 'bar',
+  data: {
+    labels: tools,
+    datasets: [{
+      label: 'Pulsar overhead',
+      data: overhead,
+      backgroundColor: overhead.map(v => v >= 0 ? '#fca5a5' : '#86efac'),
+      borderColor: overhead.map(v => v >= 0 ? red : green),
+      borderWidth: 1,
+      borderRadius: 4,
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: ctx => {
+            const v = ctx.raw;
+            const pct = batchTimes[ctx.dataIndex] > 0
+              ? ((v / batchTimes[ctx.dataIndex]) * 100).toFixed(0)
+              : '---';
+            return `${v >= 0 ? '+' : ''}${v}s (${v >= 0 ? '+' : ''}${pct}%)`;
+          }
+        }
+      }
+    },
+    scales: {
+      y: {
+        title: { display: true, text: 'Seconds' },
+      },
+      x: {
+        ticks: { maxRotation: 45, minRotation: 45 }
+      }
+    }
+  }
+});
+
+// --- Cumulative line chart ---
+const batchCum = [], pulsarCum = [];
+batchTimes.reduce((acc, v, i) => { batchCum.push(acc + v); return acc + v; }, 0);
+pulsarTimes.reduce((acc, v, i) => { pulsarCum.push(acc + v); return acc + v; }, 0);
+
+new Chart(document.getElementById('cumulativeChart'), {
+  type: 'line',
+  data: {
+    labels: tools,
+    datasets: [
+      {
+        label: 'GCP Batch',
+        data: batchCum.map(v => +(v/60).toFixed(1)),
+        borderColor: blue,
+        backgroundColor: blueLight + '33',
+        fill: true,
+        tension: 0.3,
+        pointRadius: 4,
+        pointBackgroundColor: blue,
+      },
+      {
+        label: 'Pulsar',
+        data: pulsarCum.map(v => +(v/60).toFixed(1)),
+        borderColor: amber,
+        backgroundColor: amberLight + '33',
+        fill: true,
+        tension: 0.3,
+        pointRadius: 4,
+        pointBackgroundColor: amber,
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: ctx => `${ctx.dataset.label}: ${ctx.raw} min`
+        }
+      }
+    },
+    scales: {
+      y: {
+        title: { display: true, text: 'Minutes' },
+        beginAtZero: true,
+      },
+      x: {
+        ticks: { maxRotation: 45, minRotation: 45 }
+      }
+    }
+  }
+});
+
+// --- Pie charts ---
+const pieColors = [
+  '#3b82f6', '#f59e0b', '#ef4444', '#22c55e', '#8b5cf6', '#ec4899',
+  '#14b8a6', '#f97316', '#6366f1', '#84cc16', '#06b6d4', '#e11d48'
+];
+
+function makePie(canvasId, data, title) {
+  new Chart(document.getElementById(canvasId), {
+    type: 'doughnut',
+    data: {
+      labels: tools,
+      datasets: [{
+        data: data,
+        backgroundColor: pieColors,
+        borderWidth: 2,
+        borderColor: '#fff',
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        title: { display: true, text: title, font: { size: 13 } },
+        legend: { position: 'right', labels: { boxWidth: 12, padding: 8, font: { size: 10 } } },
+        tooltip: {
+          callbacks: {
+            label: ctx => {
+              const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
+              const pct = ((ctx.raw / total) * 100).toFixed(1);
+              return `${ctx.label}: ${ctx.raw}s (${pct}%)`;
+            }
+          }
+        }
+      }
+    }
+  });
+}
+
+makePie('pieChartBatch', batchTimes, 'GCP Batch (19.2 min total)');
+makePie('pieChartPulsar', pulsarTimes, 'Pulsar (30.5 min total)');
+</script>
+
+</body>
+</html>

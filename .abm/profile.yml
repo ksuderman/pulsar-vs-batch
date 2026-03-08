@@ -1,0 +1,8 @@
+pulsar:
+  url: http://35.245.243.149
+  key: 2a9ad1bcf3bfd2ff1f16e5cae4b47c12
+  kube: /Users/suderman/.kube/configs/pulsar
+batch:
+  url: http://34.86.128.107
+  key: 75b85ea658560b129a3b82868b47fa7a
+  kube: /Users/suderman/.kube/configs/batch

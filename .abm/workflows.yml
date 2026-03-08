@@ -1,0 +1,4 @@
+rnaseq-pe: https://benchmarking-inputs.s3.amazonaws.com/RNASeq/Galaxy-Workflow-RNAseq_PE.ga
+variant-pe: https://raw.githubusercontent.com/galaxyproject/iwc/main/workflows/variant-calling/generic-variant-calling-wgs-pe/Generic-variation-analysis-on-WGS-PE-data.ga
+variant: https://benchmarking-inputs.s3.amazonaws.com/Variant/Galaxy-Workflow-Variant_analysis_on_WGS_PE_data.ga
+chipseq-pe: https://raw.githubusercontent.com/iwc-workflows/chipseq-pe/main/chipseq-pe.ga

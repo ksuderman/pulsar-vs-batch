@@ -1,0 +1,14 @@
+rna:
+  https://benchmarking-inputs.s3.amazonaws.com/RNASeq/Galaxy-History-SRR24043307-full.tar.gz
+rna-20: 
+  https://benchmarking-inputs.s3.amazonaws.com/RNASeq/Galaxy-History-SRR24043307-downsampled-20.tar.gz
+rna-50: 
+  https://benchmarking-inputs.s3.amazonaws.com/RNASeq/Galaxy-History-SRR24043307-downsampled-50.tar.gz
+variant-2g:
+  https://benchmarking-inputs.s3.amazonaws.com/Variant/Variant-calling-inputs---2GB.rocrate.zip
+variant-5g: 
+  https://benchmarking-inputs.s3.amazonaws.com/Variant/Variant-calling-inputs---5GB.rocrate.zip
+variant-10g: 
+  https://benchmarking-inputs.s3.amazonaws.com/Variant/Variant-calling-inputs---10GB.rocrate.zip
+variant-test: 
+  https://benchmarking-inputs.s3.amazonaws.com/ERR3485802/Galaxy-History-VC-Test-Data.tar.gz

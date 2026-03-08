@@ -1,0 +1,8 @@
+# Run a small test workflow on all of the clusters.
+name: Pulsar-vs-Batch-Test
+runs: 1
+benchmark_confs:
+  - /Users/suderman/Workspaces/JHU/pulsar-vs-batch/benchmarks/variant-test.yml
+cloud:
+  - batch
+  - pulsar

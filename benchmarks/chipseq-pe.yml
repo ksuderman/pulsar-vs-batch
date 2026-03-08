@@ -1,0 +1,22 @@
+# ChIP-seq PE benchmark using IWC test data (wt_H3K4me3, mm10)
+# Workflow: https://iwc.galaxyproject.org/workflow/chipseq-pe-main/
+#
+# Test data from Zenodo (record 1324070):
+#   Forward: https://zenodo.org/record/1324070/files/wt_H3K4me3_read1.fastq.gz
+#   Reverse: https://zenodo.org/record/1324070/files/wt_H3K4me3_read2.fastq.gz
+#
+# Upload the paired FASTQs to your Galaxy instance and create a list:paired
+# collection named "wt_H3K4me3" before running this benchmark.
+- output_history_base_name: ChIPseq-PE
+  workflow_id: "ChIP-seq Analysis: Paired-End Read Processing"
+  runs:
+  - history_name: wt_H3K4me3
+    inputs:
+    - name: PE fastq input
+      collection: wt_H3K4me3
+    - name: Reference genome
+      value: mm10
+    - name: Effective genome size
+      value: 1870000000
+    - name: Normalize profile
+      value: true
