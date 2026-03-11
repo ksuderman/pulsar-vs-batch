@@ -4,7 +4,7 @@
   - history_name: 2GB
     inputs:
     - name: PE fastq input
-      collection: SRR24043307
+      collection: SRR24043307-80
     - name: gtf
       dataset_id: ucsc.hg38.knownGene.gtf
     - name: forward_adapter
@@ -18,7 +18,7 @@
   - history_name: 5GB
     inputs:
     - name: PE fastq input
-      collection: SRR24043307.fastq
+      collection: SRR24043307-50
     - name: gtf
       dataset_id: ucsc.hg38.knownGene.gtf
     - name: forward_adapter
