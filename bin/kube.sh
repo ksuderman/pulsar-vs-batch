@@ -76,8 +76,5 @@ else
 	echo "Not running on MacOS"
 	sed -i "s/default/$cloud/g" ~/.kube/configs/$cloud
 fi
-exit
-
-
 chmod 0400 ~/.kube/configs/$cloud
-
+echo "Done"
