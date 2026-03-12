@@ -81,9 +81,14 @@ benchmarks/             # Benchmark configurations (workflow + inputs)
 experiments/            # Experiment definitions
   test.yml              #   Quick test: 1 run of variant-test on both runners
   benchmark.yml         #   Full: 3 runs of all benchmarks on both runners
-results/                # Analysis output
+results/                # Analysis output (initial test experiment)
   results.md            #   Markdown summary of test experiment results
   charts.html           #   Interactive Chart.js visualizations
+docs/                   # GitHub Pages site (auto-generated)
+  index.md              #   Full results report with tables and analysis
+  charts.html           #   Interactive Chart.js dashboard
+  _config.yml           #   Jekyll configuration
+  assets/css/style.scss #   Custom CSS overrides
 bin/                    # Scripts
   batch.sh              #   Launch/stop the direct Batch Galaxy instance
   pulsar.sh             #   Launch/stop the Pulsar Galaxy instance
@@ -93,6 +98,7 @@ bin/                    # Scripts
   kube.sh               #   Download and configure kubeconfig from a VM
   test.sh               #   Run or validate the variant-test benchmark
   tail.sh               #   Tail cloud-init logs on a running VM
+  generate_docs.py      #   Regenerate docs/ from metrics JSON files
 ```
 
 ## Benchmark Workflows
@@ -114,6 +120,14 @@ bin/                    # Scripts
 The Pulsar sidecar adds roughly 1 minute of overhead per workflow step due to HTTP file staging and AMQP messaging. This overhead is fixed per step, so it is proportionally more significant for short-running tools and negligible for compute-heavy jobs.
 
 See [results/results.md](results/results.md) for the full breakdown and [results/charts.html](results/charts.html) for interactive visualizations.
+
+## Full Benchmark Results
+
+The full benchmark results (variant analysis across 2GB, 5GB, and 10GB inputs) are published to GitHub Pages from the `docs/` directory. Regenerate after downloading new metrics:
+
+```bash
+python3 bin/generate_docs.py
+```
 
 ## Configuration
 

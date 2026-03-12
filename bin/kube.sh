@@ -67,8 +67,17 @@ echo "Downloading kubeconfig to ~/.kube/configs/$cloud"
 gcloud compute scp --zone $zone $USER@$server:/etc/rancher/rke2/rke2.yaml ~/.kube/configs/$cloud
 kubectl --kubeconfig ~/.kube/configs/$cloud config set-cluster default --server=https://$ip:6443
 echo "Patching the kubeconfig"
-sed -i .bak "s/default/$cloud/g" ~/.kube/configs/$cloud
-echo "Removing backup file"
-rm ~/.kube/configs/$cloud.bak
+if [[ $(uname) = Darwin ]] ; then
+	echo "Running on MacOS"
+	sed -i .bak "s/default/$cloud/g" ~/.kube/configs/$cloud
+	echo "Removing backup file"
+	rm ~/.kube/configs/$cloud.bak
+else
+	echo "Not running on MacOS"
+	sed -i "s/default/$cloud/g" ~/.kube/configs/$cloud
+fi
+exit
+
+
 chmod 0400 ~/.kube/configs/$cloud
 
