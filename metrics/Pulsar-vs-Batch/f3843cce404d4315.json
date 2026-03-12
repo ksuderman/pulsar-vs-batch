@@ -1,0 +1,79 @@
+{
+    "run": "1",
+    "cloud": "pulsar",
+    "job_conf": "Default",
+    "workflow_id": "6c44d8a294d0fee7",
+    "history_id": "d3a2321e0f5f6416",
+    "inputs": "SRR24043307-2GB GRCh38.p14.gbff.gz SRR24043307-5GB GRCh38.p14.gbff.gz SRR24043307-10GB GRCh38.p14.gbff.gz",
+    "metrics": {
+        "model_class": "Job",
+        "id": "f3843cce404d4315",
+        "history_id": "d3a2321e0f5f6416",
+        "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/lofreq_call/lofreq_call/2.1.5+galaxy1",
+        "state": "paused",
+        "exit_code": null,
+        "create_time": "2026-03-12T06:00:35.257666",
+        "update_time": "2026-03-12T16:23:10.095459",
+        "galaxy_version": "26.0",
+        "external_id": null,
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": null,
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "05a11571e11d2b78",
+        "command_version": null,
+        "params": {
+            "call_control": "{\"__current_case__\": 1, \"align_quals\": {\"alnqual\": {\"__current_case__\": 0, \"alnqual_choice\": {\"__current_case__\": 1, \"alnquals_to_use\": \"\", \"extended_baq\": true}, \"use_alnqual\": \"\"}}, \"bc_quals\": {\"alt_bq\": {\"__current_case__\": 0, \"modify\": \"\"}, \"min_alt_bq\": \"30\", \"min_bq\": \"30\"}, \"coverage\": {\"max_depth\": \"1000000\", \"min_cov\": \"5\"}, \"joint_qual\": {\"def_alt_jq\": \"0\", \"min_alt_jq\": \"0\", \"min_jq\": \"0\"}, \"map_quals\": {\"min_mq\": \"0\", \"use_mq\": {\"__current_case__\": 0, \"max_mq\": \"255\", \"no_mq\": \"\"}}, \"pe\": {\"use_orphan\": false}, \"set_call_options\": \"yes\", \"source_qual\": {\"use_src_qual\": {\"__current_case__\": 0, \"src_qual\": \"\"}}}",
+            "filter_control": "{\"__current_case__\": 3, \"bonf\": \"0\", \"filter_type\": \"set_custom\", \"others\": false, \"sig\": \"0.0005\"}",
+            "reference_source": "{\"__current_case__\": 1, \"ref\": {\"values\": [{\"id\": 79, \"src\": \"hda\"}]}, \"ref_selector\": \"history\"}",
+            "regions": "{\"__current_case__\": 0, \"restrict_to_region\": \"genome\"}",
+            "variant_types": "\"--call-indels\"",
+            "__workflow_invocation_uuid__": "\"c80afe0e1dd811f1ae90ae14a0e2a0d4\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/?.len\"",
+            "dbkey": "\"?\"",
+            "__input_ext": "\"input\""
+        },
+        "inputs": {
+            "reads": {
+                "id": "17e60f7bd01de6ed",
+                "src": "hda",
+                "uuid": "cbefe6bd-2192-4a99-86ef-252e5351dcda"
+            },
+            "reference_source|ref": {
+                "id": "125aaea63d2dc16e",
+                "src": "hda",
+                "uuid": "f44ef567-e459-4a68-a880-930d849c049d"
+            }
+        },
+        "outputs": {
+            "variants": {
+                "id": "8b81a5ccc59f7e98",
+                "src": "hda",
+                "uuid": "a9bfba0d-628a-4f62-9276-b3fa08d6ce8d"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {
+            "variants": {
+                "src": "hdca",
+                "id": "07381688fb3683d5"
+            }
+        },
+        "tool_stdout": null,
+        "tool_stderr": null,
+        "job_stdout": null,
+        "job_stderr": null,
+        "stdout": "",
+        "stderr": "",
+        "job_messages": null,
+        "dependencies": [],
+        "job_metrics": []
+    },
+    "status": "paused",
+    "server": "http://136.107.46.155",
+    "ref_data_size": [],
+    "input_data_size": [
+        957932045,
+        1289376399
+    ]
+}

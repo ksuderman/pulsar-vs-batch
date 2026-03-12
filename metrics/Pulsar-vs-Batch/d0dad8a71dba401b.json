@@ -1,0 +1,76 @@
+{
+    "run": "1",
+    "cloud": "pulsar",
+    "job_conf": "Default",
+    "workflow_id": "6c44d8a294d0fee7",
+    "history_id": "d3a2321e0f5f6416",
+    "inputs": "SRR24043307-2GB GRCh38.p14.gbff.gz SRR24043307-5GB GRCh38.p14.gbff.gz SRR24043307-10GB GRCh38.p14.gbff.gz",
+    "metrics": {
+        "model_class": "Job",
+        "id": "d0dad8a71dba401b",
+        "history_id": "d3a2321e0f5f6416",
+        "tool_id": "toolshed.g2.bx.psu.edu/repos/devteam/picard/picard_MarkDuplicates/2.18.2.2",
+        "state": "error",
+        "exit_code": null,
+        "create_time": "2026-03-12T15:40:23.293545",
+        "update_time": "2026-03-12T15:45:28.435415",
+        "galaxy_version": "26.0",
+        "external_id": "67",
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": null,
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "05a11571e11d2b78",
+        "command_version": null,
+        "params": {
+            "comments": "[]",
+            "remove_duplicates": "true",
+            "assume_sorted": "true",
+            "duplicate_scoring_strategy": "\"SUM_OF_BASE_QUALITIES\"",
+            "read_name_regex": "\"\"",
+            "optical_duplicate_pixel_distance": "\"100\"",
+            "barcode_tag": "\"\"",
+            "validation_stringency": "\"LENIENT\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/?.len\"",
+            "dbkey": "\"?\"",
+            "__input_ext": "\"bam\""
+        },
+        "inputs": {
+            "inputFile": {
+                "id": "6e1ef817567986db",
+                "src": "hda",
+                "uuid": "3fa59d9a-f574-4e67-ab77-d91601eaa8cc"
+            }
+        },
+        "outputs": {
+            "metrics_file": {
+                "id": "fdb3bb166ff260e1",
+                "src": "hda",
+                "uuid": "7de8c66d-14af-4f23-89f1-ed27edc5a3f8"
+            },
+            "outFile": {
+                "id": "41bf901c5d823ded",
+                "src": "hda",
+                "uuid": "d706308f-12fe-42eb-9c4d-87b069b0ce48"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {},
+        "tool_stdout": "",
+        "tool_stderr": "",
+        "job_stdout": null,
+        "job_stderr": null,
+        "stdout": "",
+        "stderr": "",
+        "job_messages": null,
+        "dependencies": [],
+        "job_metrics": []
+    },
+    "status": "error",
+    "server": "http://136.107.46.155",
+    "ref_data_size": [],
+    "input_data_size": [
+        957932045,
+        1289376399
+    ]
+}
