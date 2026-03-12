@@ -1,0 +1,149 @@
+{
+    "run": "1",
+    "cloud": "batch",
+    "job_conf": "Default",
+    "workflow_id": "9ade964b69e0b027",
+    "history_id": "60739207b480cfd7",
+    "inputs": "SRR24043307-2GB GRCh38.p14.gbff.gz SRR24043307-5GB GRCh38.p14.gbff.gz SRR24043307-10GB GRCh38.p14.gbff.gz",
+    "metrics": {
+        "model_class": "Job",
+        "id": "b0b2c194812afbfa",
+        "history_id": "60739207b480cfd7",
+        "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/snpeff/snpEff/4.3+T.galaxy1",
+        "state": "ok",
+        "exit_code": 0,
+        "create_time": "2026-03-12T00:00:13.762536",
+        "update_time": "2026-03-12T08:47:42.977871",
+        "galaxy_version": "26.1",
+        "external_id": "galaxy-job-1773305108-15e89091",
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": "snpEff -Xmx${GALAXY_MEMORY_MB:-8192}m eff -i vcf -o vcf -upDownStreamLen 0 -formatEff -classic -no-downstream -no-intergenic -no-intron -no-upstream -no-utr                  -stats '/galaxy/server/database/jobs_directory/000/78/outputs/dataset_835241be-a09a-45af-abc8-7020ff99c73f.dat' -noLog -dataDir '/galaxy/server/database/objects/0/8/a/dataset_08af25e7-d720-463d-9bc7-c33b09de4851_files' -configOption 'h38'.genome='h38' -configOption 'h38'.codonTable='Standard' 'h38' '/galaxy/server/database/objects/b/d/a/dataset_bdab3114-7870-46ab-90fa-0a830fcbe25b.dat' > '/galaxy/server/database/jobs_directory/000/78/outputs/dataset_e90cf819-9a81-4b28-8f11-76bd67bd5981.dat' && mkdir '/galaxy/server/database/jobs_directory/000/78/outputs/dataset_835241be-a09a-45af-abc8-7020ff99c73f_files' && mv '/galaxy/server/database/jobs_directory/000/78/outputs/dataset_835241be-a09a-45af-abc8-7020ff99c73f.dat.genes.txt' '/galaxy/server/database/jobs_directory/000/78/outputs/dataset_835241be-a09a-45af-abc8-7020ff99c73f_files/dataset_835241be-a09a-45af-abc8-7020ff99c73f.dat.genes.txt'",
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "87aee200a9af44ab",
+        "command_version": "SnpEff\t4.3t\t2017-11-24",
+        "params": {
+            "annotations": "[\"-formatEff\", \"-classic\"]",
+            "chr": "\"\"",
+            "csvStats": "false",
+            "filter": "{\"__current_case__\": 0, \"specificEffects\": \"no\"}",
+            "filterOut": "[\"-no-downstream\", \"-no-intergenic\", \"-no-intron\", \"-no-upstream\", \"-no-utr\"]",
+            "generate_stats": "true",
+            "inputFormat": "\"vcf\"",
+            "intervals": null,
+            "noLog": "true",
+            "offset": "\"default\"",
+            "outputConditional": "{\"__current_case__\": 0, \"outputFormat\": \"vcf\"}",
+            "snpDb": "{\"__current_case__\": 3, \"codon_table\": \"Standard\", \"genomeSrc\": \"custom\", \"snpeff_db\": {\"values\": [{\"id\": 96, \"src\": \"hda\"}]}}",
+            "spliceRegion": "{\"__current_case__\": 0, \"setSpliceRegions\": \"no\"}",
+            "spliceSiteSize": null,
+            "transcripts": null,
+            "udLength": "\"0\"",
+            "__workflow_invocation_uuid__": "\"701a0f001da611f1a14fba5d5720ddb4\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/?.len\"",
+            "dbkey": "\"?\"",
+            "__input_ext": "\"vcf\""
+        },
+        "inputs": {
+            "snpDb|snpeff_db": {
+                "id": "41b2246febb7acf0",
+                "src": "hda",
+                "uuid": "08af25e7-d720-463d-9bc7-c33b09de4851"
+            },
+            "input": {
+                "id": "17636c6d21b3801c",
+                "src": "hda",
+                "uuid": "bdab3114-7870-46ab-90fa-0a830fcbe25b"
+            }
+        },
+        "outputs": {
+            "snpeff_output": {
+                "id": "7537e9182d411759",
+                "src": "hda",
+                "uuid": "e90cf819-9a81-4b28-8f11-76bd67bd5981"
+            },
+            "statsFile": {
+                "id": "fc571b56d2404ea6",
+                "src": "hda",
+                "uuid": "835241be-a09a-45af-abc8-7020ff99c73f"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {
+            "snpeff_output": {
+                "src": "hdca",
+                "id": "5d61f96512831d73"
+            },
+            "statsFile": {
+                "src": "hdca",
+                "id": "82c93726cb660021"
+            }
+        },
+        "tool_stdout": "",
+        "tool_stderr": "",
+        "job_stdout": "",
+        "job_stderr": "",
+        "stdout": "",
+        "stderr": "",
+        "job_messages": [],
+        "dependencies": [],
+        "job_metrics": [
+            {
+                "title": "Container ID",
+                "value": "quay.io/biocontainers/snpeff:4.3.1t--hdfd78af_5",
+                "plugin": "core",
+                "name": "container_id",
+                "raw_value": "quay.io/biocontainers/snpeff:4.3.1t--hdfd78af_5"
+            },
+            {
+                "title": "Container Type",
+                "value": "docker",
+                "plugin": "core",
+                "name": "container_type",
+                "raw_value": "docker"
+            },
+            {
+                "title": "Cores Allocated",
+                "value": "1",
+                "plugin": "core",
+                "name": "galaxy_slots",
+                "raw_value": "1.0000000"
+            },
+            {
+                "title": "Memory Allocated (MB)",
+                "value": "12288",
+                "plugin": "core",
+                "name": "galaxy_memory_mb",
+                "raw_value": "12288.0000000"
+            },
+            {
+                "title": "Job Start Time",
+                "value": "2026-03-12 08:47:19",
+                "plugin": "core",
+                "name": "start_epoch",
+                "raw_value": "1773305239.0000000"
+            },
+            {
+                "title": "Job End Time",
+                "value": "2026-03-12 08:47:26",
+                "plugin": "core",
+                "name": "end_epoch",
+                "raw_value": "1773305246.0000000"
+            },
+            {
+                "title": "Job Runtime (Wall Clock)",
+                "value": "7 seconds",
+                "plugin": "core",
+                "name": "runtime_seconds",
+                "raw_value": "7.0000000"
+            }
+        ]
+    },
+    "status": "ok",
+    "server": "http://136.107.98.65",
+    "ref_data_size": [],
+    "input_data_size": [
+        957932045,
+        1289376399
+    ]
+}

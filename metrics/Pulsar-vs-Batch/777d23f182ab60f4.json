@@ -1,0 +1,175 @@
+{
+    "run": "1",
+    "cloud": "batch",
+    "job_conf": "Default",
+    "workflow_id": "9ade964b69e0b027",
+    "history_id": "e3e0a8eb1ed6569c",
+    "inputs": "SRR24043307-2GB GRCh38.p14.gbff.gz",
+    "metrics": {
+        "model_class": "Job",
+        "id": "777d23f182ab60f4",
+        "history_id": "e3e0a8eb1ed6569c",
+        "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/multiqc/multiqc/1.11+galaxy0",
+        "state": "ok",
+        "exit_code": 0,
+        "create_time": "2026-03-11T14:55:09.099410",
+        "update_time": "2026-03-11T16:54:33.606961",
+        "galaxy_version": "26.1",
+        "external_id": "galaxy-job-1773247927-e88caeaf",
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": "die() { echo \"$@\" 1>&2 ; exit 1; } &&  mkdir multiqc_WDir &&   mkdir multiqc_WDir/fastp_0 &&    ln -s '/galaxy/server/database/objects/b/0/8/dataset_b084fdba-a6fb-4a2b-ac50-2e28984817c0.dat' 'multiqc_WDir/fastp_0/SRR24043307_fastqfastp.json' && grep -q \"report_title\" 'multiqc_WDir/fastp_0/SRR24043307_fastqfastp.json' || die \"'report_title' or 'report_title' not found in the file\" && mkdir multiqc_WDir/samtools_1 &&    mkdir 'multiqc_WDir/samtools_1/stats_0' &&      grep -q 'This file was produced by samtools stats' /galaxy/server/database/objects/c/3/8/dataset_c385a06b-a114-4f5d-a377-d7e6f8b2b573.dat || die \"Module 'samtools: 'This file was produced by samtools stats' not found in the file 'SRR24043307_fastq'\" && ln -s '/galaxy/server/database/objects/c/3/8/dataset_c385a06b-a114-4f5d-a377-d7e6f8b2b573.dat' 'multiqc_WDir/samtools_1/stats_0/SRR24043307_fastq'  &&    mkdir multiqc_WDir/picard_2 &&      mkdir 'multiqc_WDir/picard_2/markdups_0' &&    grep -q 'MarkDuplicates' /galaxy/server/database/objects/3/4/0/dataset_340c0140-b577-4f9b-8c6e-c561c9000fc1.dat || die \"Module 'picard: 'MarkDuplicates' not found in the file 'SRR24043307_fastq'\" && ln -s '/galaxy/server/database/objects/3/4/0/dataset_340c0140-b577-4f9b-8c6e-c561c9000fc1.dat' 'multiqc_WDir/picard_2/markdups_0/SRR24043307_fastq'  &&     multiqc multiqc_WDir --filename 'report'",
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "87aee200a9af44ab",
+        "command_version": null,
+        "params": {
+            "comment": "\"\"",
+            "export": "false",
+            "flat": "false",
+            "results": "[{\"__index__\": 0, \"software_cond\": {\"__current_case__\": 7, \"input\": {\"values\": [{\"id\": 26, \"src\": \"hdca\"}]}, \"software\": \"fastp\"}}, {\"__index__\": 1, \"software_cond\": {\"__current_case__\": 24, \"output\": [{\"__index__\": 0, \"type\": {\"__current_case__\": 0, \"input\": {\"values\": [{\"id\": 31, \"src\": \"hdca\"}]}, \"type\": \"stats\"}}], \"software\": \"samtools\"}}, {\"__index__\": 2, \"software_cond\": {\"__current_case__\": 17, \"output\": [{\"__index__\": 0, \"input\": {\"values\": [{\"id\": 29, \"src\": \"hdca\"}]}, \"type\": \"markdups\"}], \"software\": \"picard\"}}]",
+            "saveLog": "false",
+            "title": "\"\"",
+            "__workflow_invocation_uuid__": "\"4b01e8421d5a11f1aa4eba5d5720ddb4\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/?.len\"",
+            "dbkey": "\"?\"",
+            "__input_ext": "\"input\""
+        },
+        "inputs": {
+            "results_1|software_cond|output_0|type|input1": {
+                "id": "c136b520877c6325",
+                "src": "hda",
+                "uuid": "c385a06b-a114-4f5d-a377-d7e6f8b2b573"
+            },
+            "results_1|software_cond|output_0|type|input": {
+                "id": "c136b520877c6325",
+                "src": "hda",
+                "uuid": "c385a06b-a114-4f5d-a377-d7e6f8b2b573"
+            },
+            "results_2|software_cond|output_0|input1": {
+                "id": "e02fddcac8195d41",
+                "src": "hda",
+                "uuid": "340c0140-b577-4f9b-8c6e-c561c9000fc1"
+            },
+            "results_2|software_cond|output_0|input": {
+                "id": "e02fddcac8195d41",
+                "src": "hda",
+                "uuid": "340c0140-b577-4f9b-8c6e-c561c9000fc1"
+            },
+            "results_0|software_cond|input1": {
+                "id": "f8e0aafe408409a2",
+                "src": "hda",
+                "uuid": "b084fdba-a6fb-4a2b-ac50-2e28984817c0"
+            },
+            "results_0|software_cond|input": {
+                "id": "f8e0aafe408409a2",
+                "src": "hda",
+                "uuid": "b084fdba-a6fb-4a2b-ac50-2e28984817c0"
+            }
+        },
+        "outputs": {
+            "__new_primary_file_stats|fastp__": {
+                "id": "3d4ca63302dd2eac",
+                "src": "hda",
+                "uuid": "3d94e59f-00c3-46ea-ba3e-221848bedf9a"
+            },
+            "__new_primary_file_stats|general_stats__": {
+                "id": "8e5b4c59a4223c04",
+                "src": "hda",
+                "uuid": "04365e4d-afb0-4d0a-bfca-dadb418c204c"
+            },
+            "__new_primary_file_stats|picard_dups__": {
+                "id": "d405953d0b297f7f",
+                "src": "hda",
+                "uuid": "a8169297-8067-4b11-a38b-5ede2f3ab822"
+            },
+            "__new_primary_file_stats|samtools_stats__": {
+                "id": "5d61f96512831d73",
+                "src": "hda",
+                "uuid": "c2581949-5e4b-4ef5-82b5-dc8db29ed4b8"
+            },
+            "__new_primary_file_stats|sources__": {
+                "id": "82c93726cb660021",
+                "src": "hda",
+                "uuid": "4f8a557f-a897-4930-855c-8fcf75d644f0"
+            },
+            "html_report": {
+                "id": "1642aca2c4a61cb0",
+                "src": "hda",
+                "uuid": "d1245aa3-dc85-49f3-b0d1-03457ffd7da3"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {
+            "stats": {
+                "src": "hdca",
+                "id": "6cb699422c190562"
+            }
+        },
+        "tool_stdout": "|         searching | \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501 100% 3/3  ",
+        "tool_stderr": "\n  /// MultiQC \ud83d\udd0d | v1.11\n\n|           multiqc | MultiQC Version v1.33 now available!\n|           multiqc | Search path : /galaxy/server/database/jobs_directory/000/50/working/multiqc_WDir\n|            picard | Found 1 MarkDuplicates reports\n|          samtools | Found 1 stats reports\n|             fastp | Found 1 reports\n|           multiqc | Compressing plot data\n|           multiqc | Report      : report.html\n|           multiqc | Data        : report_data\n|           multiqc | MultiQC complete\n",
+        "job_stdout": "",
+        "job_stderr": "",
+        "stdout": "|         searching | \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501 100% 3/3  ",
+        "stderr": "\n  /// MultiQC \ud83d\udd0d | v1.11\n\n|           multiqc | MultiQC Version v1.33 now available!\n|           multiqc | Search path : /galaxy/server/database/jobs_directory/000/50/working/multiqc_WDir\n|            picard | Found 1 MarkDuplicates reports\n|          samtools | Found 1 stats reports\n|             fastp | Found 1 reports\n|           multiqc | Compressing plot data\n|           multiqc | Report      : report.html\n|           multiqc | Data        : report_data\n|           multiqc | MultiQC complete\n",
+        "job_messages": [],
+        "dependencies": [],
+        "job_metrics": [
+            {
+                "title": "Container ID",
+                "value": "quay.io/biocontainers/multiqc:1.11--pyhdfd78af_0",
+                "plugin": "core",
+                "name": "container_id",
+                "raw_value": "quay.io/biocontainers/multiqc:1.11--pyhdfd78af_0"
+            },
+            {
+                "title": "Container Type",
+                "value": "docker",
+                "plugin": "core",
+                "name": "container_type",
+                "raw_value": "docker"
+            },
+            {
+                "title": "Cores Allocated",
+                "value": "1",
+                "plugin": "core",
+                "name": "galaxy_slots",
+                "raw_value": "1.0000000"
+            },
+            {
+                "title": "Memory Allocated (MB)",
+                "value": "11673",
+                "plugin": "core",
+                "name": "galaxy_memory_mb",
+                "raw_value": "11673.0000000"
+            },
+            {
+                "title": "Job Start Time",
+                "value": "2026-03-11 16:54:08",
+                "plugin": "core",
+                "name": "start_epoch",
+                "raw_value": "1773248048.0000000"
+            },
+            {
+                "title": "Job End Time",
+                "value": "2026-03-11 16:54:16",
+                "plugin": "core",
+                "name": "end_epoch",
+                "raw_value": "1773248056.0000000"
+            },
+            {
+                "title": "Job Runtime (Wall Clock)",
+                "value": "8 seconds",
+                "plugin": "core",
+                "name": "runtime_seconds",
+                "raw_value": "8.0000000"
+            }
+        ]
+    },
+    "status": "ok",
+    "server": "http://136.107.98.65",
+    "ref_data_size": [],
+    "input_data_size": [
+        503642961,
+        1289376399
+    ]
+}

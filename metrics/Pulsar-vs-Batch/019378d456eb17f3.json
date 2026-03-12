@@ -1,0 +1,125 @@
+{
+    "run": "1",
+    "cloud": "batch",
+    "job_conf": "Default",
+    "workflow_id": "9ade964b69e0b027",
+    "history_id": "312e47e21ee9b87b",
+    "inputs": "SRR24043307-2GB GRCh38.p14.gbff.gz SRR24043307-5GB GRCh38.p14.gbff.gz",
+    "metrics": {
+        "model_class": "Job",
+        "id": "019378d456eb17f3",
+        "history_id": "312e47e21ee9b87b",
+        "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/lofreq_indelqual/lofreq_indelqual/2.1.5+galaxy0",
+        "state": "ok",
+        "exit_code": 0,
+        "create_time": "2026-03-11T18:21:26.114914",
+        "update_time": "2026-03-11T21:30:30.367303",
+        "galaxy_version": "26.1",
+        "external_id": "galaxy-job-1773263998-337930a5",
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": "ln -s '/galaxy/server/database/objects/5/c/5/dataset_5c5d51fe-def0-43d1-9606-d33e0aa34116.dat' reference.fa && lofreq faidx reference.fa 2>&1 || echo \"Error running samtools faidx for indexing fasta reference for lofreq\" >&2 &&  lofreq indelqual --dindel --ref reference.fa -o output.bam /galaxy/server/database/objects/8/3/2/dataset_8326ca17-07ae-4f3a-9f69-f7403e4895d3.dat",
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "87aee200a9af44ab",
+        "command_version": "2.1.5",
+        "params": {
+            "strategy": "{\"__current_case__\": 1, \"reference_source\": {\"__current_case__\": 1, \"ref\": {\"values\": [{\"id\": 74, \"src\": \"hda\"}]}, \"ref_selector\": \"history\"}, \"selector\": \"dindel\"}",
+            "__workflow_invocation_uuid__": "\"1c41d8061d7711f1bc31ba5d5720ddb4\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/?.len\"",
+            "dbkey": "\"?\"",
+            "__input_ext": "\"input\""
+        },
+        "inputs": {
+            "reads": {
+                "id": "a2a13b0ec378e13c",
+                "src": "hda",
+                "uuid": "8326ca17-07ae-4f3a-9f69-f7403e4895d3"
+            },
+            "strategy|reference_source|ref": {
+                "id": "77ac58cf2168e40e",
+                "src": "hda",
+                "uuid": "5c5d51fe-def0-43d1-9606-d33e0aa34116"
+            }
+        },
+        "outputs": {
+            "output": {
+                "id": "f2d9a25bf7e852de",
+                "src": "hda",
+                "uuid": "3a6ac320-4f83-4ae7-b14e-ca8cc5730bf0"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {
+            "output": {
+                "src": "hdca",
+                "id": "f8e0aafe408409a2"
+            }
+        },
+        "tool_stdout": "",
+        "tool_stderr": "",
+        "job_stdout": "",
+        "job_stderr": "",
+        "stdout": "",
+        "stderr": "",
+        "job_messages": [],
+        "dependencies": [],
+        "job_metrics": [
+            {
+                "title": "Container ID",
+                "value": "quay.io/biocontainers/lofreq:2.1.5--py312ha5e83ca_15",
+                "plugin": "core",
+                "name": "container_id",
+                "raw_value": "quay.io/biocontainers/lofreq:2.1.5--py312ha5e83ca_15"
+            },
+            {
+                "title": "Container Type",
+                "value": "docker",
+                "plugin": "core",
+                "name": "container_type",
+                "raw_value": "docker"
+            },
+            {
+                "title": "Cores Allocated",
+                "value": "1",
+                "plugin": "core",
+                "name": "galaxy_slots",
+                "raw_value": "1.0000000"
+            },
+            {
+                "title": "Memory Allocated (MB)",
+                "value": "11673",
+                "plugin": "core",
+                "name": "galaxy_memory_mb",
+                "raw_value": "11673.0000000"
+            },
+            {
+                "title": "Job Start Time",
+                "value": "2026-03-11 21:22:08",
+                "plugin": "core",
+                "name": "start_epoch",
+                "raw_value": "1773264128.0000000"
+            },
+            {
+                "title": "Job End Time",
+                "value": "2026-03-11 21:29:03",
+                "plugin": "core",
+                "name": "end_epoch",
+                "raw_value": "1773264543.0000000"
+            },
+            {
+                "title": "Job Runtime (Wall Clock)",
+                "value": "6 minutes",
+                "plugin": "core",
+                "name": "runtime_seconds",
+                "raw_value": "415.0000000"
+            }
+        ]
+    },
+    "status": "ok",
+    "server": "http://136.107.98.65",
+    "ref_data_size": [],
+    "input_data_size": [
+        943609340,
+        1289376399
+    ]
+}
