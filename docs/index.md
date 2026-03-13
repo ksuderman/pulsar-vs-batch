@@ -4,7 +4,7 @@ title: Pulsar vs Direct GCP Batch - Variant Analysis
 
 # Pulsar vs Direct GCP Batch: Variant Analysis
 
-**[Interactive Charts](charts.html)**
+**[Interactive Charts](charts.html)** | **[Cost Summary](costs.md)**
 
 ## Experiment Setup
 

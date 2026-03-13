@@ -4,7 +4,7 @@ title: Pulsar vs Direct GCP Batch - RNASeq
 
 # Pulsar vs Direct GCP Batch: RNASeq
 
-**[Interactive Charts](charts.html)**
+**[Interactive Charts](charts.html)** | **[Cost Summary](../costs.md)**
 
 ## Experiment Setup
 
