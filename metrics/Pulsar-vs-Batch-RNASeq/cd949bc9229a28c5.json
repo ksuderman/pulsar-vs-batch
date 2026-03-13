@@ -1,0 +1,130 @@
+{
+    "run": "1",
+    "cloud": "pulsar",
+    "job_conf": "Default",
+    "workflow_id": "5dd04c396188b091",
+    "history_id": "b4b2cdc31b55552e",
+    "inputs": "SRR24043307-80 ucsc.hg38.knownGene.gtf",
+    "metrics": {
+        "model_class": "Job",
+        "id": "cd949bc9229a28c5",
+        "history_id": "b4b2cdc31b55552e",
+        "tool_id": "toolshed.g2.bx.psu.edu/repos/lparsons/cutadapt/cutadapt/4.0+galaxy1",
+        "state": "ok",
+        "exit_code": 0,
+        "create_time": "2026-03-13T03:46:01.816820",
+        "update_time": "2026-03-13T03:55:29.168104",
+        "galaxy_version": "26.1",
+        "external_id": "35",
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": "ln -f -s '/mnt/disks/pulsar_staging/35/inputs/dataset_945bb883-c7b2-473d-9fb0-e1830a7ed42b.dat' 'downsampled-SRR24043307_fastq_gz_1.fq.gz' &&  ln -f -s '/mnt/disks/pulsar_staging/35/inputs/dataset_aa8a83e4-541c-4878-8ab9-78895f5c4a63.dat' 'downsampled-SRR24043307_fastq_gz_2.fq.gz' &&    cutadapt  -j=${GALAXY_SLOTS:-4}      -a 'Please use: For R1: - For Nextera: CTGTCTCTTATACACATCTCCGAGCCCACGAGAC - For TrueSeq: GATCGGAAGAGCACACGTCTGAACTCCAGTCAC or AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'='AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'         -A 'Please use: For R2: - For Nextera: CTGTCTCTTATACACATCTGACGCTGCCGACGA - For TruSeq: GATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT or AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT'='AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT'      --output='out1.fq.gz' --paired-output='out2.fq.gz'  --error-rate=0.1 --times=1 --overlap=3   --action=trim      --minimum-length=15 --pair-filter=any   --quality-cutoff=30     'downsampled-SRR24043307_fastq_gz_1.fq.gz' 'downsampled-SRR24043307_fastq_gz_2.fq.gz'  > report.txt",
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "5dd04c396188b091",
+        "command_version": "4.0",
+        "params": {
+            "__workflow_invocation_uuid__": "\"26d193101e8f11f1a3530e6fa7db7a80\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/?.len\"",
+            "dbkey": "\"?\"",
+            "__input_ext": "\"input\"",
+            "__job_resource": "{\"__current_case__\": 0, \"__job_resource__select\": \"no\"}",
+            "adapter_options": "{\"action\": \"trim\", \"error_rate\": \"0.1\", \"internal\": \"\", \"match_read_wildcards\": \" \", \"no_indels\": false, \"overlap\": \"3\", \"revcomp\": false, \"times\": \"1\"}",
+            "filter_options": "{\"discard_cassava\": false, \"discard_trimmed\": false, \"discard_untrimmed\": false, \"length_R2_options\": {\"__current_case__\": 1, \"length_R2_status\": \"False\"}, \"max_expected_errors\": null, \"max_n\": null, \"maximum_length\": null, \"minimum_length\": \"15\", \"pair_filter\": \"any\"}",
+            "library": "{\"__current_case__\": 2, \"input_1\": {\"values\": [{\"id\": 6, \"src\": \"dce\"}]}, \"r1\": {\"adapters\": [{\"__index__\": 0, \"adapter_source\": {\"__current_case__\": 0, \"adapter\": \"AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC\", \"adapter_name\": \"Please use: For R1: - For Nextera: CTGTCTCTTATACACATCTCCGAGCCCACGAGAC - For TrueSeq: GATCGGAAGAGCACACGTCTGAACTCCAGTCAC or AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC\", \"adapter_source_list\": \"user\"}, \"single_noindels\": false}], \"anywhere_adapters\": [], \"cut\": \"0\", \"front_adapters\": []}, \"r2\": {\"adapters2\": [{\"__index__\": 0, \"adapter_source2\": {\"__current_case__\": 0, \"adapter2\": \"AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT\", \"adapter_name2\": \"Please use: For R2: - For Nextera: CTGTCTCTTATACACATCTGACGCTGCCGACGA - For TruSeq: GATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT or AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT\", \"adapter_source_list2\": \"user\"}, \"single_noindels\": false}], \"anywhere_adapters2\": [], \"cut2\": \"0\", \"front_adapters2\": [], \"quality_cutoff2\": \"\"}, \"type\": \"paired_collection\"}",
+            "output_selector": "[\"report\"]",
+            "read_mod_options": "{\"length_tag\": \"\", \"nextseq_trim\": \"0\", \"quality_cutoff\": \"30\", \"rename\": \"\", \"shorten_options\": {\"__current_case__\": 1, \"shorten_values\": \"False\"}, \"strip_suffix\": \"\", \"trim_n\": false, \"zero_cap\": false}"
+        },
+        "inputs": {
+            "library|input_11": {
+                "id": "c2e540db2b289881",
+                "src": "hda",
+                "uuid": "945bb883-c7b2-473d-9fb0-e1830a7ed42b"
+            },
+            "library|input_12": {
+                "id": "02486a256ae04aa4",
+                "src": "hda",
+                "uuid": "aa8a83e4-541c-4878-8ab9-78895f5c4a63"
+            }
+        },
+        "outputs": {
+            "out_pairs|__part__|forward": {
+                "id": "90c71858ec5d99c3",
+                "src": "hda",
+                "uuid": "765e58d3-34b9-45dd-97d4-5b5c8f19d3c7"
+            },
+            "out_pairs|__part__|reverse": {
+                "id": "6faceb2d214fd01e",
+                "src": "hda",
+                "uuid": "3f827e5c-c463-45c9-82e1-0ab2de2e3fdc"
+            },
+            "report": {
+                "id": "2118ad00d29eec62",
+                "src": "hda",
+                "uuid": "fa8d1e6f-250c-41c9-b84a-387efde21d5d"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {
+            "out_pairs": {
+                "src": "hdca",
+                "id": "6b93ff49d6fea88e"
+            },
+            "report": {
+                "src": "hdca",
+                "id": "b4b2cdc31b55552e"
+            }
+        },
+        "tool_stdout": "",
+        "tool_stderr": "",
+        "job_stdout": "",
+        "job_stderr": "",
+        "stdout": "",
+        "stderr": "",
+        "job_messages": [],
+        "dependencies": [],
+        "job_metrics": [
+            {
+                "title": "Cores Allocated",
+                "value": "8",
+                "plugin": "core",
+                "name": "galaxy_slots",
+                "raw_value": "8.0000000"
+            },
+            {
+                "title": "Memory Allocated (MB)",
+                "value": "28672",
+                "plugin": "core",
+                "name": "galaxy_memory_mb",
+                "raw_value": "28672.0000000"
+            },
+            {
+                "title": "Job Start Time",
+                "value": "2026-03-13 03:51:25",
+                "plugin": "core",
+                "name": "start_epoch",
+                "raw_value": "1773373885.0000000"
+            },
+            {
+                "title": "Job End Time",
+                "value": "2026-03-13 03:53:51",
+                "plugin": "core",
+                "name": "end_epoch",
+                "raw_value": "1773374031.0000000"
+            },
+            {
+                "title": "Job Runtime (Wall Clock)",
+                "value": "2 minutes",
+                "plugin": "core",
+                "name": "runtime_seconds",
+                "raw_value": "146.0000000"
+            }
+        ]
+    },
+    "status": "ok",
+    "server": "http://35.245.29.195",
+    "ref_data_size": [],
+    "input_data_size": [
+        2842083,
+        503642961
+    ]
+}

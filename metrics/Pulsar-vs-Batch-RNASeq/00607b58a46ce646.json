@@ -1,0 +1,66 @@
+{
+    "run": "1",
+    "cloud": "pulsar",
+    "job_conf": "Default",
+    "workflow_id": "5dd04c396188b091",
+    "history_id": "b2fbf841daf268d8",
+    "inputs": "SRR24043307-80 ucsc.hg38.knownGene.gtf SRR24043307-50 ucsc.hg38.knownGene.gtf SRR24043307-full ucsc.hg38.knownGene.gtf",
+    "metrics": {
+        "model_class": "Job",
+        "id": "00607b58a46ce646",
+        "history_id": "b2fbf841daf268d8",
+        "tool_id": "param_value_from_file",
+        "state": "error",
+        "exit_code": null,
+        "create_time": "2026-03-13T06:22:31.347293",
+        "update_time": "2026-03-13T08:23:21.432884",
+        "galaxy_version": "26.1",
+        "external_id": null,
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": null,
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "5dd04c396188b091",
+        "command_version": null,
+        "params": {
+            "param_type": "\"float\"",
+            "remove_newlines": "true",
+            "__workflow_invocation_uuid__": "\"021a64dc1ea511f1a9290e6fa7db7a80\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/hg38.len\"",
+            "dbkey": "\"hg38\"",
+            "__input_ext": "\"input\""
+        },
+        "inputs": {
+            "input1": {
+                "id": "9487b241d375f4df",
+                "src": "hda",
+                "uuid": "13f6a1af-44e4-4772-bc07-f50d1620a0f9"
+            }
+        },
+        "outputs": {
+            "float_param": {
+                "id": "368f46628434e4eb",
+                "src": "hda",
+                "uuid": "1748ed11-0c07-4fad-b8bf-0ae9ec07941f"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {},
+        "tool_stdout": "",
+        "tool_stderr": "",
+        "job_stdout": null,
+        "job_stderr": null,
+        "stdout": "",
+        "stderr": "",
+        "job_messages": null,
+        "dependencies": [],
+        "job_metrics": []
+    },
+    "status": "error",
+    "server": "http://35.245.29.195",
+    "ref_data_size": [],
+    "input_data_size": [
+        2824478,
+        503642961
+    ]
+}

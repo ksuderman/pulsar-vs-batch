@@ -1,0 +1,120 @@
+{
+    "run": "1",
+    "cloud": "batch",
+    "job_conf": "Default",
+    "workflow_id": "0be3040c412749ac",
+    "history_id": "71281358f7110031",
+    "inputs": "SRR24043307-80 ucsc.hg38.knownGene.gtf SRR24043307-50 ucsc.hg38.knownGene.gtf",
+    "metrics": {
+        "model_class": "Job",
+        "id": "93cc8ed631c9daa6",
+        "history_id": "71281358f7110031",
+        "tool_id": "wig_to_bigWig",
+        "state": "ok",
+        "exit_code": 0,
+        "create_time": "2026-03-13T06:43:27.155464",
+        "update_time": "2026-03-13T07:20:02.519687",
+        "galaxy_version": "26.1",
+        "external_id": "galaxy-job-1773386263-da2f46bb",
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": "grep -v \"^track\" '/galaxy/server/database/objects/a/6/8/dataset_a68876dc-7738-4b84-b18f-ade0f908cf5c.dat' | wigToBigWig stdin '/cvmfs/data.galaxyproject.org/managed/len/ucsc/hg38.len' '/galaxy/server/database/jobs_directory/000/69/outputs/dataset_5791c17d-7eb5-487f-bf16-4f372777ce28.dat' -clip 2>&1 || echo \"Error running wigToBigWig.\" >&2",
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "0be3040c412749ac",
+        "command_version": "",
+        "params": {
+            "settings": "{\"__current_case__\": 0, \"settingsType\": \"preset\"}",
+            "__workflow_invocation_uuid__": "\"57ecdf081e9f11f1b66e4eb3196e66d4\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/hg38.len\"",
+            "dbkey": "\"hg38\"",
+            "__input_ext": "\"bedgraph\""
+        },
+        "inputs": {
+            "input1": {
+                "id": "9126078a810cd548",
+                "src": "hda",
+                "uuid": "a68876dc-7738-4b84-b18f-ade0f908cf5c"
+            }
+        },
+        "outputs": {
+            "out_file1": {
+                "id": "a2085ec685ab0589",
+                "src": "hda",
+                "uuid": "5791c17d-7eb5-487f-bf16-4f372777ce28"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {
+            "out_file1": {
+                "src": "hdca",
+                "id": "b7e1f30f3e7059b7"
+            }
+        },
+        "tool_stdout": "",
+        "tool_stderr": "",
+        "job_stdout": "",
+        "job_stderr": "",
+        "stdout": "",
+        "stderr": "",
+        "job_messages": [],
+        "dependencies": [],
+        "job_metrics": [
+            {
+                "title": "Container ID",
+                "value": "quay.io/biocontainers/ucsc-wigtobigwig:357--h446ed27_4",
+                "plugin": "core",
+                "name": "container_id",
+                "raw_value": "quay.io/biocontainers/ucsc-wigtobigwig:357--h446ed27_4"
+            },
+            {
+                "title": "Container Type",
+                "value": "docker",
+                "plugin": "core",
+                "name": "container_type",
+                "raw_value": "docker"
+            },
+            {
+                "title": "Cores Allocated",
+                "value": "1",
+                "plugin": "core",
+                "name": "galaxy_slots",
+                "raw_value": "1.0000000"
+            },
+            {
+                "title": "Memory Allocated (MB)",
+                "value": "28672",
+                "plugin": "core",
+                "name": "galaxy_memory_mb",
+                "raw_value": "28672.0000000"
+            },
+            {
+                "title": "Job Start Time",
+                "value": "2026-03-13 07:19:24",
+                "plugin": "core",
+                "name": "start_epoch",
+                "raw_value": "1773386364.0000000"
+            },
+            {
+                "title": "Job End Time",
+                "value": "2026-03-13 07:19:42",
+                "plugin": "core",
+                "name": "end_epoch",
+                "raw_value": "1773386382.0000000"
+            },
+            {
+                "title": "Job Runtime (Wall Clock)",
+                "value": "18 seconds",
+                "plugin": "core",
+                "name": "runtime_seconds",
+                "raw_value": "18.0000000"
+            }
+        ]
+    },
+    "status": "ok",
+    "server": "http://34.48.93.121",
+    "ref_data_size": [],
+    "input_data_size": [
+        5099543128,
+        503642961
+    ]
+}

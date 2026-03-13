@@ -1,0 +1,151 @@
+{
+    "run": "1",
+    "cloud": "pulsar",
+    "job_conf": "Default",
+    "workflow_id": "5dd04c396188b091",
+    "history_id": "58c5d45efb06e38d",
+    "inputs": "SRR24043307-80 ucsc.hg38.knownGene.gtf SRR24043307-50 ucsc.hg38.knownGene.gtf",
+    "metrics": {
+        "model_class": "Job",
+        "id": "3a3e35c8ab052477",
+        "history_id": "58c5d45efb06e38d",
+        "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/rgrnastar/rna_star/2.7.8a+galaxy1",
+        "state": "ok",
+        "exit_code": 0,
+        "create_time": "2026-03-13T05:01:53.977501",
+        "update_time": "2026-03-13T06:14:18.954139",
+        "galaxy_version": "26.1",
+        "external_id": "55",
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": "STAR  --runThreadN ${GALAXY_SLOTS:-4} --genomeLoad NoSharedMemory --genomeDir '/cvmfs/data.galaxyproject.org/managed/rnastar/2.7.4a/hg38/hg38/dataset_fdfceb86-2b00-45f3-a3f4-63794ea8182d_files' --sjdbOverhang 99 --sjdbGTFfile '/mnt/disks/pulsar_staging/55/inputs/dataset_10c41754-e60f-41a9-9ef0-d7fefa8108a4.dat'   --readFilesIn '/mnt/disks/pulsar_staging/55/inputs/dataset_44afe14a-c3d0-4ff7-a0b5-5dbcf9234429.dat' '/mnt/disks/pulsar_staging/55/inputs/dataset_0fb6034e-097e-418c-a32d-4ac2ba77c216.dat'   --readFilesCommand zcat   --outSAMtype BAM SortedByCoordinate  --twopassMode None ''  --quantMode GeneCounts   --outSAMattrIHstart 1 --outSAMattributes NH HI AS nM  --outSAMprimaryFlag OneBestScore  --outSAMmapqUnique 255    --outSAMunmapped None  --outFilterType BySJout --outFilterMultimapScoreRange 1 --outFilterMultimapNmax 20 --outFilterMismatchNmax 999 --outFilterMismatchNoverLmax 0.3 --outFilterMismatchNoverReadLmax 0.04 --outFilterScoreMin 0 --outFilterScoreMinOverLread 0.66 --outFilterMatchNmin 0 --outFilterMatchNminOverLread 0.66 --outSAMmultNmax -1 --outSAMtlen 1   --seedSearchStartLmax 50 --seedSearchStartLmaxOverLread 1.0 --seedSearchLmax 0 --seedMultimapNmax 10000 --seedPerReadNmax 1000 --seedPerWindowNmax 50 --seedNoneLociPerWindow 10  --alignIntronMin 20 --alignIntronMax 1000000 --alignMatesGapMax 1000000 --alignSJoverhangMin 8 --alignSJstitchMismatchNmax 0 -1 0 0 --alignSJDBoverhangMin 1 --alignSplicedMateMapLmin 0 --alignSplicedMateMapLminOverLmate 0.66 --alignWindowsPerReadNmax 10000 --alignTranscriptsPerWindowNmax 100 --alignTranscriptsPerReadNmax 10000 --alignEndsType Local --peOverlapNbasesMin 0 --peOverlapMMp 0.01  --limitOutSJoneRead 1000 --limitOutSJcollapsed 1000000 --limitSjdbInsertNsj 1000000  --outBAMsortingThreadN ${GALAXY_SLOTS:-4} --outBAMsortingBinsN 50 --winAnchorMultimapNmax 50 --limitBAMsortRAM $((${GALAXY_MEMORY_MB:-0}*1000000))  && samtools view -b -o '/mnt/disks/pulsar_staging/55/working/dataset_10f24567-f573-4d67-92ac-a5768695383d.dat' Aligned.sortedByCoord.out.bam",
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "5dd04c396188b091",
+        "command_version": "",
+        "params": {
+            "algo": "{\"params\": {\"__current_case__\": 3, \"align\": {\"alignEndsType\": false, \"alignIntronMax\": \"1000000\", \"alignIntronMin\": \"20\", \"alignMatesGapMax\": \"1000000\", \"alignSJDBoverhangMin\": \"1\", \"alignSJoverhangMin\": \"8\", \"alignSJstitchMismatchNmax\": {\"alignSJstitchMismatchNmax1\": \"0\", \"alignSJstitchMismatchNmax2\": \"-1\", \"alignSJstitchMismatchNmax3\": \"0\", \"alignSJstitchMismatchNmax4\": \"0\"}, \"alignSplicedMateMapLmin\": \"0\", \"alignSplicedMateMapLminOverLmate\": \"0.66\", \"alignTranscriptsPerReadNmax\": \"10000\", \"alignTranscriptsPerWindowNmax\": \"100\", \"alignWindowsPerReadNmax\": \"10000\", \"peOverlapMMp\": \"0.01\", \"peOverlapNbasesMin\": \"0\"}, \"chim_settings\": {\"chimFilter\": true, \"chimJunctionOverhangMin\": \"20\", \"chimMainSegmentMultNmax\": \"10\", \"chimMultimapNmax\": \"1\", \"chimMultimapScoreRange\": \"1\", \"chimScoreDropMax\": \"20\", \"chimScoreJunctionNonGTAG\": \"-1\", \"chimScoreMin\": \"0\", \"chimScoreSeparation\": \"10\", \"chimSegmentMin\": \"12\", \"chimSegmentReadGapMax\": \"0\"}, \"limits\": {\"limitOutSJcollapsed\": \"1000000\", \"limitOutSJoneRead\": \"1000\", \"limitSjdbInsertNsj\": \"1000000\"}, \"seed\": {\"seedMultimapNmax\": \"10000\", \"seedNoneLociPerWindow\": \"10\", \"seedPerReadNmax\": \"1000\", \"seedPerWindowNmax\": \"50\", \"seedSearchLmax\": \"0\", \"seedSearchStartLmax\": \"50\", \"seedSearchStartLmaxOverLread\": \"1.0\"}, \"settingsType\": \"full\"}}",
+            "chimOutType": "\"\"",
+            "filter": "{\"basic_filters\": [\"exclude_unmapped\"], \"output_params2\": {\"__current_case__\": 0, \"outFilterMatchNmin\": \"0\", \"outFilterMatchNminOverLread\": \"0.66\", \"outFilterMismatchNmax\": \"999\", \"outFilterMismatchNoverLmax\": \"0.3\", \"outFilterMismatchNoverReadLmax\": \"0.04\", \"outFilterMultimapNmax\": \"20\", \"outFilterMultimapScoreRange\": \"1\", \"outFilterScoreMin\": \"0\", \"outFilterScoreMinOverLread\": \"0.66\", \"outFilterType\": true, \"outSAMmultNmax\": \"-1\", \"outSAMtlen\": \"1\", \"output_select2\": \"yes\"}}",
+            "oformat": "{\"HI_offset\": \"1\", \"outSAMattributes\": [\"NH\", \"HI\", \"AS\", \"nM\"], \"outSAMmapqUnique\": \"255\", \"outSAMprimaryFlag\": \"OneBestScore\"}",
+            "perf": "{\"outBAMsortingBinsN\": \"50\", \"winAnchorMultimapNmax\": \"50\"}",
+            "quantmode_output": "{\"__current_case__\": 1, \"quantMode\": \"GeneCounts\"}",
+            "refGenomeSource": "{\"GTFconditional\": {\"GTFselect\": \"without-gtf\", \"__current_case__\": 1, \"genomeDir\": \"hg38\", \"sjdbGTFfile\": {\"values\": [{\"id\": 11, \"src\": \"hda\"}]}, \"sjdbOverhang\": \"99\"}, \"__current_case__\": 0, \"geneSource\": \"indexed\"}",
+            "singlePaired": "{\"__current_case__\": 2, \"input\": {\"values\": [{\"id\": 52, \"src\": \"dce\"}]}, \"sPaired\": \"paired_collection\"}",
+            "twopass": "{\"__current_case__\": 0, \"sj_precalculated\": \"\", \"twopassMode\": \"None\", \"twopass_read_subset\": \"\"}",
+            "__workflow_invocation_uuid__": "\"c009d98e1e9911f1b5ea0e6fa7db7a80\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/?.len\"",
+            "dbkey": "\"?\"",
+            "__input_ext": "\"input\""
+        },
+        "inputs": {
+            "refGenomeSource|GTFconditional|sjdbGTFfile": {
+                "id": "b4b2cdc31b55552e",
+                "src": "hda",
+                "uuid": "10c41754-e60f-41a9-9ef0-d7fefa8108a4"
+            },
+            "singlePaired|input2": {
+                "id": "0dcd226db80ad7c8",
+                "src": "hda",
+                "uuid": "0fb6034e-097e-418c-a32d-4ac2ba77c216"
+            },
+            "singlePaired|input1": {
+                "id": "9ae2dcc241863a92",
+                "src": "hda",
+                "uuid": "44afe14a-c3d0-4ff7-a0b5-5dbcf9234429"
+            }
+        },
+        "outputs": {
+            "output_log": {
+                "id": "4c077ad5010d8051",
+                "src": "hda",
+                "uuid": "f17ba7c6-5eea-4406-a470-5680fe63e625"
+            },
+            "splice_junctions": {
+                "id": "8435936c8ee5af07",
+                "src": "hda",
+                "uuid": "cdbaa86e-30f5-42f1-ade4-0edb59de27be"
+            },
+            "mapped_reads": {
+                "id": "b708a699696444e1",
+                "src": "hda",
+                "uuid": "10f24567-f573-4d67-92ac-a5768695383d"
+            },
+            "reads_per_gene": {
+                "id": "7243d4b3cc4adfe2",
+                "src": "hda",
+                "uuid": "ad0f63f3-08ba-48ef-9f53-1fa76388682d"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {
+            "output_log": {
+                "src": "hdca",
+                "id": "79f0c046119fa401"
+            },
+            "splice_junctions": {
+                "src": "hdca",
+                "id": "ddc328af4d7f7c12"
+            },
+            "mapped_reads": {
+                "src": "hdca",
+                "id": "750328530dffa1e2"
+            },
+            "reads_per_gene": {
+                "src": "hdca",
+                "id": "c46596ec790bc4d7"
+            }
+        },
+        "tool_stdout": "Mar 13 05:32:48 ..... started STAR run\nMar 13 05:32:48 ..... loading genome\nMar 13 05:54:28 ..... processing annotations GTF\nMar 13 05:54:42 ..... inserting junctions into the genome indices\nMar 13 05:57:50 ..... started mapping\nMar 13 06:03:39 ..... finished mapping\nMar 13 06:03:39 ..... started sorting BAM\nMar 13 06:04:14 ..... finished successfully\n",
+        "tool_stderr": "",
+        "job_stdout": "",
+        "job_stderr": "",
+        "stdout": "Mar 13 05:32:48 ..... started STAR run\nMar 13 05:32:48 ..... loading genome\nMar 13 05:54:28 ..... processing annotations GTF\nMar 13 05:54:42 ..... inserting junctions into the genome indices\nMar 13 05:57:50 ..... started mapping\nMar 13 06:03:39 ..... finished mapping\nMar 13 06:03:39 ..... started sorting BAM\nMar 13 06:04:14 ..... finished successfully\n",
+        "stderr": "",
+        "job_messages": [],
+        "dependencies": [],
+        "job_metrics": [
+            {
+                "title": "Cores Allocated",
+                "value": "10",
+                "plugin": "core",
+                "name": "galaxy_slots",
+                "raw_value": "10.0000000"
+            },
+            {
+                "title": "Memory Allocated (MB)",
+                "value": "51200",
+                "plugin": "core",
+                "name": "galaxy_memory_mb",
+                "raw_value": "51200.0000000"
+            },
+            {
+                "title": "Job Start Time",
+                "value": "2026-03-13 05:32:48",
+                "plugin": "core",
+                "name": "start_epoch",
+                "raw_value": "1773379968.0000000"
+            },
+            {
+                "title": "Job End Time",
+                "value": "2026-03-13 06:08:48",
+                "plugin": "core",
+                "name": "end_epoch",
+                "raw_value": "1773382128.0000000"
+            },
+            {
+                "title": "Job Runtime (Wall Clock)",
+                "value": "36 minutes",
+                "plugin": "core",
+                "name": "runtime_seconds",
+                "raw_value": "2160.0000000"
+            }
+        ]
+    },
+    "status": "ok",
+    "server": "http://35.245.29.195",
+    "ref_data_size": [],
+    "input_data_size": [
+        5099543128,
+        503642961
+    ]
+}
