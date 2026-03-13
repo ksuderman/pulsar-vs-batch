@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pulsar vs GCP Batch: Variant Analysis</title>
+<title>Pulsar vs GCP Batch: Runtime Comparison</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f5f7fa; color: #1a1a2e; padding: 2rem; max-width: 1200px; margin: 0 auto; }
   h1 { font-size: 1.8rem; margin-bottom: 0.3rem; }
   .subtitle { color: #666; font-size: 0.95rem; margin-bottom: 1.5rem; }
-  .tabs { display: flex; gap: 0; margin-bottom: 2rem; border-bottom: 2px solid #e5e7eb; flex-wrap: wrap; }
+  .tabs { display: flex; gap: 0; margin-bottom: 2rem; border-bottom: 2px solid #e5e7eb; }
   .tab { padding: 0.7rem 1.4rem; cursor: pointer; font-size: 0.9rem; font-weight: 500; color: #666; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: color 0.2s, border-color 0.2s; user-select: none; }
   .tab:hover { color: #1a1a2e; }
   .tab.active { color: #3b82f6; border-bottom-color: #3b82f6; }
@@ -34,8 +34,8 @@
 </head>
 <body>
 
-<h1>Pulsar vs Direct GCP Batch: Variant Analysis</h1>
-<p class="subtitle">Variant Analysis &mdash; 12 tool types &mdash; 8 runs</p>
+<h1>Pulsar vs Direct GCP Batch</h1>
+<p class="subtitle">Variant analysis on WGS PE data &mdash; 12-step workflow &mdash; 8 runs</p>
 
 <div class="tabs">
   <div class="tab active" data-tab="overview">Overview</div>
@@ -62,8 +62,8 @@
 <div class="tab-content" id="tab-10gb-2gb-5gb">
   <div class="summary-cards">
     <div class="card batch"><div class="label">Batch Compute</div><div class="value">504.3 min</div><div class="detail">30259s across 12 steps</div></div>
-    <div class="card pulsar"><div class="label">Pulsar Compute</div><div class="value">530.4 min</div><div class="detail">31824s across 6 steps</div></div>
-    <div class="card overhead"><div class="label">Compute Difference</div><div class="value">+5%</div><div class="detail">+1565s</div></div>
+    <div class="card pulsar"><div class="label">Pulsar Compute</div><div class="value">530.4 min</div><div class="detail">31824s across 12 steps</div></div>
+    <div class="card overhead"><div class="label">Compute Difference</div><div class="value">+5%</div><div class="detail">+1565s &mdash; staging overhead + GALAXY_SLOTS gap</div></div>
   </div>
   <div class="chart-container"><h2>Per-Step Compute Time &mdash; 10GB+2GB+5GB</h2><p class="chart-desc">Actual runtime_seconds per tool.</p><canvas id="bar_tab-10gb-2gb-5gb" height="100"></canvas></div>
   <div class="chart-row">
@@ -76,7 +76,7 @@
   <div class="summary-cards">
     <div class="card batch"><div class="label">Batch Compute</div><div class="value">186.4 min</div><div class="detail">11184s across 12 steps</div></div>
     <div class="card pulsar"><div class="label">Pulsar Compute</div><div class="value">238.5 min</div><div class="detail">14308s across 12 steps</div></div>
-    <div class="card overhead"><div class="label">Compute Difference</div><div class="value">+28%</div><div class="detail">+3124s</div></div>
+    <div class="card overhead"><div class="label">Compute Difference</div><div class="value">+28%</div><div class="detail">+3124s &mdash; staging overhead + GALAXY_SLOTS gap</div></div>
   </div>
   <div class="chart-container"><h2>Per-Step Compute Time &mdash; 2GB</h2><p class="chart-desc">Actual runtime_seconds per tool.</p><canvas id="bar_tab-2gb" height="100"></canvas></div>
   <div class="chart-row">
@@ -89,7 +89,7 @@
   <div class="summary-cards">
     <div class="card batch"><div class="label">Batch Compute</div><div class="value">320.4 min</div><div class="detail">19221s across 12 steps</div></div>
     <div class="card pulsar"><div class="label">Pulsar Compute</div><div class="value">482.9 min</div><div class="detail">28973s across 12 steps</div></div>
-    <div class="card overhead"><div class="label">Compute Difference</div><div class="value">+51%</div><div class="detail">+9752s</div></div>
+    <div class="card overhead"><div class="label">Compute Difference</div><div class="value">+51%</div><div class="detail">+9752s &mdash; staging overhead + GALAXY_SLOTS gap</div></div>
   </div>
   <div class="chart-container"><h2>Per-Step Compute Time &mdash; 2GB+5GB</h2><p class="chart-desc">Actual runtime_seconds per tool.</p><canvas id="bar_tab-2gb-5gb" height="100"></canvas></div>
   <div class="chart-row">
@@ -113,11 +113,11 @@
 </div>
 
 <div class="footer">
-  Galaxy 26.1 &middot; GCP Batch us-east4 &middot; 8 workflow runs &middot; Generated 2026-03-13 10:35</div>
+  Galaxy 26.1 &middot; GCP Batch us-east4 &middot; 8 workflow runs &middot; Generated 2026-03-12 14:59</div>
 
 <script>
-const tools = ["bwa_mem", "lofreq_call", "picard_MarkD", "snpEff_build", "lofreq_viter", "fastp", "lofreq_indel", "samtools_vie", "samtools_sta", "multiqc", "snpEff", "lofreq_filte"];
-const toolsFull = ["bwa_mem", "lofreq_call", "picard_MarkDuplicates", "snpEff_build_gb", "lofreq_viterbi", "fastp", "lofreq_indelqual", "samtools_view", "samtools_stats", "multiqc", "snpEff", "lofreq_filter"];
+const tools = ["fastp", "snpEff_build", "bwa_mem", "sam_view", "picard_MD", "sam_stats", "lf_viterbi", "multiqc", "lf_indelq", "lf_call", "lf_filter", "snpEff"];
+const toolsFull = ["fastp", "snpEff_build_gb", "bwa_mem", "samtools_view", "picard_MarkDuplicates", "samtools_stats", "lofreq_viterbi", "multiqc", "lofreq_indelqual", "lofreq_call", "lofreq_filter", "snpEff"];
 
 const blue = "#3b82f6", blueLight = "#93bbfd", amber = "#f59e0b", amberLight = "#fcd679";
 const red = "#ef4444", green = "#22c55e", purple = "#8b5cf6", purpleLight = "#c4b5fd";
@@ -128,18 +128,18 @@ Chart.defaults.font.size = 12;
 const secTooltip = ctx => `${ctx.dataset.label}: ${ctx.raw}s (${(ctx.raw/60).toFixed(1)}m)`;
 function cumSum(arr) { let s=0; return arr.map(v => s += v); }
 
-const batch_10gb_2gb_5gb = [8761, 14609, 2563, 1146, 1183, 482, 652, 626, 219, 9, 7, 2];
-const pulsar_10gb_2gb_5gb = [28198, 0, 1392, 171, 0, 1396, 0, 454, 213, 0, 0, 0];
+const batch_10gb_2gb_5gb = [482, 1146, 8761, 626, 2563, 219, 1183, 9, 652, 14609, 2, 7];
+const pulsar_10gb_2gb_5gb = [1396, 171, 28198, 454, 464, 213, 0, 0, 0, 0, 0, 0];
 const overhead_10gb_2gb_5gb = batch_10gb_2gb_5gb.map((b,i) => pulsar_10gb_2gb_5gb[i] - b);
-const batchSlots_10gb_2gb_5gb = [8, 2, 3, 1, 4, 4, 1, 1, 2, 1, 1, 1];
-const batch_2gb = [4597, 3954, 526, 1126, 364, 165, 242, 140, 54, 9, 5, 1];
-const pulsar_2gb = [8237, 4593, 296, 177, 365, 332, 157, 98, 47, 2, 4, 0];
+const batchSlots_10gb_2gb_5gb = [4, 1, 8, 1, 3, 2, 4, 1, 1, 2, 1, 1];
+const batch_2gb = [165, 1126, 4597, 140, 526, 54, 364, 9, 242, 3954, 1, 5];
+const pulsar_2gb = [332, 177, 8237, 98, 296, 47, 365, 2, 157, 4593, 0, 4];
 const overhead_2gb = batch_2gb.map((b,i) => pulsar_2gb[i] - b);
-const batchSlots_2gb = [8, 2, 3, 1, 4, 4, 1, 1, 2, 1, 1, 1];
-const batch_2gb_5gb = [6142, 8610, 1290, 1174, 724, 401, 421, 332, 110, 9, 6, 1];
-const pulsar_2gb_5gb = [15661, 10158, 709, 175, 788, 829, 303, 235, 107, 3, 5, 0];
+const batchSlots_2gb = [4, 1, 8, 1, 3, 2, 4, 1, 1, 2, 1, 1];
+const batch_2gb_5gb = [401, 1174, 6142, 332, 1290, 110, 724, 9, 421, 8610, 1, 6];
+const pulsar_2gb_5gb = [829, 175, 15661, 235, 709, 107, 788, 3, 303, 10158, 0, 5];
 const overhead_2gb_5gb = batch_2gb_5gb.map((b,i) => pulsar_2gb_5gb[i] - b);
-const batchSlots_2gb_5gb = [8, 2, 3, 1, 4, 4, 1, 1, 2, 1, 1, 1];
+const batchSlots_2gb_5gb = [4, 1, 8, 1, 3, 2, 4, 1, 1, 2, 1, 1];
 
 const ovLabels = ["batch R1 10GB+2GB+5GB", "batch R1 2GB", "batch R2 2GB", "batch R1 2GB+5GB", "batch R2 2GB+5GB", "pulsar R1 10GB+2GB+5GB", "pulsar R1 2GB", "pulsar R1 2GB+5GB"];
 const ovCompute = [504.3, 185.7, 187.1, 320.4, 320.3, 530.4, 238.5, 482.9];
@@ -221,9 +221,9 @@ new Chart(document.getElementById("cum_tab-2gb-5gb"), {
 
 new Chart(document.getElementById("scalingChart"), {
   type: "bar", data: { labels: tools, datasets: [
-    { label: "10GB+2GB+5GB", data: [8761, 14609, 2563, 1146, 1183, 482, 652, 626, 219, 9, 7, 2], backgroundColor: "#93bbfd", borderRadius: 4 },
-    { label: "2GB", data: [4597, 3954, 526, 1126, 364, 165, 242, 140, 54, 9, 5, 1], backgroundColor: "#3b82f6", borderRadius: 4 },
-    { label: "2GB+5GB", data: [6142, 8610, 1290, 1174, 724, 401, 421, 332, 110, 9, 6, 1], backgroundColor: "#1d4ed8", borderRadius: 4 },
+    { label: "10GB+2GB+5GB", data: [482, 1146, 8761, 626, 2563, 219, 1183, 9, 652, 14609, 2, 7], backgroundColor: "#93bbfd", borderRadius: 4 },
+    { label: "2GB", data: [165, 1126, 4597, 140, 526, 54, 364, 9, 242, 3954, 1, 5], backgroundColor: "#3b82f6", borderRadius: 4 },
+    { label: "2GB+5GB", data: [401, 1174, 6142, 332, 1290, 110, 724, 9, 421, 8610, 1, 6], backgroundColor: "#1d4ed8", borderRadius: 4 },
   ] }, options: { responsive: true, plugins: { legend: { position: "top" }, tooltip: { callbacks: { label: secTooltip } } }, scales: { y: { title: { display: true, text: "Seconds" }, beginAtZero: true }, x: { ticks: { maxRotation: 45, minRotation: 45 } } } }
 });
 new Chart(document.getElementById("scalingLineChart"), {

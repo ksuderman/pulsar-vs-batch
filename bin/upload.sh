@@ -16,5 +16,5 @@ for cloud in $@ ; do
     done
     # Trying to create the dataset collection before the datasets have finished
     # uploading will fail.  Doing it at the very end should avoid that.
-    abm $cloud dataset wt_H3K4me3 wt_H3K4me3=forward,reverse
+    abm $cloud dataset collection --name wt_H3K4me3 wt_H3K4me3=forward,reverse
 done

@@ -8,11 +8,16 @@ Reads all JSON files from metrics/<experiment>/ (default: metrics/Pulsar-vs-Batc
 and produces:
     docs/index.md      - Markdown results report
     docs/charts.html   - Interactive Chart.js dashboard
+
+Supports any workflow -- tools are discovered dynamically from the data,
+sorted by average runtime (descending), and short names are auto-generated.
 """
 
 import json
 import glob
+import hashlib
 import os
+import re
 import sys
 from collections import defaultdict
 from datetime import datetime
@@ -20,27 +25,6 @@ from datetime import datetime
 # ---------------------------------------------------------------------------
 # Data loading
 # ---------------------------------------------------------------------------
-
-TOOL_ORDER = [
-    "fastp", "snpEff_build_gb", "bwa_mem", "samtools_view",
-    "picard_MarkDuplicates", "samtools_stats", "lofreq_viterbi", "multiqc",
-    "lofreq_indelqual", "lofreq_call", "lofreq_filter", "snpEff",
-]
-
-TOOL_SHORT = {
-    "fastp": "fastp",
-    "snpEff_build_gb": "snpEff_build",
-    "bwa_mem": "bwa_mem",
-    "samtools_view": "sam_view",
-    "picard_MarkDuplicates": "picard_MD",
-    "samtools_stats": "sam_stats",
-    "lofreq_viterbi": "lf_viterbi",
-    "multiqc": "multiqc",
-    "lofreq_indelqual": "lf_indelq",
-    "lofreq_call": "lf_call",
-    "lofreq_filter": "lf_filter",
-    "snpEff": "snpEff",
-}
 
 
 def load_metrics(metrics_dir):
@@ -86,14 +70,110 @@ def load_metrics(metrics_dir):
 
 
 def get_size_label(inputs_str):
+    """Derive a size label from the inputs string.
+
+    For variant analysis data with explicit size markers (2GB, 5GB, 10GB),
+    returns those labels joined by '+'.
+
+    For other workflows (e.g. RNASeq with SRR identifiers), extracts
+    meaningful tokens from the input string to produce a short label.
+    """
+    # Check for explicit size markers first
     sizes = []
-    if "10GB" in inputs_str:
-        sizes.append("10GB")
-    if "5GB" in inputs_str:
-        sizes.append("5GB")
-    if "2GB" in inputs_str:
-        sizes.append("2GB")
-    return "+".join(sorted(sizes)) if sizes else "unknown"
+    for pattern in ["10GB", "5GB", "2GB"]:
+        if pattern in inputs_str:
+            sizes.append(pattern)
+    if sizes:
+        return "+".join(sorted(sizes))
+
+    # For other workflows, extract distinguishing tokens.
+    # Split on whitespace, find unique non-reference tokens.
+    # Reference files (e.g. .gtf, .gbff) are shared across runs;
+    # the varying parts (e.g. SRR IDs with size suffixes) identify the run.
+    tokens = inputs_str.strip().split()
+    if not tokens:
+        return "unknown"
+
+    # Filter out common reference file names (keep only data identifiers)
+    ref_extensions = {".gtf", ".gbff", ".gbff.gz", ".fa", ".fa.gz", ".fasta",
+                      ".fasta.gz", ".bed", ".gff", ".gff3", ".len"}
+    data_tokens = []
+    for t in tokens:
+        is_ref = any(t.lower().endswith(ext) for ext in ref_extensions)
+        if not is_ref:
+            data_tokens.append(t)
+
+    if data_tokens:
+        return " ".join(sorted(set(data_tokens)))
+
+    # Fallback: short hash
+    h = hashlib.sha256(inputs_str.encode()).hexdigest()[:8]
+    return f"input-{h}"
+
+
+def discover_tool_order(jobs):
+    """Discover tools from data and sort by average runtime (descending).
+
+    Returns (tool_order, tool_short) where tool_order is a list of tool names
+    and tool_short maps full names to abbreviated display names.
+    """
+    # Only consider successfully completed jobs for runtime ordering
+    tool_runtimes = defaultdict(list)
+    all_tools = set()
+    for j in jobs:
+        all_tools.add(j["tool"])
+        if j["state"] == "ok" and j["runtime"] > 0:
+            tool_runtimes[j["tool"]].append(j["runtime"])
+
+    # Include tools with no successful runs too (they'll have avg=0)
+    for t in all_tools:
+        if t not in tool_runtimes:
+            tool_runtimes[t] = [0]
+
+    # Sort by average runtime descending
+    tool_order = sorted(tool_runtimes.keys(),
+                        key=lambda t: sum(tool_runtimes[t]) / len(tool_runtimes[t]),
+                        reverse=True)
+
+    # Generate short names: truncate at 12 chars
+    tool_short = {}
+    for t in tool_order:
+        if len(t) <= 12:
+            tool_short[t] = t
+        else:
+            tool_short[t] = t[:12]
+
+    # Resolve collisions in short names
+    seen = {}
+    for t in tool_order:
+        short = tool_short[t]
+        if short in seen:
+            # Append a distinguishing suffix
+            idx = 2
+            while f"{short[:10]}_{idx}" in seen.values():
+                idx += 1
+            tool_short[t] = f"{short[:10]}_{idx}"
+        seen[tool_short[t]] = t
+
+    return tool_order, tool_short
+
+
+def derive_experiment_title(experiment_name):
+    """Derive a human-readable workflow title from the experiment directory name.
+
+    e.g. 'Pulsar-vs-Batch-RNASeq' -> 'RNASeq'
+         'Pulsar-vs-Batch' -> 'Variant Analysis'
+    """
+    # Strip the common prefix
+    title = experiment_name
+    for prefix in ["Pulsar-vs-Batch-", "Pulsar-vs-Batch"]:
+        if title.startswith(prefix):
+            title = title[len(prefix):]
+            break
+    # If nothing left after stripping, use a default
+    if not title:
+        title = "Variant Analysis"
+    return title
 
 
 def group_by_history(jobs):
@@ -108,10 +188,18 @@ def history_stats(jobs_in_history):
     creates = [datetime.fromisoformat(j["create_time"]) for j in jobs]
     updates = [datetime.fromisoformat(j["update_time"]) for j in jobs]
     wall_clock = (max(updates) - min(creates)).total_seconds()
-    compute = sum(j["runtime"] for j in jobs)
+    # Only count runtime from ok jobs
+    ok_jobs = [j for j in jobs if j["state"] == "ok"]
+    compute = sum(j["runtime"] for j in ok_jobs)
     overhead = wall_clock - compute
     size_label = get_size_label(jobs[0]["inputs"])
     date_range = (min(creates).strftime("%Y-%m-%d"), max(updates).strftime("%Y-%m-%d"))
+
+    total_steps = len(jobs)
+    ok_steps = len(ok_jobs)
+    failed_steps = total_steps - ok_steps
+    failed_tools = [j["tool"] for j in jobs if j["state"] != "ok"]
+
     return {
         "cloud": jobs[0]["cloud"],
         "run": jobs[0]["run"],
@@ -120,7 +208,10 @@ def history_stats(jobs_in_history):
         "wall_clock": wall_clock,
         "compute": compute,
         "overhead": overhead,
-        "steps": len(jobs),
+        "steps": total_steps,
+        "ok_steps": ok_steps,
+        "failed_steps": failed_steps,
+        "failed_tools": failed_tools,
         "server": jobs[0]["server"],
         "date_start": date_range[0],
         "date_end": date_range[1],
@@ -145,26 +236,43 @@ def find_matchups(all_stats):
 
 
 def per_tool_times(stat):
-    """Return {tool: runtime} for a history stat."""
-    return {j["tool"]: j["runtime"] for j in stat["jobs"]}
+    """Return {tool: total_runtime} for a history stat, summing duplicate tools."""
+    tools = defaultdict(float)
+    for j in stat["jobs"]:
+        if j["state"] == "ok":
+            tools[j["tool"]] += j["runtime"]
+    return dict(tools)
 
 
 def avg_tool_times(stats_list):
-    """Average per-tool runtimes across multiple runs."""
-    tools = defaultdict(list)
+    """Average per-tool runtimes across multiple runs.
+
+    For tools that appear multiple times in a single workflow run,
+    their runtimes are summed first, then averaged across runs.
+    """
+    tool_totals = defaultdict(list)
     for s in stats_list:
+        per_history = defaultdict(float)
         for j in s["jobs"]:
-            tools[j["tool"]].append(j["runtime"])
-    return {t: sum(v) / len(v) for t, v in tools.items()}
+            if j["state"] == "ok":
+                per_history[j["tool"]] += j["runtime"]
+        for t, v in per_history.items():
+            tool_totals[t].append(v)
+    return {t: sum(v) / len(v) for t, v in tool_totals.items()}
 
 
 def avg_tool_slots(stats_list):
-    """Average per-tool slots across runs."""
-    tools = defaultdict(list)
+    """Average per-tool slots across runs (take max slots per tool per history)."""
+    tool_slots = defaultdict(list)
     for s in stats_list:
+        per_history = defaultdict(float)
         for j in s["jobs"]:
-            tools[j["tool"]].append(j["slots"])
-    return {t: sum(v) / len(v) for t, v in tools.items()}
+            if j["state"] == "ok" and j["slots"] > 0:
+                # Use max slots for a tool (in case of multiple invocations)
+                per_history[j["tool"]] = max(per_history[j["tool"]], j["slots"])
+        for t, v in per_history.items():
+            tool_slots[t].append(v)
+    return {t: sum(v) / len(v) for t, v in tool_slots.items()}
 
 
 def fmt_min(seconds):
@@ -181,7 +289,15 @@ def fmt_pct(diff, base):
 # Markdown generation
 # ---------------------------------------------------------------------------
 
-def generate_markdown(all_stats, matchups, experiment_name):
+def generate_markdown(all_stats, matchups, experiment_name, tool_order, tool_short):
+    workflow_title = derive_experiment_title(experiment_name)
+    # Count unique tools across all runs
+    all_tools = set()
+    for s in all_stats:
+        for j in s["jobs"]:
+            all_tools.add(j["tool"])
+    step_count = len(all_tools)
+
     lines = []
     w = lines.append
 
@@ -195,10 +311,10 @@ def generate_markdown(all_stats, matchups, experiment_name):
     date_range = f"{min(all_dates)} to {max(all_dates)}"
 
     w("---")
-    w("title: Pulsar vs Direct GCP Batch")
+    w(f"title: Pulsar vs Direct GCP Batch - {workflow_title}")
     w("---")
     w("")
-    w("# Pulsar vs Direct GCP Batch: Runtime Comparison")
+    w(f"# Pulsar vs Direct GCP Batch: {workflow_title}")
     w("")
     w("**[Interactive Charts](charts.html)**")
     w("")
@@ -206,7 +322,7 @@ def generate_markdown(all_stats, matchups, experiment_name):
     # Setup
     w("## Experiment Setup")
     w("")
-    w("- **Workflow:** Variant analysis on WGS PE data (12 steps)")
+    w(f"- **Workflow:** {workflow_title} ({step_count} unique tool types)")
     w("- **Galaxy version:** 26.1")
     w("- **Infrastructure:** GCE VM on RKE2 Kubernetes, jobs dispatched to GCP Batch VMs (us-east4)")
     w("- **Custom VM image:** `galaxy-k8s-minimal-debian12-v2026-03-05` (CVMFS pre-installed)")
@@ -226,21 +342,46 @@ def generate_markdown(all_stats, matchups, experiment_name):
     w("")
 
     total_jobs = sum(s["steps"] for s in all_stats)
+    total_ok = sum(s["ok_steps"] for s in all_stats)
+    total_failed = sum(s["failed_steps"] for s in all_stats)
     w(f"### Workflow Runs")
     w("")
-    w(f"{len(all_stats)} workflow invocations, {total_jobs} total jobs. All completed successfully.")
+    if total_failed == 0:
+        w(f"{len(all_stats)} workflow invocations, {total_jobs} total jobs. All completed successfully.")
+    else:
+        w(f"{len(all_stats)} workflow invocations, {total_jobs} total jobs ({total_ok} succeeded, {total_failed} failed/errored).")
     w("")
+
+    # Report failed jobs if any
+    if total_failed > 0:
+        w("### Failed/Errored Jobs")
+        w("")
+        failed_by_cloud = defaultdict(lambda: defaultdict(list))
+        for s in all_stats:
+            for j in s["jobs"]:
+                if j["state"] != "ok":
+                    failed_by_cloud[s["cloud"]][j["tool"]].append(j["state"])
+        w("| Cloud | Tool | State | Count |")
+        w("|-------|------|-------|-------|")
+        for cloud in sorted(failed_by_cloud.keys()):
+            for tool in sorted(failed_by_cloud[cloud].keys()):
+                states = failed_by_cloud[cloud][tool]
+                from collections import Counter
+                for state, count in sorted(Counter(states).items()):
+                    w(f"| {cloud} | {tool} | {state} | {count} |")
+        w("")
 
     # Summary table
     w("## Results Summary")
     w("")
     w("### All Runs")
     w("")
-    w("| Runner | Run | Input Sizes | Wall Clock | Compute Time | Scheduling Overhead |")
-    w("|--------|-----|-------------|-----------|-------------|-------------------|")
+    w("| Runner | Run | Input Sizes | Wall Clock | Compute Time | Scheduling Overhead | Steps OK |")
+    w("|--------|-----|-------------|-----------|-------------|-------------------|----------|")
     for s in sorted(all_stats, key=lambda x: (x["cloud"], x["run"], x["size"])):
         oh_pct = f"{s['overhead'] / s['wall_clock'] * 100:.0f}%" if s["wall_clock"] > 0 else "--"
-        w(f"| {s['cloud']} | {s['run']} | {s['size']} | {fmt_min(s['wall_clock'])} min | {fmt_min(s['compute'])} min | {fmt_min(s['overhead'])} min ({oh_pct}) |")
+        steps_str = f"{s['ok_steps']}/{s['steps']}"
+        w(f"| {s['cloud']} | {s['run']} | {s['size']} | {fmt_min(s['wall_clock'])} min | {fmt_min(s['compute'])} min | {fmt_min(s['overhead'])} min ({oh_pct}) | {steps_str} |")
     w("")
 
     # Head-to-head matchups
@@ -257,6 +398,11 @@ def generate_markdown(all_stats, matchups, experiment_name):
         b_label = f"GCP Batch (avg of {len(batch_stats)} runs)" if len(batch_stats) > 1 else "GCP Batch"
         p_label = f"Pulsar (avg of {len(pulsar_stats)} runs)" if len(pulsar_stats) > 1 else "Pulsar"
 
+        b_ok = sum(s["ok_steps"] for s in batch_stats) // len(batch_stats)
+        p_ok = sum(s["ok_steps"] for s in pulsar_stats) // len(pulsar_stats)
+        b_total = batch_stats[0]["steps"]
+        p_total = pulsar_stats[0]["steps"]
+
         w(f"### Head-to-Head: {size}")
         w("")
         w(f"| Metric | {b_label} | {p_label} | Difference |")
@@ -264,7 +410,7 @@ def generate_markdown(all_stats, matchups, experiment_name):
         w(f"| **Wall clock** | **{fmt_min(b_wall)} min** | **{fmt_min(p_wall)} min** | **{fmt_min(p_wall - b_wall):s} min ({fmt_pct(p_wall - b_wall, b_wall)})** |")
         w(f"| **Compute time** | **{fmt_min(b_comp)} min** | **{fmt_min(p_comp)} min** | **{fmt_min(p_comp - b_comp):s} min ({fmt_pct(p_comp - b_comp, b_comp)})** |")
         w(f"| **Scheduling overhead** | **{fmt_min(b_oh)} min** | **{fmt_min(p_oh)} min** | **{fmt_min(p_oh - b_oh):s} min ({fmt_pct(p_oh - b_oh, b_oh)})** |")
-        w(f"| Steps completed | {batch_stats[0]['steps']}/{batch_stats[0]['steps']} | {pulsar_stats[0]['steps']}/{pulsar_stats[0]['steps']} | -- |")
+        w(f"| Steps completed | {b_ok}/{b_total} | {p_ok}/{p_total} | -- |")
         w("")
 
     # Per-step tables
@@ -287,19 +433,33 @@ def generate_markdown(all_stats, matchups, experiment_name):
         w(header)
         w(sep)
         b_total = p_total = 0
-        for tool in TOOL_ORDER:
+        for tool in tool_order:
             if tool not in b_times and tool not in p_times:
                 continue
             b = b_times.get(tool, 0)
             p = p_times.get(tool, 0)
             diff = p - b
             pct = fmt_pct(diff, b) if b > 1 else "--"
-            w(f"| {tool} | {b:.0f}s | {p:.0f}s | {diff:+.0f}s | {pct} |")
+            note = ""
+            if tool not in b_times:
+                note = " *"
+            elif tool not in p_times:
+                note = " *"
+            w(f"| {tool}{note} | {b:.0f}s | {p:.0f}s | {diff:+.0f}s | {pct} |")
             b_total += b
             p_total += p
         diff_total = p_total - b_total
         w(f"| **Total** | **{b_total:.0f}s** | **{p_total:.0f}s** | **{diff_total:+.0f}s** | **{fmt_pct(diff_total, b_total)}** |")
         w("")
+        # Note tools only present on one cloud
+        batch_only = [t for t in tool_order if t in b_times and t not in p_times]
+        pulsar_only = [t for t in tool_order if t not in b_times and t in p_times]
+        if batch_only:
+            w(f"*Tools only on Batch: {', '.join(batch_only)}*")
+            w("")
+        if pulsar_only:
+            w(f"*Tools only on Pulsar: {', '.join(pulsar_only)}*")
+            w("")
 
     # Resource allocation section
     w("## Resource Allocation: VM Sizing vs GALAXY_SLOTS")
@@ -308,10 +468,25 @@ def generate_markdown(all_stats, matchups, experiment_name):
     w("")
     w("Pulsar correctly right-sizes GCP Batch VMs based on per-tool resource requirements. The TPV destination passes `cores: \"{cores}\"` and `mem: \"{mem}\"` to Pulsar's `parse_gcp_job_params()`, which calls `compute_machine_type()` to select an appropriate N2 machine type.")
     w("")
-    w("### GALAXY_SLOTS Reporting Gap")
-    w("")
-    w("Galaxy reports **slots=1** and **mem=0MB** for all Pulsar jobs because the Pulsar coexecution path doesn't feed these values back to Galaxy's metrics. The direct Batch runner explicitly sets `export GALAXY_SLOTS=${galaxy_slots}` in its `container_script.sh`. The Pulsar path relies on `CLUSTER_SLOTS_STATEMENT.sh`, which falls through to `GALAXY_SLOTS=\"1\"` on GCP Batch VMs (no SLURM/PBS/SGE env vars). Actual thread usage depends on how each tool discovers available CPUs.")
-    w("")
+
+    # Check if Pulsar still reports slots=1 or if the fix is deployed
+    pulsar_stats = [s for s in all_stats if s["cloud"] == "pulsar"]
+    pulsar_slots_values = set()
+    for s in pulsar_stats:
+        for j in s["jobs"]:
+            if j["state"] == "ok" and j["slots"] > 0:
+                pulsar_slots_values.add(j["slots"])
+
+    if pulsar_slots_values and pulsar_slots_values != {1.0}:
+        w("### GALAXY_SLOTS Reporting (Fixed)")
+        w("")
+        w("Pulsar now correctly reports GALAXY_SLOTS. The fix injects the proper slot count into the Pulsar task environment, so Galaxy metrics accurately reflect the VM cores allocated to each job.")
+        w("")
+    else:
+        w("### GALAXY_SLOTS Reporting Gap")
+        w("")
+        w("Galaxy reports **slots=1** and **mem=0MB** for all Pulsar jobs because the Pulsar coexecution path doesn't feed these values back to Galaxy's metrics. The direct Batch runner explicitly sets `export GALAXY_SLOTS=${galaxy_slots}` in its `container_script.sh`. The Pulsar path relies on `CLUSTER_SLOTS_STATEMENT.sh`, which falls through to `GALAXY_SLOTS=\"1\"` on GCP Batch VMs (no SLURM/PBS/SGE env vars). Actual thread usage depends on how each tool discovers available CPUs.")
+        w("")
 
     # Slots table from batch data
     any_batch = [s for s in all_stats if s["cloud"] == "batch"]
@@ -321,7 +496,7 @@ def generate_markdown(all_stats, matchups, experiment_name):
         w("")
         w("| Tool | CPU Slots |")
         w("|------|-----------|")
-        for tool in TOOL_ORDER:
+        for tool in tool_order:
             if tool in b_slots and b_slots[tool] > 0:
                 w(f"| {tool} | {b_slots[tool]:.0f} |")
         w("")
@@ -331,18 +506,21 @@ def generate_markdown(all_stats, matchups, experiment_name):
         b_times = avg_tool_times(clouds["batch"])
         p_times = avg_tool_times(clouds["pulsar"])
         b_slots_map = avg_tool_slots(clouds["batch"])
+        # Only show if there are tools with data on both sides
+        tools_both = [t for t in tool_order if t in b_times and t in p_times and b_times[t] > 5]
+        if not tools_both:
+            continue
         w(f"### Runtime Ratio Analysis ({size})")
         w("")
         w("| Tool | Batch Slots | Pulsar/Batch Ratio | Expected if 1 Thread |")
         w("|------|------------|-------------------|---------------------|")
-        for tool in TOOL_ORDER:
-            b = b_times.get(tool, 0)
-            p = p_times.get(tool, 0)
+        for tool in tools_both:
+            b = b_times[tool]
+            p = p_times[tool]
             s = b_slots_map.get(tool, 1)
-            if b > 5:
-                ratio = f"{p / b:.2f}x"
-                expected = f"~{s:.0f}x"
-                w(f"| {tool} | {s:.0f} | {ratio} | {expected} |")
+            ratio = f"{p / b:.2f}x"
+            expected = f"~{s:.0f}x"
+            w(f"| {tool} | {s:.0f} | {ratio} | {expected} |")
         w("")
         break  # Only show for smallest matchup size
 
@@ -391,19 +569,19 @@ def generate_markdown(all_stats, matchups, experiment_name):
         finding_num += 1
 
     # Tools faster on Pulsar
-    w(f"### {finding_num}. Several tools are faster on Pulsar")
-    w("")
     for size, clouds in sorted(matchups.items()):
         b_times = avg_tool_times(clouds["batch"])
         p_times = avg_tool_times(clouds["pulsar"])
-        faster = [(t, b_times[t], p_times[t]) for t in TOOL_ORDER
+        faster = [(t, b_times[t], p_times[t]) for t in tool_order
                    if t in b_times and t in p_times and p_times[t] < b_times[t] * 0.8 and b_times[t] > 5]
         if faster:
+            w(f"### {finding_num}. Several tools are faster on Pulsar")
+            w("")
             for t, b, p in faster:
                 w(f"- **{t}** ({size}): {fmt_pct(p - b, b)} ({p:.0f}s vs {b:.0f}s)")
+            w("")
+            finding_num += 1
         break
-    w("")
-    finding_num += 1
 
     w(f"### {finding_num}. Scheduling overhead is Pulsar's major cost")
     w("")
@@ -431,9 +609,8 @@ def generate_markdown(all_stats, matchups, experiment_name):
 
     w("## Implications")
     w("")
-    w("- **Inject `GALAXY_SLOTS` into Pulsar task environment.** Tools that read `$GALAXY_SLOTS` for thread count would benefit. A fix has been prototyped in `pulsar/client/container_job_config.py`.")
     w("- **Pulsar's staging overhead is inherent** to the AMQP sidecar architecture. Dominates for short multi-step workflows, negligible for long-running single-step jobs.")
-    w("- **Pulsar's I/O model has advantages.** Local SSD staging benefits I/O-bound tools. The snpEff_build_gb speedup warrants investigation.")
+    w("- **Pulsar's I/O model has advantages.** Local SSD staging benefits I/O-bound tools.")
     w("")
 
     return "\n".join(lines)
@@ -443,7 +620,16 @@ def generate_markdown(all_stats, matchups, experiment_name):
 # HTML chart generation
 # ---------------------------------------------------------------------------
 
-def generate_html(all_stats, matchups):
+def generate_html(all_stats, matchups, experiment_name, tool_order, tool_short):
+    workflow_title = derive_experiment_title(experiment_name)
+
+    # Count unique tools
+    all_tools = set()
+    for s in all_stats:
+        for j in s["jobs"]:
+            all_tools.add(j["tool"])
+    step_count = len(all_tools)
+
     # Prepare data for charts
     chart_data = {}
     for size, clouds in sorted(matchups.items()):
@@ -451,9 +637,9 @@ def generate_html(all_stats, matchups):
         p_times = avg_tool_times(clouds["pulsar"])
         b_slots = avg_tool_slots(clouds["batch"])
         chart_data[size] = {
-            "batch": [b_times.get(t, 0) for t in TOOL_ORDER],
-            "pulsar": [p_times.get(t, 0) for t in TOOL_ORDER],
-            "batch_slots": [b_slots.get(t, 0) for t in TOOL_ORDER],
+            "batch": [b_times.get(t, 0) for t in tool_order],
+            "pulsar": [p_times.get(t, 0) for t in tool_order],
+            "batch_slots": [b_slots.get(t, 0) for t in tool_order],
         }
 
     # Overview data
@@ -475,17 +661,27 @@ def generate_html(all_stats, matchups):
     scaling_data = {}
     for size in sorted(batch_by_size.keys()):
         avg_times = avg_tool_times(batch_by_size[size])
-        scaling_data[size] = [avg_times.get(t, 0) for t in TOOL_ORDER]
+        scaling_data[size] = [avg_times.get(t, 0) for t in tool_order]
 
-    tools_json = json.dumps([TOOL_SHORT.get(t, t) for t in TOOL_ORDER])
-    tools_full_json = json.dumps(TOOL_ORDER)
+    tools_json = json.dumps([tool_short.get(t, t) for t in tool_order])
+    tools_full_json = json.dumps(tool_order)
     matchup_sizes = sorted(matchups.keys())
+
+    # Check Pulsar slots status
+    pulsar_stats = [s for s in all_stats if s["cloud"] == "pulsar"]
+    pulsar_slots_values = set()
+    for s in pulsar_stats:
+        for j in s["jobs"]:
+            if j["state"] == "ok" and j["slots"] > 0:
+                pulsar_slots_values.add(j["slots"])
+    pulsar_slots_fixed = pulsar_slots_values and pulsar_slots_values != {1.0}
 
     # Build tabs dynamically
     tab_ids = ["overview"]
     tab_labels = ["Overview"]
     for size in matchup_sizes:
-        tab_ids.append(f"tab-{size.lower().replace('+', '-')}")
+        safe_id = re.sub(r'[^a-zA-Z0-9]', '-', size.lower())
+        tab_ids.append(f"tab-{safe_id}")
         tab_labels.append(size)
     if len(scaling_data) > 1:
         tab_ids.append("scaling")
@@ -501,14 +697,14 @@ def generate_html(all_stats, matchups):
     h('<head>')
     h('<meta charset="UTF-8">')
     h('<meta name="viewport" content="width=device-width, initial-scale=1.0">')
-    h('<title>Pulsar vs GCP Batch: Runtime Comparison</title>')
+    h(f'<title>Pulsar vs GCP Batch: {workflow_title}</title>')
     h('<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>')
     h('<style>')
     h('  * { box-sizing: border-box; margin: 0; padding: 0; }')
     h('  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f5f7fa; color: #1a1a2e; padding: 2rem; max-width: 1200px; margin: 0 auto; }')
     h('  h1 { font-size: 1.8rem; margin-bottom: 0.3rem; }')
     h('  .subtitle { color: #666; font-size: 0.95rem; margin-bottom: 1.5rem; }')
-    h('  .tabs { display: flex; gap: 0; margin-bottom: 2rem; border-bottom: 2px solid #e5e7eb; }')
+    h('  .tabs { display: flex; gap: 0; margin-bottom: 2rem; border-bottom: 2px solid #e5e7eb; flex-wrap: wrap; }')
     h('  .tab { padding: 0.7rem 1.4rem; cursor: pointer; font-size: 0.9rem; font-weight: 500; color: #666; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: color 0.2s, border-color 0.2s; user-select: none; }')
     h('  .tab:hover { color: #1a1a2e; }')
     h('  .tab.active { color: #3b82f6; border-bottom-color: #3b82f6; }')
@@ -532,8 +728,8 @@ def generate_html(all_stats, matchups):
     h('</head>')
     h('<body>')
     h('')
-    h('<h1>Pulsar vs Direct GCP Batch</h1>')
-    h(f'<p class="subtitle">Variant analysis on WGS PE data &mdash; 12-step workflow &mdash; {len(all_stats)} runs</p>')
+    h(f'<h1>Pulsar vs Direct GCP Batch: {workflow_title}</h1>')
+    h(f'<p class="subtitle">{workflow_title} &mdash; {step_count} tool types &mdash; {len(all_stats)} runs</p>')
     h('')
 
     # Tabs
@@ -563,7 +759,8 @@ def generate_html(all_stats, matchups):
 
     # ===== SIZE COMPARISON TABS =====
     for size in matchup_sizes:
-        tid = f"tab-{size.lower().replace('+', '-')}"
+        safe_id = re.sub(r'[^a-zA-Z0-9]', '-', size.lower())
+        tid = f"tab-{safe_id}"
         b_stats = matchups[size]["batch"]
         p_stats = matchups[size]["pulsar"]
         b_wall = sum(s["wall_clock"] for s in b_stats) / len(b_stats)
@@ -571,12 +768,15 @@ def generate_html(all_stats, matchups):
         b_comp = sum(s["compute"] for s in b_stats) / len(b_stats)
         p_comp = sum(s["compute"] for s in p_stats) / len(p_stats)
 
+        b_ok = sum(s["ok_steps"] for s in b_stats) // len(b_stats)
+        p_ok = sum(s["ok_steps"] for s in p_stats) // len(p_stats)
+
         h(f'<div class="tab-content" id="{tid}">')
         h('  <div class="summary-cards">')
-        h(f'    <div class="card batch"><div class="label">Batch Compute</div><div class="value">{b_comp/60:.1f} min</div><div class="detail">{b_comp:.0f}s across 12 steps</div></div>')
-        h(f'    <div class="card pulsar"><div class="label">Pulsar Compute</div><div class="value">{p_comp/60:.1f} min</div><div class="detail">{p_comp:.0f}s across 12 steps</div></div>')
+        h(f'    <div class="card batch"><div class="label">Batch Compute</div><div class="value">{b_comp/60:.1f} min</div><div class="detail">{b_comp:.0f}s across {b_ok} steps</div></div>')
+        h(f'    <div class="card pulsar"><div class="label">Pulsar Compute</div><div class="value">{p_comp/60:.1f} min</div><div class="detail">{p_comp:.0f}s across {p_ok} steps</div></div>')
         diff_pct = (p_comp - b_comp) / b_comp * 100 if b_comp > 0 else 0
-        h(f'    <div class="card overhead"><div class="label">Compute Difference</div><div class="value">{diff_pct:+.0f}%</div><div class="detail">{p_comp - b_comp:+.0f}s &mdash; staging overhead + GALAXY_SLOTS gap</div></div>')
+        h(f'    <div class="card overhead"><div class="label">Compute Difference</div><div class="value">{diff_pct:+.0f}%</div><div class="detail">{p_comp - b_comp:+.0f}s</div></div>')
         h('  </div>')
         h(f'  <div class="chart-container"><h2>Per-Step Compute Time &mdash; {size}</h2><p class="chart-desc">Actual runtime_seconds per tool.</p><canvas id="bar_{tid}" height="100"></canvas></div>')
         h('  <div class="chart-row">')
@@ -599,10 +799,14 @@ def generate_html(all_stats, matchups):
     h('<div class="tab-content" id="resources">')
     h('  <div class="summary-cards">')
     h('    <div class="card batch"><div class="label">VM Right-Sizing</div><div class="value">Working</div><div class="detail">Pulsar compute_machine_type() selects correct N2 VM</div></div>')
-    h('    <div class="card pulsar"><div class="label">GALAXY_SLOTS Reporting</div><div class="value">slots=1</div><div class="detail">Galaxy reports 1 slot (metric gap, not actual VM cores)</div></div>')
+    if pulsar_slots_fixed:
+        h('    <div class="card pulsar"><div class="label">GALAXY_SLOTS Reporting</div><div class="value">Fixed</div><div class="detail">Pulsar now correctly reports slot count</div></div>')
+    else:
+        h('    <div class="card pulsar"><div class="label">GALAXY_SLOTS Reporting</div><div class="value">slots=1</div><div class="detail">Galaxy reports 1 slot (metric gap, not actual VM cores)</div></div>')
     h('  </div>')
-    h('  <div class="chart-container"><h2>Galaxy-Reported CPU Slots: Batch vs Pulsar</h2><p class="chart-desc">Batch sets GALAXY_SLOTS explicitly. Pulsar relies on CLUSTER_SLOTS_STATEMENT.sh fallback.</p><canvas id="slotsChart" height="100"></canvas></div>')
-    h('  <div class="chart-container"><h2>Runtime Ratio vs Batch Slot Count</h2><p class="chart-desc">If Pulsar were truly 1-thread, overhead % would match slot count. Actual ratios are lower.</p><canvas id="impactChart" height="100"></canvas></div>')
+    if first_matchup:
+        h('  <div class="chart-container"><h2>Galaxy-Reported CPU Slots: Batch vs Pulsar</h2><p class="chart-desc">Batch sets GALAXY_SLOTS explicitly. Pulsar relies on CLUSTER_SLOTS_STATEMENT.sh fallback.</p><canvas id="slotsChart" height="100"></canvas></div>')
+        h('  <div class="chart-container"><h2>Runtime Ratio vs Batch Slot Count</h2><p class="chart-desc">If Pulsar were truly 1-thread, overhead % would match slot count. Actual ratios are lower.</p><canvas id="impactChart" height="100"></canvas></div>')
     h('</div>')
     h('')
 
@@ -612,7 +816,6 @@ def generate_html(all_stats, matchups):
     h('')
 
     # ===== JAVASCRIPT =====
-    # Python-side color constants (mirrored in JS below)
     blue, blueLight, amber, amberLight = "#3b82f6", "#93bbfd", "#f59e0b", "#fcd679"
 
     h('<script>')
@@ -631,7 +834,7 @@ def generate_html(all_stats, matchups):
 
     # Matchup data
     for size, cd in chart_data.items():
-        safe = size.lower().replace("+", "_")
+        safe = re.sub(r'[^a-zA-Z0-9]', '_', size.lower())
         h(f'const batch_{safe} = {json.dumps([round(v) for v in cd["batch"]])};')
         h(f'const pulsar_{safe} = {json.dumps([round(v) for v in cd["pulsar"]])};')
         h(f'const overhead_{safe} = batch_{safe}.map((b,i) => pulsar_{safe}[i] - b);')
@@ -673,8 +876,9 @@ def generate_html(all_stats, matchups):
 
     # Per-size comparison charts
     for size in matchup_sizes:
-        safe = size.lower().replace("+", "_")
-        tid = f"tab-{size.lower().replace('+', '-')}"
+        safe = re.sub(r'[^a-zA-Z0-9]', '_', size.lower())
+        safe_id = re.sub(r'[^a-zA-Z0-9]', '-', size.lower())
+        tid = f"tab-{safe_id}"
 
         # Bar chart
         h(f'new Chart(document.getElementById("bar_{tid}"), {{')
@@ -726,13 +930,23 @@ def generate_html(all_stats, matchups):
 
     # Resource charts (use first matchup)
     if first_matchup:
-        safe = first_matchup.lower().replace("+", "_")
+        safe = re.sub(r'[^a-zA-Z0-9]', '_', first_matchup.lower())
+
+        # Determine Pulsar slots for the chart
+        if pulsar_slots_fixed:
+            # Use actual Pulsar slot data
+            p_slots_data = avg_tool_slots([s for s in all_stats if s["cloud"] == "pulsar"])
+            pulsar_slots_arr = [p_slots_data.get(t, 0) for t in tool_order]
+        else:
+            pulsar_slots_arr = [1] * len(tool_order)
+
         h(f'const batchSlots = batchSlots_{safe};')
-        h(f'const pulsarSlots = {json.dumps([1] * len(TOOL_ORDER))};')
+        h(f'const pulsarSlots = {json.dumps([round(v) for v in pulsar_slots_arr])};')
         h('new Chart(document.getElementById("slotsChart"), {')
         h('  type: "bar", data: { labels: tools, datasets: [')
         h('    { label: "Batch slots", data: batchSlots, backgroundColor: blue, borderRadius: 4 },')
-        h('    { label: "Pulsar slots (reported)", data: pulsarSlots, backgroundColor: amber, borderRadius: 4 }')
+        pulsar_slots_label = "Pulsar slots" if pulsar_slots_fixed else "Pulsar slots (reported)"
+        h(f'    {{ label: "{pulsar_slots_label}", data: pulsarSlots, backgroundColor: amber, borderRadius: 4 }}')
         h('  ] }, options: { responsive: true, plugins: { legend: { position: "top" } }, scales: { y: { title: { display: true, text: "CPU Slots" }, beginAtZero: true, ticks: { stepSize: 1 } }, x: { ticks: { maxRotation: 45, minRotation: 45 } } } }')
         h('});')
         h('')
@@ -776,7 +990,14 @@ def generate_html(all_stats, matchups):
 def main():
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     metrics_dir = sys.argv[1] if len(sys.argv) > 1 else os.path.join(base_dir, "metrics", "Pulsar-vs-Batch")
-    docs_dir = os.path.join(base_dir, "docs")
+
+    # Determine output directory from experiment name
+    experiment_name = os.path.basename(metrics_dir)
+    # Default experiment goes to docs/, others to docs/<experiment>/
+    if experiment_name == "Pulsar-vs-Batch":
+        docs_dir = os.path.join(base_dir, "docs")
+    else:
+        docs_dir = os.path.join(base_dir, "docs", experiment_name)
 
     os.makedirs(docs_dir, exist_ok=True)
 
@@ -785,22 +1006,30 @@ def main():
     groups = group_by_history(jobs)
 
     all_stats = [history_stats(g) for g in groups.values()]
+
+    # Discover tools dynamically
+    tool_order, tool_short = discover_tool_order(jobs)
+
     matchups = find_matchups(all_stats)
 
     print(f"  {len(jobs)} jobs across {len(all_stats)} workflow runs")
+    print(f"  {len(tool_order)} unique tools: {', '.join(tool_order)}")
     print(f"  Matchups: {', '.join(matchups.keys()) if matchups else 'none'}")
+
+    # Report failed jobs
+    total_failed = sum(s["failed_steps"] for s in all_stats)
+    if total_failed > 0:
+        print(f"  {total_failed} failed/errored jobs")
     print()
 
-    experiment_name = os.path.basename(metrics_dir)
-
     md_path = os.path.join(docs_dir, "index.md")
-    md = generate_markdown(all_stats, matchups, experiment_name)
+    md = generate_markdown(all_stats, matchups, experiment_name, tool_order, tool_short)
     with open(md_path, "w") as f:
         f.write(md)
     print(f"  Wrote {md_path}")
 
     html_path = os.path.join(docs_dir, "charts.html")
-    html = generate_html(all_stats, matchups)
+    html = generate_html(all_stats, matchups, experiment_name, tool_order, tool_short)
     with open(html_path, "w") as f:
         f.write(html)
     print(f"  Wrote {html_path}")
