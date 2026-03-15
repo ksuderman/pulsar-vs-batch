@@ -2,13 +2,13 @@
 set -eu
 
 if [[ $# -eq 0 ]] ; then
-    echo "USAGE: $0 [batch,pulsar]"
+    echo "USAGE: $0 [batch,bucket,pulsar]"
     exit 1
 fi
 
 while [[ $# -gt 0 ]] ; do
     case $1 in
-        batch|pulsar)
+        batch|bucket|pulsar)
             cloud=$1
             abm $cloud history list | grep imported | while read -r input ; do
                 hid=$(echo $input | awk '{print $1}')

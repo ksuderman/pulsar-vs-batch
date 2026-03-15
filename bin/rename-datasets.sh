@@ -2,7 +2,7 @@
 set -eu
 
 if [[ $# -eq 0 ]] ; then
-    echo "USAGE: $0 [batch|pulsar]"
+    echo "USAGE: $0 [batch|bucket|pulsar]"
     exit 1
 fi
 function get_dataset_id() {
@@ -19,7 +19,7 @@ function rename_rnaseq_dataset() {
 
 while [[ $# -gt 0 ]] ; do
     case $1 in
-        batch|pulsar)
+        batch|bucket|pulsar)
             for size in 2GB 5GB 10GB ; do
                 dsid=$(get_dataset_id $1 "Variant calling inputs - $size")
                 abm $1 dataset rename "Variant calling inputs - $size" $dsid SRR24043307-$size

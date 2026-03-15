@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -eu
 
-SERVERS="pulsar batch"
+SERVERS=${SERVERS:-"pulsar batch bucket"}
 BENCHMARKS="chipseq-pe.yml rnaseq.yml variant.yml variant-test.yml"
 
 for server in $SERVERS ; do
