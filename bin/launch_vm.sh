@@ -10,7 +10,7 @@ BOOT_DISK_SIZE="100GB"
 DISK_SIZE="150GB"
 POSTGRES_DISK_SIZE="10GB"
 DISK_TYPE="pd-balanced"
-GALAXY_CHART_VERSION="6.7.2"
+GALAXY_CHART_VERSION="6.7.0"
 GALAXY_DEPS_VERSION="1.1.1"
 GIT_BRANCH="master"
 GIT_REPO="https://github.com/galaxyproject/galaxy-k8s-boot.git"
@@ -20,15 +20,16 @@ PROJECT="anvil-and-terra-development"
 VM_USER="debian"
 ZONE="us-east4-c"
 RESTORE_GALAXY=false
+GCS_BUCKET_NAME=""
+GCS_MOUNT_PATH="/galaxy/server/database"
 
 # Parse command line arguments
 DISK_NAME=""
 DRY_RUN=""
-ENABLE_PULSAR_GCP=""
+POSTGRES_DISK_NAME=""
 EPHEMERAL_ONLY=false
 GALAXY_VALUES_FILES=()  # Array to hold multiple values files
 INSTANCE_NAME=""
-POSTGRES_DISK_NAME=""
 SSH_KEY=""
 
 usage() {
@@ -54,12 +55,13 @@ Options:
   -r, --git-repo REPO               Git repository URL (default: $GIT_REPO)
   -s, --disk-size SIZE              Size of NFS persistent disk (default: $DISK_SIZE)
   -z, --zone ZONE                   GCP zone (default: $ZONE)
-  --enable-pulsar-batch             Use the Pulsar Batch runner instead of the direct GCP Batch runner
   --galaxy-chart-version VERSION    Galaxy Helm chart version (default: $GALAXY_CHART_VERSION)
   --galaxy-deps-version VERSION     Galaxy dependencies chart version (default: $GALAXY_DEPS_VERSION)
   --postgres-disk DISK_NAME         Name of PostgreSQL disk (default: galaxy-postgres-INSTANCE_NAME)
   --postgres-disk-size SIZE         Size of PostgreSQL disk (default: $POSTGRES_DISK_SIZE)
   --restore-galaxy                  Auto-detect and restore Galaxy from existing data
+  --gcs-bucket BUCKET               Enable GCS object store with this bucket name
+  --gcs-mount-path PATH             GCS mount path (default: /galaxy/server/database)
   -h, --help, help                  Show this help message
 
 Examples:
@@ -103,10 +105,6 @@ while [[ $# -gt 0 ]]; do
             ;;
         --dry-run)
         	DRY_RUN="yes"
-        	shift
-        	;;
-        --enable-pulsar-gcp)
-        	ENABLE_PULSAR_GCP="true"
         	shift
         	;;
         -e|--ephemeral-only)
@@ -168,6 +166,14 @@ while [[ $# -gt 0 ]]; do
         --restore-galaxy)
             RESTORE_GALAXY=true
             shift
+            ;;
+        --gcs-bucket)
+            GCS_BUCKET_NAME="$2"
+            shift 2
+            ;;
+        --gcs-mount-path)
+            GCS_MOUNT_PATH="$2"
+            shift 2
             ;;
         -h|--help|help)
             usage
@@ -239,14 +245,14 @@ echo "Galaxy Deps Version: $GALAXY_DEPS_VERSION"
 echo "Galaxy Values Files: ${GALAXY_VALUES_FILES[@]}"
 echo "Git Repository: $GIT_REPO"
 echo "Git Branch: $GIT_BRANCH"
-if [[ $ENABLE_PULSAR_GCP = "true" ]] ; then
-	echo "GCP Batch runner: pulsar"
-else
-	echo "GCP Batch runner: direct"
-fi
 
 if [ "$RESTORE_GALAXY" = true ]; then
     echo "Galaxy Restore Mode: Auto-detect and restore"
+fi
+
+if [ -n "$GCS_BUCKET_NAME" ]; then
+    echo "GCS Bucket: $GCS_BUCKET_NAME"
+    echo "GCS Mount Path: $GCS_MOUNT_PATH"
 fi
 
 if [ "$EPHEMERAL_ONLY" = false ]; then
@@ -304,7 +310,7 @@ if [[ $DRY_RUN = "yes" ]] ; then
 	TEMP_USER_DATA="./cloud-config.txt"
 else
 	TEMP_USER_DATA=$(mktemp /tmp/user_data.XXXXXX)
-	# trap "rm -f $TEMP_USER_DATA" EXIT
+	trap "rm -f $TEMP_USER_DATA" EXIT
 fi
 
 # Add the configuration values directly into the script
@@ -378,7 +384,7 @@ runcmd:
     else
       echo "[`date`] - No PostgreSQL disk found. PostgreSQL will use ephemeral storage."
     fi
-  
+  - |
     # Set disk ownership
     VM_USER="PLACEHOLDER_VM_USER"
     if [ -d /mnt/block_storage ]; then
@@ -404,6 +410,8 @@ cat >> "$TEMP_USER_DATA" << EOF
     GALAXY_DEPS_VERSION="${GALAXY_DEPS_VERSION}"
     GALAXY_VALUES_FILES_JSON='${GALAXY_VALUES_FILES_JSON}'
     RESTORE_GALAXY="${RESTORE_GALAXY}"
+    GCS_BUCKET_NAME="${GCS_BUCKET_NAME}"
+    GCS_MOUNT_PATH="${GCS_MOUNT_PATH}"
 EOF
 
 cat >> "$TEMP_USER_DATA" << 'EOF'
@@ -433,21 +441,20 @@ cat >> "$TEMP_USER_DATA" << 'EOF'
     echo "[`date`] - Galaxy Deps Version: ${GALAXY_DEPS_VERSION}"
     echo "[`date`] - Galaxy Values Files: ${GALAXY_VALUES_FILES_JSON}"
     echo "[`date`] - Inventory file created at /tmp/ansible-inventory/localhost; running ansible-pull..."
-EOF
 
-if [[ $ENABLE_PULSAR_GCP = "true" ]] ; then
-    cat >> $TEMP_USER_DATA << 'EOF'
-    ANSIBLE_CALLBACKS_ENABLED=profile_tasks ANSIBLE_HOST_PATTERN_MISMATCH=ignore ansible-pull -U ${GIT_REPO} -C ${GIT_BRANCH} -d /home/PLACEHOLDER_VM_USER/ansible -i /tmp/ansible-inventory/localhost --accept-host-key --limit 127.0.0.1 --extra-vars "{\"enable_gcp_batch\": false, \"enable_pulsar_gcp_batch\": true, \"galaxy_chart_version\": \"${GALAXY_CHART_VERSION}\", \"galaxy_deps_version\": \"${GALAXY_DEPS_VERSION}\", \"galaxy_values_files\": ${GALAXY_VALUES_FILES_JSON}}" playbook.yml
+    # Build extra-vars JSON
+    EXTRA_VARS="{\"enable_gcp_batch\": true, \"galaxy_chart_version\": \"${GALAXY_CHART_VERSION}\", \"galaxy_deps_version\": \"${GALAXY_DEPS_VERSION}\", \"galaxy_values_files\": ${GALAXY_VALUES_FILES_JSON}"
+    if [ -n "${GCS_BUCKET_NAME}" ]; then
+      EXTRA_VARS="${EXTRA_VARS}, \"enable_gcs_object_store\": true, \"gcs_bucket_name\": \"${GCS_BUCKET_NAME}\", \"gcs_mount_path\": \"${GCS_MOUNT_PATH}\""
+    fi
+    EXTRA_VARS="${EXTRA_VARS}}"
+
+    ANSIBLE_CALLBACKS_ENABLED=profile_tasks ANSIBLE_HOST_PATTERN_MISMATCH=ignore ansible-pull -U ${GIT_REPO} -C ${GIT_BRANCH} -d /home/PLACEHOLDER_VM_USER/ansible -i /tmp/ansible-inventory/localhost --accept-host-key --limit 127.0.0.1 --extra-vars "${EXTRA_VARS}" playbook.yml
+
     echo "[`date`] - User data script completed."
     '
+
 EOF
-else
-    cat >> $TEMP_USER_DATA << 'EOF'
-    ANSIBLE_CALLBACKS_ENABLED=profile_tasks ANSIBLE_HOST_PATTERN_MISMATCH=ignore ansible-pull -U ${GIT_REPO} -C ${GIT_BRANCH} -d /home/PLACEHOLDER_VM_USER/ansible -i /tmp/ansible-inventory/localhost --accept-host-key --limit 127.0.0.1 --extra-vars "{\"enable_gcp_batch\": true, \"enable_pulsar_gcp_batch\": false, \"galaxy_chart_version\": \"${GALAXY_CHART_VERSION}\", \"galaxy_deps_version\": \"${GALAXY_DEPS_VERSION}\", \"galaxy_values_files\": ${GALAXY_VALUES_FILES_JSON}}" playbook.yml
-    echo "[`date`] - User data script completed."
-    '
-EOF
-fi
 
 # Replace VM_USER placeholder in the generated user-data
 if [[ "$OSTYPE" == "darwin"* ]]; then
