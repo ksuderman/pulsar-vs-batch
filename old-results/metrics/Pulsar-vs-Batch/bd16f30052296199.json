@@ -1,0 +1,74 @@
+{
+    "run": "1",
+    "cloud": "pulsar",
+    "job_conf": "Default",
+    "workflow_id": "6c44d8a294d0fee7",
+    "history_id": "d3a2321e0f5f6416",
+    "inputs": "SRR24043307-2GB GRCh38.p14.gbff.gz SRR24043307-5GB GRCh38.p14.gbff.gz SRR24043307-10GB GRCh38.p14.gbff.gz",
+    "metrics": {
+        "model_class": "Job",
+        "id": "bd16f30052296199",
+        "history_id": "d3a2321e0f5f6416",
+        "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/lofreq_filter/lofreq_filter/2.1.5+galaxy0",
+        "state": "paused",
+        "exit_code": null,
+        "create_time": "2026-03-12T06:00:35.382008",
+        "update_time": "2026-03-12T16:23:11.142601",
+        "galaxy_version": "26.0",
+        "external_id": null,
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": null,
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "05a11571e11d2b78",
+        "command_version": null,
+        "params": {
+            "af": "{\"af_max\": \"0.0\", \"af_min\": \"0.0\"}",
+            "coverage": "{\"cov_max\": \"0\", \"cov_min\": \"0\"}",
+            "filter_by_type": "{\"__current_case__\": 0, \"keep_only\": \"\", \"qual\": {\"indelqual_filter\": {\"__current_case__\": 0, \"indelqual\": \"no\"}, \"snvqual_filter\": {\"__current_case__\": 0, \"snvqual\": \"no\"}}}",
+            "flag_or_drop": "\"--print-all\"",
+            "sb": "{\"sb_filter\": {\"__current_case__\": 2, \"sb_alpha\": \"0.001\", \"sb_compound\": true, \"sb_indels\": false, \"sb_mtc\": \"fdr\", \"strand_bias\": \"mtc\"}}",
+            "__workflow_invocation_uuid__": "\"c80afe0e1dd811f1ae90ae14a0e2a0d4\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/?.len\"",
+            "dbkey": "\"?\"",
+            "__input_ext": "\"input\""
+        },
+        "inputs": {
+            "invcf": {
+                "id": "8b81a5ccc59f7e98",
+                "src": "hda",
+                "uuid": "a9bfba0d-628a-4f62-9276-b3fa08d6ce8d"
+            }
+        },
+        "outputs": {
+            "outvcf": {
+                "id": "a9a3fc7745c9a710",
+                "src": "hda",
+                "uuid": "6076d870-9d70-4a0e-9b08-d8d1f265a830"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {
+            "outvcf": {
+                "src": "hdca",
+                "id": "e4a99d022954a70f"
+            }
+        },
+        "tool_stdout": null,
+        "tool_stderr": null,
+        "job_stdout": null,
+        "job_stderr": null,
+        "stdout": "",
+        "stderr": "",
+        "job_messages": null,
+        "dependencies": [],
+        "job_metrics": []
+    },
+    "status": "paused",
+    "server": "http://136.107.46.155",
+    "ref_data_size": [],
+    "input_data_size": [
+        957932045,
+        1289376399
+    ]
+}

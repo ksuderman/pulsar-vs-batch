@@ -1,0 +1,65 @@
+{
+    "run": "1",
+    "cloud": "pulsar",
+    "job_conf": "Default",
+    "workflow_id": "5dd04c396188b091",
+    "history_id": "b4b2cdc31b55552e",
+    "inputs": "SRR24043307-80 ucsc.hg38.knownGene.gtf",
+    "metrics": {
+        "model_class": "Job",
+        "id": "0e5113880a7e4719",
+        "history_id": "b4b2cdc31b55552e",
+        "tool_id": "param_value_from_file",
+        "state": "error",
+        "exit_code": null,
+        "create_time": "2026-03-13T05:00:43.540009",
+        "update_time": "2026-03-13T05:00:44.611700",
+        "galaxy_version": "26.1",
+        "external_id": null,
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": null,
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "5dd04c396188b091",
+        "command_version": null,
+        "params": {
+            "param_type": "\"float\"",
+            "remove_newlines": "true",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/hg38.len\"",
+            "dbkey": "\"hg38\"",
+            "__input_ext": "\"input\""
+        },
+        "inputs": {
+            "input1": {
+                "id": "08dd24985794ad12",
+                "src": "hda",
+                "uuid": "55ca1a29-f090-451c-88b2-8fcadfa1a13b"
+            }
+        },
+        "outputs": {
+            "float_param": {
+                "id": "a14ab00591ba7c88",
+                "src": "hda",
+                "uuid": "3a91a11e-5aaf-491b-9290-5c82c80806cb"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {},
+        "tool_stdout": "",
+        "tool_stderr": "",
+        "job_stdout": null,
+        "job_stderr": null,
+        "stdout": "",
+        "stderr": "",
+        "job_messages": null,
+        "dependencies": [],
+        "job_metrics": []
+    },
+    "status": "error",
+    "server": "http://35.245.29.195",
+    "ref_data_size": [],
+    "input_data_size": [
+        2842083,
+        503642961
+    ]
+}

@@ -1,0 +1,152 @@
+{
+    "run": "2",
+    "cloud": "batch",
+    "job_conf": "Default",
+    "workflow_id": "9ade964b69e0b027",
+    "history_id": "b1fb70a7ae2b60ba",
+    "inputs": "SRR24043307-2GB GRCh38.p14.gbff.gz",
+    "metrics": {
+        "model_class": "Job",
+        "id": "55d0ffe6b5d23eca",
+        "history_id": "b1fb70a7ae2b60ba",
+        "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/fastp/fastp/0.23.2+galaxy0",
+        "state": "ok",
+        "exit_code": 0,
+        "create_time": "2026-03-12T08:48:05.279592",
+        "update_time": "2026-03-12T08:52:36.556878",
+        "galaxy_version": "26.1",
+        "external_id": "galaxy-job-1773305286-6635afe0",
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": "ln -s '/galaxy/server/database/objects/a/2/b/dataset_a2b1bbde-96b1-4782-9d90-9b11a4c415e1.dat' 'SRR24043307_fastq.fastq.gz' && ln -s '/galaxy/server/database/objects/b/4/1/dataset_b4175e26-9489-4907-8b39-e45c46449d19.dat' 'SRR24043307_fastq_R2.fastq.gz' &&    fastp  --thread ${GALAXY_SLOTS:-1} --report_title 'fastp report for SRR24043307_fastq.fastq.gz'   -i 'SRR24043307_fastq.fastq.gz' -o first.fastq.gz  -I 'SRR24043307_fastq_R2.fastq.gz' -O second.fastq.gz       --detect_adapter_for_pe                                          &&  mv first.fastq.gz '/galaxy/server/database/jobs_directory/000/79/outputs/dataset_3a292939-27b2-4a77-9492-fed000e5b1b3.dat' && mv second.fastq.gz '/galaxy/server/database/jobs_directory/000/79/outputs/dataset_a6310e7c-bf12-4212-91d1-77560f1bf218.dat'",
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "87aee200a9af44ab",
+        "command_version": "fastp 0.23.2",
+        "params": {
+            "filter_options": "{\"length_filtering_options\": {\"disable_length_filtering\": false, \"length_limit\": null, \"length_required\": null}, \"low_complexity_filter\": {\"complexity_threshold\": null, \"enable_low_complexity_filter\": false}, \"quality_filtering_options\": {\"disable_quality_filtering\": false, \"n_base_limit\": null, \"qualified_quality_phred\": null, \"unqualified_percent_limit\": null}}",
+            "output_options": "{\"report_html\": true, \"report_json\": true}",
+            "overrepresented_sequence_analysis": "{\"overrepresentation_analysis\": false, \"overrepresentation_sampling\": null}",
+            "read_mod_options": "{\"base_correction_options\": {\"correction\": false}, \"cutting_by_quality_options\": {\"cut_by_quality3\": false, \"cut_by_quality5\": false, \"cut_mean_quality\": null, \"cut_window_size\": null}, \"polyg_tail_trimming\": {\"__current_case__\": 1, \"poly_g_min_len\": null, \"trimming_select\": \"\"}, \"polyx_tail_trimming\": {\"__current_case__\": 1, \"polyx_trimming_select\": \"\"}, \"umi_processing\": {\"umi\": false, \"umi_len\": null, \"umi_loc\": \"\", \"umi_prefix\": \"\"}}",
+            "single_paired": "{\"__current_case__\": 2, \"adapter_trimming_options\": {\"adapter_sequence1\": \"\", \"adapter_sequence2\": \"\", \"disable_adapter_trimming\": false}, \"global_trimming_options\": {\"trim_front1\": null, \"trim_front2\": null, \"trim_tail1\": null, \"trim_tail2\": null}, \"paired_input\": {\"values\": [{\"id\": 15, \"src\": \"dce\"}]}, \"single_paired_selector\": \"paired_collection\"}",
+            "__workflow_invocation_uuid__": "\"2e9395ac1df011f1a314ba5d5720ddb4\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/?.len\"",
+            "dbkey": "\"?\"",
+            "__input_ext": "\"fastqsanger.gz\""
+        },
+        "inputs": {
+            "single_paired|paired_input1": {
+                "id": "fe2cc10ccf3c59d1",
+                "src": "hda",
+                "uuid": "a2b1bbde-96b1-4782-9d90-9b11a4c415e1"
+            },
+            "single_paired|paired_input2": {
+                "id": "9107f205d1ede304",
+                "src": "hda",
+                "uuid": "b4175e26-9489-4907-8b39-e45c46449d19"
+            }
+        },
+        "outputs": {
+            "report_html": {
+                "id": "f07100b166dc9f25",
+                "src": "hda",
+                "uuid": "9e8ede70-f4ca-41f4-a71b-15bf0914d0cf"
+            },
+            "report_json": {
+                "id": "d36a10631bf8ec36",
+                "src": "hda",
+                "uuid": "0930fd2f-2879-4a1e-964e-c518b5852520"
+            },
+            "output_paired_coll|__part__|forward": {
+                "id": "60177c521adb6d8a",
+                "src": "hda",
+                "uuid": "3a292939-27b2-4a77-9492-fed000e5b1b3"
+            },
+            "output_paired_coll|__part__|reverse": {
+                "id": "9bf7dc813c920b61",
+                "src": "hda",
+                "uuid": "a6310e7c-bf12-4212-91d1-77560f1bf218"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {
+            "output_paired_coll": {
+                "src": "hdca",
+                "id": "eb9b8658f5931cd7"
+            },
+            "report_html": {
+                "src": "hdca",
+                "id": "abefe876570244c6"
+            },
+            "report_json": {
+                "src": "hdca",
+                "id": "1c6f6ecfcd825212"
+            }
+        },
+        "tool_stdout": "",
+        "tool_stderr": "Detecting adapter sequence for read1...\n>Illumina TruSeq Adapter Read 1\nAGATCGGAAGAGCACACGTCTGAACTCCAGTCA\n\nDetecting adapter sequence for read2...\n>Illumina TruSeq Adapter Read 2\nAGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT\n\nRead1 before filtering:\ntotal reads: 18462384\ntotal bases: 1864700784\nQ20 bases: 1834649662(98.3884%)\nQ30 bases: 1776556191(95.273%)\n\nRead2 before filtering:\ntotal reads: 18462384\ntotal bases: 1864700784\nQ20 bases: 1829955991(98.1367%)\nQ30 bases: 1764804435(94.6428%)\n\nRead1 after filtering:\ntotal reads: 18334043\ntotal bases: 1841959022\nQ20 bases: 1814737831(98.5222%)\nQ30 bases: 1758174052(95.4513%)\n\nRead2 after filtering:\ntotal reads: 18334043\ntotal bases: 1841956124\nQ20 bases: 1813282785(98.4433%)\nQ30 bases: 1750356498(95.027%)\n\nFiltering result:\nreads passed filter: 36668086\nreads failed due to low quality: 240600\nreads failed due to too many N: 3760\nreads failed due to too short: 12322\nreads with adapter trimmed: 1761492\nbases trimmed due to adapters: 21481276\n\nDuplication rate: 16.3815%\n\nInsert size peak (evaluated by paired-end reads): 140\n\nJSON report: fastp.json\nHTML report: fastp.html\n\nfastp --thread 4 --report_title fastp report for SRR24043307_fastq.fastq.gz -i SRR24043307_fastq.fastq.gz -o first.fastq.gz -I SRR24043307_fastq_R2.fastq.gz -O second.fastq.gz --detect_adapter_for_pe \nfastp v0.23.2, time used: 160 seconds\n",
+        "job_stdout": "",
+        "job_stderr": "",
+        "stdout": "",
+        "stderr": "Detecting adapter sequence for read1...\n>Illumina TruSeq Adapter Read 1\nAGATCGGAAGAGCACACGTCTGAACTCCAGTCA\n\nDetecting adapter sequence for read2...\n>Illumina TruSeq Adapter Read 2\nAGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT\n\nRead1 before filtering:\ntotal reads: 18462384\ntotal bases: 1864700784\nQ20 bases: 1834649662(98.3884%)\nQ30 bases: 1776556191(95.273%)\n\nRead2 before filtering:\ntotal reads: 18462384\ntotal bases: 1864700784\nQ20 bases: 1829955991(98.1367%)\nQ30 bases: 1764804435(94.6428%)\n\nRead1 after filtering:\ntotal reads: 18334043\ntotal bases: 1841959022\nQ20 bases: 1814737831(98.5222%)\nQ30 bases: 1758174052(95.4513%)\n\nRead2 after filtering:\ntotal reads: 18334043\ntotal bases: 1841956124\nQ20 bases: 1813282785(98.4433%)\nQ30 bases: 1750356498(95.027%)\n\nFiltering result:\nreads passed filter: 36668086\nreads failed due to low quality: 240600\nreads failed due to too many N: 3760\nreads failed due to too short: 12322\nreads with adapter trimmed: 1761492\nbases trimmed due to adapters: 21481276\n\nDuplication rate: 16.3815%\n\nInsert size peak (evaluated by paired-end reads): 140\n\nJSON report: fastp.json\nHTML report: fastp.html\n\nfastp --thread 4 --report_title fastp report for SRR24043307_fastq.fastq.gz -i SRR24043307_fastq.fastq.gz -o first.fastq.gz -I SRR24043307_fastq_R2.fastq.gz -O second.fastq.gz --detect_adapter_for_pe \nfastp v0.23.2, time used: 160 seconds\n",
+        "job_messages": [],
+        "dependencies": [],
+        "job_metrics": [
+            {
+                "title": "Container ID",
+                "value": "quay.io/biocontainers/fastp:0.23.2--hadf994f_5",
+                "plugin": "core",
+                "name": "container_id",
+                "raw_value": "quay.io/biocontainers/fastp:0.23.2--hadf994f_5"
+            },
+            {
+                "title": "Container Type",
+                "value": "docker",
+                "plugin": "core",
+                "name": "container_type",
+                "raw_value": "docker"
+            },
+            {
+                "title": "Cores Allocated",
+                "value": "4",
+                "plugin": "core",
+                "name": "galaxy_slots",
+                "raw_value": "4.0000000"
+            },
+            {
+                "title": "Memory Allocated (MB)",
+                "value": "10240",
+                "plugin": "core",
+                "name": "galaxy_memory_mb",
+                "raw_value": "10240.0000000"
+            },
+            {
+                "title": "Job Start Time",
+                "value": "2026-03-12 08:49:55",
+                "plugin": "core",
+                "name": "start_epoch",
+                "raw_value": "1773305395.0000000"
+            },
+            {
+                "title": "Job End Time",
+                "value": "2026-03-12 08:52:35",
+                "plugin": "core",
+                "name": "end_epoch",
+                "raw_value": "1773305555.0000000"
+            },
+            {
+                "title": "Job Runtime (Wall Clock)",
+                "value": "2 minutes",
+                "plugin": "core",
+                "name": "runtime_seconds",
+                "raw_value": "160.0000000"
+            }
+        ]
+    },
+    "status": "ok",
+    "server": "http://136.107.98.65",
+    "ref_data_size": [],
+    "input_data_size": [
+        503642961,
+        1289376399
+    ]
+}

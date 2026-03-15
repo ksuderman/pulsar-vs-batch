@@ -1,0 +1,80 @@
+{
+    "run": "1",
+    "cloud": "pulsar",
+    "job_conf": "Default",
+    "workflow_id": "5dd04c396188b091",
+    "history_id": "58c5d45efb06e38d",
+    "inputs": "SRR24043307-80 ucsc.hg38.knownGene.gtf SRR24043307-50 ucsc.hg38.knownGene.gtf",
+    "metrics": {
+        "model_class": "Job",
+        "id": "4a3d6e67d22bd16a",
+        "history_id": "58c5d45efb06e38d",
+        "tool_id": "toolshed.g2.bx.psu.edu/repos/devteam/bamtools_filter/bamFilter/2.5.2+galaxy1",
+        "state": "deleted",
+        "exit_code": null,
+        "create_time": "2026-03-13T05:01:54.356619",
+        "update_time": "2026-03-13T06:22:20.175021",
+        "galaxy_version": "26.1",
+        "external_id": "57",
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": "cp '/mnt/disks/pulsar_staging/57/configs/tmpq3qlxy4a' '/mnt/disks/pulsar_staging/57/working/dataset_d1336e72-b3eb-4c9e-bf3f-1df77974e052.dat' && ln -s '/mnt/disks/pulsar_staging/57/inputs/dataset_10f24567-f573-4d67-92ac-a5768695383d.dat' localbam.bam && ln -s '/mnt/disks/pulsar_staging/57/inputs/metadata_metadata_c4a99462-39d3-40d6-ae7a-e874a0599e4a.dat' localbam.bam.bai && cat '/mnt/disks/pulsar_staging/57/configs/tmpq3qlxy4a' && bamtools filter -script '/mnt/disks/pulsar_staging/57/configs/tmpq3qlxy4a' -in localbam.bam -out '/mnt/disks/pulsar_staging/57/working/dataset_5b217878-39a0-43cb-a193-e7e2067bb140.dat'",
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "5dd04c396188b091",
+        "command_version": null,
+        "params": {
+            "conditions": "[{\"__index__\": 0, \"filters\": [{\"__index__\": 0, \"bam_property\": {\"__current_case__\": 21, \"bam_property_selector\": \"tag\", \"bam_property_value\": \"NH=1\"}}]}]",
+            "rule_configuration": "{\"__current_case__\": 0, \"rules_selector\": false}",
+            "__workflow_invocation_uuid__": "\"c009d98e1e9911f1b5ea0e6fa7db7a80\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/hg38.len\"",
+            "dbkey": "\"hg38\"",
+            "__input_ext": "\"bam\""
+        },
+        "inputs": {
+            "input_bam": {
+                "id": "b708a699696444e1",
+                "src": "hda",
+                "uuid": "10f24567-f573-4d67-92ac-a5768695383d"
+            }
+        },
+        "outputs": {
+            "out_file2": {
+                "id": "00607b58a46ce646",
+                "src": "hda",
+                "uuid": "d1336e72-b3eb-4c9e-bf3f-1df77974e052"
+            },
+            "out_file1": {
+                "id": "6572bdb2a934da38",
+                "src": "hda",
+                "uuid": "5b217878-39a0-43cb-a193-e7e2067bb140"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {
+            "out_file2": {
+                "src": "hdca",
+                "id": "90c71858ec5d99c3"
+            },
+            "out_file1": {
+                "src": "hdca",
+                "id": "6faceb2d214fd01e"
+            }
+        },
+        "tool_stdout": null,
+        "tool_stderr": null,
+        "job_stdout": null,
+        "job_stderr": null,
+        "stdout": "",
+        "stderr": "",
+        "job_messages": null,
+        "dependencies": [],
+        "job_metrics": []
+    },
+    "status": "deleting",
+    "server": "http://35.245.29.195",
+    "ref_data_size": [],
+    "input_data_size": [
+        5099543128,
+        503642961
+    ]
+}

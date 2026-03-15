@@ -1,0 +1,103 @@
+{
+    "run": "1",
+    "cloud": "pulsar",
+    "job_conf": "Default",
+    "workflow_id": "6c44d8a294d0fee7",
+    "history_id": "958238f089f90182",
+    "inputs": "SRR24043307-2GB GRCh38.p14.gbff.gz",
+    "metrics": {
+        "model_class": "Job",
+        "id": "59f1ec60789ee3ac",
+        "history_id": "958238f089f90182",
+        "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/lofreq_filter/lofreq_filter/2.1.5+galaxy0",
+        "state": "ok",
+        "exit_code": 0,
+        "create_time": "2026-03-11T14:55:10.610945",
+        "update_time": "2026-03-11T20:08:55.457688",
+        "galaxy_version": "26.0",
+        "external_id": "41",
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": "lofreq filter -i /mnt/disks/pulsar_staging/41/inputs/dataset_d287c4b2-56bf-4485-9b2a-afecd773ae9d.dat --no-defaults --verbose --print-all  -v 0 -V 0 -a 0.0 -A 0.0 -b fdr -c 0.001   -o filtered.vcf",
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "05a11571e11d2b78",
+        "command_version": "2.1.5",
+        "params": {
+            "af": "{\"af_max\": \"0.0\", \"af_min\": \"0.0\"}",
+            "coverage": "{\"cov_max\": \"0\", \"cov_min\": \"0\"}",
+            "filter_by_type": "{\"__current_case__\": 0, \"keep_only\": \"\", \"qual\": {\"indelqual_filter\": {\"__current_case__\": 0, \"indelqual\": \"no\"}, \"snvqual_filter\": {\"__current_case__\": 0, \"snvqual\": \"no\"}}}",
+            "flag_or_drop": "\"--print-all\"",
+            "sb": "{\"sb_filter\": {\"__current_case__\": 2, \"sb_alpha\": \"0.001\", \"sb_compound\": true, \"sb_indels\": false, \"sb_mtc\": \"fdr\", \"strand_bias\": \"mtc\"}}",
+            "__workflow_invocation_uuid__": "\"4b33b3401d5a11f1bfa0ae14a0e2a0d4\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/?.len\"",
+            "dbkey": "\"?\"",
+            "__input_ext": "\"input\""
+        },
+        "inputs": {
+            "invcf": {
+                "id": "0977c7db24e95e55",
+                "src": "hda",
+                "uuid": "d287c4b2-56bf-4485-9b2a-afecd773ae9d"
+            }
+        },
+        "outputs": {
+            "outvcf": {
+                "id": "6855d0d87cc51b1f",
+                "src": "hda",
+                "uuid": "bd245b61-db79-4cc7-8211-d238244188f3"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {
+            "outvcf": {
+                "src": "hdca",
+                "id": "e43e3fa51abf113c"
+            }
+        },
+        "tool_stdout": "",
+        "tool_stderr": "Skipping default settings\nAt least one type of multiple testing correction requested. Doing first pass of vcf\nMTC application completed\nSuccessful exit.\n",
+        "job_stdout": "",
+        "job_stderr": "",
+        "stdout": "",
+        "stderr": "Skipping default settings\nAt least one type of multiple testing correction requested. Doing first pass of vcf\nMTC application completed\nSuccessful exit.\n",
+        "job_messages": [],
+        "dependencies": [],
+        "job_metrics": [
+            {
+                "title": "Cores Allocated",
+                "value": "1",
+                "plugin": "core",
+                "name": "galaxy_slots",
+                "raw_value": "1.0000000"
+            },
+            {
+                "title": "Job Start Time",
+                "value": "2026-03-11 20:08:37",
+                "plugin": "core",
+                "name": "start_epoch",
+                "raw_value": "1773259717.0000000"
+            },
+            {
+                "title": "Job End Time",
+                "value": "2026-03-11 20:08:37",
+                "plugin": "core",
+                "name": "end_epoch",
+                "raw_value": "1773259717.0000000"
+            },
+            {
+                "title": "Job Runtime (Wall Clock)",
+                "value": "0 seconds",
+                "plugin": "core",
+                "name": "runtime_seconds",
+                "raw_value": "0E-7"
+            }
+        ]
+    },
+    "status": "ok",
+    "server": "http://136.107.46.155",
+    "ref_data_size": [],
+    "input_data_size": [
+        503642961,
+        1289376399
+    ]
+}

@@ -1,0 +1,59 @@
+{
+    "run": "1",
+    "cloud": "pulsar",
+    "job_conf": "Default",
+    "workflow_id": "5dd04c396188b091",
+    "history_id": "b2fbf841daf268d8",
+    "inputs": "SRR24043307-80 ucsc.hg38.knownGene.gtf SRR24043307-50 ucsc.hg38.knownGene.gtf SRR24043307-full ucsc.hg38.knownGene.gtf",
+    "metrics": {
+        "model_class": "Job",
+        "id": "3ca4734cac3e90ea",
+        "history_id": "b2fbf841daf268d8",
+        "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/compose_text_param/compose_text_param/0.1.1",
+        "state": "deleted",
+        "exit_code": null,
+        "create_time": "2026-03-13T06:22:29.518397",
+        "update_time": "2026-03-13T08:30:11.692816",
+        "galaxy_version": "26.1",
+        "external_id": "65",
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": "cd ../; python _evaluate_expression_.py",
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "5dd04c396188b091",
+        "command_version": null,
+        "params": {
+            "components": "[{\"__index__\": 0, \"param_type\": {\"__current_case__\": 0, \"component_value\": \"hg38\", \"select_param_type\": \"text\"}}]",
+            "__workflow_invocation_uuid__": "\"021a64dc1ea511f1a9290e6fa7db7a80\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/?.len\"",
+            "dbkey": "\"?\"",
+            "__input_ext": "\"input\""
+        },
+        "inputs": {},
+        "outputs": {
+            "out1": {
+                "id": "192ca5f52ed45f31",
+                "src": "hda",
+                "uuid": "4806cd03-b3c0-4c60-8412-c539e7184fb2"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {},
+        "tool_stdout": null,
+        "tool_stderr": null,
+        "job_stdout": null,
+        "job_stderr": null,
+        "stdout": "",
+        "stderr": "",
+        "job_messages": null,
+        "dependencies": [],
+        "job_metrics": []
+    },
+    "status": "deleted",
+    "server": "http://35.245.29.195",
+    "ref_data_size": [],
+    "input_data_size": [
+        2824478,
+        503642961
+    ]
+}

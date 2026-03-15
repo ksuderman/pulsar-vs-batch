@@ -1,0 +1,61 @@
+{
+    "run": "1",
+    "cloud": "pulsar",
+    "job_conf": "Default",
+    "workflow_id": "5dd04c396188b091",
+    "history_id": "b4b2cdc31b55552e",
+    "inputs": "SRR24043307-80 ucsc.hg38.knownGene.gtf",
+    "metrics": {
+        "model_class": "Job",
+        "id": "7e9f8c46aaa1b6d1",
+        "history_id": "b4b2cdc31b55552e",
+        "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/map_param_value/map_param_value/0.1.1",
+        "state": "deleted",
+        "exit_code": null,
+        "create_time": "2026-03-13T03:46:02.469053",
+        "update_time": "2026-03-13T05:01:44.798571",
+        "galaxy_version": "26.1",
+        "external_id": "40",
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": "cd ../; python _evaluate_expression_.py",
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "5dd04c396188b091",
+        "command_version": null,
+        "params": {
+            "input_param_type": "{\"__current_case__\": 0, \"input_param\": \"stranded - forward\", \"mappings\": [{\"__index__\": 0, \"from\": \"stranded - forward\", \"to\": \"fr-secondstrand\"}, {\"__index__\": 1, \"from\": \"stranded - reverse\", \"to\": \"fr-firststrand\"}, {\"__index__\": 2, \"from\": \"unstranded\", \"to\": \"fr-unstranded\"}], \"type\": \"text\"}",
+            "output_param_type": "\"text\"",
+            "unmapped": "{\"__current_case__\": 1, \"on_unmapped\": \"fail\"}",
+            "__workflow_invocation_uuid__": "\"26d193101e8f11f1a3530e6fa7db7a80\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/?.len\"",
+            "dbkey": "\"?\"",
+            "__input_ext": "\"input\""
+        },
+        "inputs": {},
+        "outputs": {
+            "output_param_text": {
+                "id": "ab61bc6c6ec7e409",
+                "src": "hda",
+                "uuid": "0e591422-a07c-4e2b-903b-4cc5bac2bb1f"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {},
+        "tool_stdout": null,
+        "tool_stderr": null,
+        "job_stdout": null,
+        "job_stderr": null,
+        "stdout": "",
+        "stderr": "",
+        "job_messages": null,
+        "dependencies": [],
+        "job_metrics": []
+    },
+    "status": "deleted",
+    "server": "http://35.245.29.195",
+    "ref_data_size": [],
+    "input_data_size": [
+        2842083,
+        503642961
+    ]
+}

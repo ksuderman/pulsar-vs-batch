@@ -1,0 +1,121 @@
+{
+    "run": "1",
+    "cloud": "batch",
+    "job_conf": "Default",
+    "workflow_id": "0be3040c412749ac",
+    "history_id": "88ab0c303e0ec151",
+    "inputs": "SRR24043307-80 ucsc.hg38.knownGene.gtf SRR24043307-50 ucsc.hg38.knownGene.gtf SRR24043307-full ucsc.hg38.knownGene.gtf",
+    "metrics": {
+        "model_class": "Job",
+        "id": "85091a89b6f0dcc6",
+        "history_id": "88ab0c303e0ec151",
+        "tool_id": "param_value_from_file",
+        "state": "ok",
+        "exit_code": 0,
+        "create_time": "2026-03-13T07:51:32.538750",
+        "update_time": "2026-03-13T09:28:06.914701",
+        "galaxy_version": "26.1",
+        "external_id": "galaxy-job-1773393932-ee007482",
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": "cd ../; python _evaluate_expression_.py",
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "0be3040c412749ac",
+        "command_version": "",
+        "params": {
+            "param_type": "\"float\"",
+            "remove_newlines": "true",
+            "__workflow_invocation_uuid__": "\"72198efa1eb111f182984eb3196e66d4\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/hg38.len\"",
+            "dbkey": "\"hg38\"",
+            "__input_ext": "\"input\""
+        },
+        "inputs": {
+            "input1": {
+                "id": "92ea12d3c8ea7e55",
+                "src": "hda",
+                "uuid": "8f27578d-4978-4770-9966-53a7a9e59f7b"
+            }
+        },
+        "outputs": {
+            "float_param": {
+                "id": "e96fc146f9d506ee",
+                "src": "hda",
+                "uuid": "2845d1d9-4f48-4b90-b653-b8ac1ed31c24"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {
+            "float_param": {
+                "src": "hdca",
+                "id": "ac7c2afadb4c324b"
+            }
+        },
+        "tool_stdout": "",
+        "tool_stderr": "",
+        "job_stdout": "",
+        "job_stderr": "",
+        "stdout": "",
+        "stderr": "",
+        "job_messages": [],
+        "dependencies": [],
+        "job_metrics": [
+            {
+                "title": "Container ID",
+                "value": "ksuderman/galaxy-min:26.1.dev0",
+                "plugin": "core",
+                "name": "container_id",
+                "raw_value": "ksuderman/galaxy-min:26.1.dev0"
+            },
+            {
+                "title": "Container Type",
+                "value": "docker",
+                "plugin": "core",
+                "name": "container_type",
+                "raw_value": "docker"
+            },
+            {
+                "title": "Cores Allocated",
+                "value": "1",
+                "plugin": "core",
+                "name": "galaxy_slots",
+                "raw_value": "1.0000000"
+            },
+            {
+                "title": "Memory Allocated (MB)",
+                "value": "3891",
+                "plugin": "core",
+                "name": "galaxy_memory_mb",
+                "raw_value": "3891.0000000"
+            },
+            {
+                "title": "Job Start Time",
+                "value": "2026-03-13 09:27:56",
+                "plugin": "core",
+                "name": "start_epoch",
+                "raw_value": "1773394076.0000000"
+            },
+            {
+                "title": "Job End Time",
+                "value": "2026-03-13 09:28:05",
+                "plugin": "core",
+                "name": "end_epoch",
+                "raw_value": "1773394085.0000000"
+            },
+            {
+                "title": "Job Runtime (Wall Clock)",
+                "value": "9 seconds",
+                "plugin": "core",
+                "name": "runtime_seconds",
+                "raw_value": "9.0000000"
+            }
+        ]
+    },
+    "status": "ok",
+    "server": "http://34.48.93.121",
+    "ref_data_size": [],
+    "input_data_size": [
+        2824478,
+        503642961
+    ]
+}

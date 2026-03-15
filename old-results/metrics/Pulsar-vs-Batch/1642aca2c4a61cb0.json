@@ -1,0 +1,121 @@
+{
+    "run": "1",
+    "cloud": "batch",
+    "job_conf": "Default",
+    "workflow_id": "9ade964b69e0b027",
+    "history_id": "312e47e21ee9b87b",
+    "inputs": "SRR24043307-2GB GRCh38.p14.gbff.gz SRR24043307-5GB GRCh38.p14.gbff.gz",
+    "metrics": {
+        "model_class": "Job",
+        "id": "1642aca2c4a61cb0",
+        "history_id": "312e47e21ee9b87b",
+        "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/samtools_view/samtools_view/1.13+galaxy1",
+        "state": "ok",
+        "exit_code": 0,
+        "create_time": "2026-03-11T18:21:25.244872",
+        "update_time": "2026-03-11T20:40:25.571261",
+        "galaxy_version": "26.1",
+        "external_id": "galaxy-job-1773261078-515be43d",
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": "addthreads=${GALAXY_SLOTS:-1} && (( addthreads-- )) &&   addmemory=${GALAXY_MEMORY_MB_PER_SLOT:-768} && ((addmemory=addmemory*75/100)) &&        ln -s '/galaxy/server/database/objects/e/0/7/dataset_e0722187-bb47-4280-bcda-cd52aa713c5c.dat' infile && ln -s '/galaxy/server/database/objects/_metadata_files/6/d/7/metadata_6d72dd2a-5a9e-4060-b8d5-9370b42817cd.dat' infile.bai &&               samtools view -@ $addthreads -b  -f 3 -F 0 -G 0    -o outfile      infile",
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "87aee200a9af44ab",
+        "command_version": "Version: 1.13 (using htslib 1.13)",
+        "params": {
+            "addref_cond": "{\"__current_case__\": 0, \"addref_select\": \"no\"}",
+            "mode": "{\"__current_case__\": 1, \"filter_config\": {\"cigarcons\": null, \"cond_region\": {\"__current_case__\": 0, \"select_region\": \"no\"}, \"cond_rg\": {\"__current_case__\": 0, \"select_rg\": \"no\"}, \"exclusive_filter\": null, \"exclusive_filter_all\": null, \"inclusive_filter\": [\"1\", \"2\"], \"library\": \"\", \"qname_file\": null, \"quality\": \"0\", \"tag\": \"\"}, \"output_options\": {\"__current_case__\": 0, \"adv_output\": {\"collapsecigar\": false, \"readtags\": []}, \"complementary_output\": false, \"output_format\": {\"__current_case__\": 2, \"oformat\": \"bam\"}, \"reads_report_type\": \"retained\"}, \"outtype\": \"selected_reads\", \"subsample_config\": {\"subsampling_mode\": {\"__current_case__\": 0, \"factor\": \"1.0\", \"seed\": null, \"select_subsample\": \"fraction\"}}}",
+            "__workflow_invocation_uuid__": "\"1c41d8061d7711f1bc31ba5d5720ddb4\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/?.len\"",
+            "dbkey": "\"?\"",
+            "__input_ext": "\"input\""
+        },
+        "inputs": {
+            "input": {
+                "id": "b248af8edb284b1b",
+                "src": "hda",
+                "uuid": "e0722187-bb47-4280-bcda-cd52aa713c5c"
+            }
+        },
+        "outputs": {
+            "outputsam": {
+                "id": "623b4da2b2f0cb5f",
+                "src": "hda",
+                "uuid": "3c79c8b7-db7f-440a-a3fd-7e28a9c2e60d"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {
+            "outputsam": {
+                "src": "hdca",
+                "id": "dda6415ded8060e9"
+            }
+        },
+        "tool_stdout": "",
+        "tool_stderr": "",
+        "job_stdout": "",
+        "job_stderr": "",
+        "stdout": "",
+        "stderr": "",
+        "job_messages": [],
+        "dependencies": [],
+        "job_metrics": [
+            {
+                "title": "Container ID",
+                "value": "quay.io/biocontainers/mulled-v2-8dd8177cf5b9476288c149088f4340b576b866e3:9f68127d7d238031667ddd68ffaf2d33a89c565c-0",
+                "plugin": "core",
+                "name": "container_id",
+                "raw_value": "quay.io/biocontainers/mulled-v2-8dd8177cf5b9476288c149088f4340b576b866e3:9f68127d7d238031667ddd68ffaf2d33a89c565c-0"
+            },
+            {
+                "title": "Container Type",
+                "value": "docker",
+                "plugin": "core",
+                "name": "container_type",
+                "raw_value": "docker"
+            },
+            {
+                "title": "Cores Allocated",
+                "value": "1",
+                "plugin": "core",
+                "name": "galaxy_slots",
+                "raw_value": "1.0000000"
+            },
+            {
+                "title": "Memory Allocated (MB)",
+                "value": "3891",
+                "plugin": "core",
+                "name": "galaxy_memory_mb",
+                "raw_value": "3891.0000000"
+            },
+            {
+                "title": "Job Start Time",
+                "value": "2026-03-11 20:33:14",
+                "plugin": "core",
+                "name": "start_epoch",
+                "raw_value": "1773261194.0000000"
+            },
+            {
+                "title": "Job End Time",
+                "value": "2026-03-11 20:38:53",
+                "plugin": "core",
+                "name": "end_epoch",
+                "raw_value": "1773261533.0000000"
+            },
+            {
+                "title": "Job Runtime (Wall Clock)",
+                "value": "5 minutes",
+                "plugin": "core",
+                "name": "runtime_seconds",
+                "raw_value": "339.0000000"
+            }
+        ]
+    },
+    "status": "ok",
+    "server": "http://136.107.98.65",
+    "ref_data_size": [],
+    "input_data_size": [
+        943609340,
+        1289376399
+    ]
+}
