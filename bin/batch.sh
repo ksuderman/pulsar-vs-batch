@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -eu
 
-BRANCH=pulsar-gcp-batch
+BRANCH=gcs-and-pulsar
 SERVER=ks-batch-test
 REPO=${REPO:-https://github.com/ksuderman/galaxy-k8s-boot}
 DRY_RUN=""

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-BRANCH=gcs-object-store
+BRANCH=gcs-and-pulsar
 SERVER=ks-bucket-test
 REPO=${REPO:-https://github.com/ksuderman/galaxy-k8s-boot}
 DRY_RUN=""
@@ -54,6 +54,7 @@ function start() {
 	  --git-repo $REPO \
 	  --git-branch $BRANCH \
 	  --disk-size 256 \
+	  --ephemeral-only \
 	  --gcs-bucket ks-batch-gcs-test-bucket \
 	  -f values/values.yml \
 	  -f mixins/local.yml \

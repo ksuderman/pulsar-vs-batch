@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -eu
 
-BRANCH=pulsar-gcp-batch
+BRANCH=gcs-and-pulsar
 SERVER=ks-pulsar-test
 REPO=${REPO:-https://github.com/ksuderman/galaxy-k8s-boot}
 export ZONE=us-east4-c
