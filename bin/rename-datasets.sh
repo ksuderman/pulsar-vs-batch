@@ -6,7 +6,6 @@ if [[ $# -eq 0 ]] ; then
     exit 1
 fi
 function get_dataset_id() {
-    echo "Getting dataset collection ID is history $2"
     echo $(abm $1 dataset list --history "$2" | grep dataset_collection | awk '{print $1'})
 }
 
