@@ -20,7 +20,7 @@ for cloud in $CLOUDS ; do
 done
 
 for history in rna rna-20 rna-50 variant-test variant-2g variant-5g variant-10g ; do
-    echo "Importing history $history
+    echo "Importing history $history"
     parallel "$CLOUDS" history import $history
 done
 for workflow in rnaseq-pe variant chipseq-pe ; do
