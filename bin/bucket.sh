@@ -54,7 +54,6 @@ function start() {
 	  --git-repo $REPO \
 	  --git-branch $BRANCH \
 	  --disk-size 256 \
-	  --ephemeral-only \
 	  --gcs-bucket ks-batch-gcs-test-bucket \
 	  -f values/values.yml \
 	  -f mixins/local.yml \

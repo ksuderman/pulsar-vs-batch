@@ -1,26 +1,93 @@
 #!/usr/bin/env bash
 set -eu
 
+BRANCH=gcs-and-pulsar
+SERVER=ks-batch-test
+REPO=${REPO:-https://github.com/ksuderman/galaxy-k8s-boot}
+DRY_RUN=""
+export ZONE=us-east4-c
+
+# ANSI formatting
+reset="\033[0m"
+bold="\033[1m"
+
+function hi() {
+    echo -e "$bold$@$reset"
+}
+
+NAME=$(basename "$0")
+
+function help() {
+    cat << EOF
+
+$(hi NAME)
+    $NAME
+
+$(hi DESCRIPTION)
+    Quick-start wrapper around $(hi launch_vm.sh) with preset defaults for
+    launching a Galaxy Kubernetes VM with the direct GCP Batch job runner enabled.
+
+$(hi SYNOPSIS)
+    $NAME [start|stop|help]
+
+$(hi OPTIONS)
+    $(hi start)             start a Galaxy VM that uses the direct batch runner
+    $(hi stop)              stop the Galaxy VM
+    $(hi -h)|$(hi --help)|$(hi help)    show this help message
+
+$(hi EXAMPLES)
+    \$> $NAME
+    \$> $NAME start
+    \$> $NAME stop
+    \$> $NAME help
+
+EOF
+}
+
 if [[ $# -eq 0 ]] ; then
-    echo "USAGE: $0 [batch|pulsar]"
-    exit 1
+	help
+	exit
 fi
-CMD=validate
-while [[ $# -gt 0 ]] ; do
-    case $1 in
-        batch|pulsar)
-            abm $1 bench $CMD $(pwd)/benchmarks/variant-test.yml
-            ;;
-        run) CMD=run ;;
-        validate) CMD=validate ;;
-        *)
-            echo "Unknown option $1"
-            echo "Must be one of batch or pulsar"
-            exit 1
-            ;;
-    esac
-    shift
-done
-#echo "To run the benchmark run the command:"
-#echo "    abm $cloud bench validate $(pwd)/benchmarks/variant-test.yml"
-#echo ""
+
+function start() {
+	echo "Launching ${SERVER}"
+	bin/launch_vm.sh $SERVER \
+	  --git-repo $REPO \
+	  --git-branch $BRANCH \
+	  --disk-size 256 \
+	  -f values/values.yml \
+	  -f mixins/local.yml \
+	  -f mixins/v26.1.yml
+}
+
+function stop() {
+	echo "Stopping $SERVER"
+	gcloud compute instances delete $SERVER --zone $ZONE --quiet
+	for disk in $(gcloud compute disks list --filter="name~.*${SERVER}.*" --format='value(name)') ; do
+		gcloud compute disks delete $disk --zone $ZONE --quiet
+	done
+}
+
+case $1 in
+	kube)
+		if [[ -e .kubeconfig ]] ; then
+			rm .kubeconfig
+		fi
+		bin/kube.sh --server $SERVER --cloud batch
+		;;
+	start) start ;;
+	stop) stop ;;
+	bounce)
+		stop
+		start
+		;;
+	-h|--help|help)
+		help
+		exit
+		;;
+	*)
+		echo "Unrecognized parameter $1"
+		help
+		exit 1
+		;;
+esac
