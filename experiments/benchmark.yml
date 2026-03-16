@@ -7,7 +7,7 @@ runs: 1
 benchmark_confs:
   - benchmarks/variant.yml
   - benchmarks/rnaseq.yml
-  - benchmarks/chipseq-pe.yml
+#  - benchmarks/chipseq-pe.yml
 # The cloud instances, as defined in the .abm/profile.yml file.
 cloud:
   - batch
