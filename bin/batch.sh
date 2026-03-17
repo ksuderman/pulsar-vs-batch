@@ -57,6 +57,7 @@ function start() {
 	  --disk-size 256 \
 	  -f values/values.yml \
 	  -f mixins/local.yml \
+	  -f mixins/debug.yml \
 	  -f mixins/v26.1.yml
 }
 

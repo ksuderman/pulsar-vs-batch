@@ -13,6 +13,7 @@ Supports any workflow -- tools are discovered dynamically from the data,
 sorted by average runtime (descending), and short names are auto-generated.
 """
 
+import argparse
 import json
 import glob
 import hashlib
@@ -73,18 +74,23 @@ def get_size_label(inputs_str):
     """Derive a size label from the inputs string.
 
     For variant analysis data with explicit size markers (2GB, 5GB, 10GB),
-    returns those labels joined by '+'.
+    returns a cumulative label showing total data processed. When multiple
+    sizes appear in one workflow invocation, all datasets are processed
+    together (e.g. "7GB (2+5)" means the 2GB and 5GB datasets were
+    processed in a single workflow run).
 
     For other workflows (e.g. RNASeq with SRR identifiers), extracts
     meaningful tokens from the input string to produce a short label.
     """
-    # Check for explicit size markers first
-    sizes = []
-    for pattern in ["10GB", "5GB", "2GB"]:
-        if pattern in inputs_str:
-            sizes.append(pattern)
+    # Check for explicit size markers first.
+    # The inputs field may contain datasets from prior runs in the same
+    # history (an ABM reporting artifact).  Use the largest size marker
+    # as the actual input size for this invocation.
+    size_values = {"2GB": 2, "5GB": 5, "10GB": 10}
+    sizes = [s for s in size_values if s in inputs_str]
     if sizes:
-        return "+".join(sorted(sizes))
+        largest = max(sizes, key=lambda s: size_values[s])
+        return largest
 
     # For other workflows, extract distinguishing tokens.
     # Split on whitespace, find unique non-reference tokens.
@@ -989,7 +995,17 @@ def generate_html(all_stats, matchups, experiment_name, tool_order, tool_short):
 
 def main():
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    metrics_dir = sys.argv[1] if len(sys.argv) > 1 else os.path.join(base_dir, "metrics", "Pulsar-vs-Batch")
+
+    parser = argparse.ArgumentParser(description="Generate docs from metrics JSON files.")
+    parser.add_argument("metrics_dir", nargs="?",
+                        default=os.path.join(base_dir, "metrics", "Pulsar-vs-Batch"),
+                        help="Directory containing metrics JSON files")
+    parser.add_argument("--exclude", action="append", default=[],
+                        help="Exclude workflow runs whose inputs contain this string (repeatable)")
+    args = parser.parse_args()
+
+    metrics_dir = args.metrics_dir
+    exclude_patterns = args.exclude
 
     # Determine output directory from experiment name
     experiment_name = os.path.basename(metrics_dir)
@@ -1003,6 +1019,16 @@ def main():
 
     print(f"Loading metrics from {metrics_dir}...")
     jobs = load_metrics(metrics_dir)
+
+    # Filter out excluded patterns
+    if exclude_patterns:
+        before = len(jobs)
+        jobs = [j for j in jobs
+                if not any(pat in j["inputs"] for pat in exclude_patterns)]
+        excluded = before - len(jobs)
+        if excluded:
+            print(f"  Excluded {excluded} jobs matching: {', '.join(exclude_patterns)}")
+
     groups = group_by_history(jobs)
 
     all_stats = [history_stats(g) for g in groups.values()]

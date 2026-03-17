@@ -58,6 +58,7 @@ function start() {
 	  -f values/values.yml \
 	  -f mixins/local.yml \
 	  -f mixins/gcs.yml \
+	  -f mixins/debug.yml \
 	  -f mixins/v26.1.yml
 
 }
