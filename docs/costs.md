@@ -4,7 +4,7 @@ title: Variant Calling Cost Summary
 
 # Variant Calling Cost Summary
 
-**[Interactive Cost Charts](costs.html)** | **[Performance Report](index.md)** | **[Performance Charts](charts.html)**
+**[Interactive Cost Charts](cost-chartss.html)** | **[Performance Report](index.html)** | **[Performance Charts](charts.html)**
 
 **Period:** 2026-03-16 19:36 to 2026-03-17 15:23 UTC  
 **Region:** us-east4  
