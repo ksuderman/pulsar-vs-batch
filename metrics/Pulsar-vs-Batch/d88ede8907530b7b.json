@@ -1,0 +1,124 @@
+{
+    "run": "1",
+    "cloud": "batch",
+    "job_conf": "Default",
+    "workflow_id": "bddcdd049e475662",
+    "history_id": "07f9eca21a755b78",
+    "inputs": "SRR24043307-2GB GRCh38.p14.gbff.gz SRR24043307-5GB GRCh38.p14.gbff.gz SRR24043307-10GB GRCh38.p14.gbff.gz",
+    "metrics": {
+        "model_class": "Job",
+        "id": "d88ede8907530b7b",
+        "history_id": "07f9eca21a755b78",
+        "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/lofreq_filter/lofreq_filter/2.1.5+galaxy0",
+        "state": "ok",
+        "exit_code": 0,
+        "create_time": "2026-03-17T04:38:32.470087",
+        "update_time": "2026-03-17T13:19:07.330109",
+        "galaxy_version": "26.1",
+        "external_id": "galaxy-job-1773753418-ea425757",
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": "lofreq filter -i /galaxy/server/database/objects/5/3/c/dataset_53ca7342-d0db-4e64-a44e-9cf48407dd0e.dat --no-defaults --verbose --print-all  -v 0 -V 0 -a 0.0 -A 0.0 -b fdr -c 0.001   -o filtered.vcf",
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "b9eec48891b366cf",
+        "command_version": "2.1.5",
+        "params": {
+            "af": "{\"af_max\": \"0.0\", \"af_min\": \"0.0\"}",
+            "coverage": "{\"cov_max\": \"0\", \"cov_min\": \"0\"}",
+            "filter_by_type": "{\"__current_case__\": 0, \"keep_only\": \"\", \"qual\": {\"indelqual_filter\": {\"__current_case__\": 0, \"indelqual\": \"no\"}, \"snvqual_filter\": {\"__current_case__\": 0, \"snvqual\": \"no\"}}}",
+            "flag_or_drop": "\"--print-all\"",
+            "sb": "{\"sb_filter\": {\"__current_case__\": 2, \"sb_alpha\": \"0.001\", \"sb_compound\": true, \"sb_indels\": false, \"sb_mtc\": \"fdr\", \"strand_bias\": \"mtc\"}}",
+            "__workflow_invocation_uuid__": "\"25c7f77821bb11f18a7d82839cb514a4\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/?.len\"",
+            "dbkey": "\"?\"",
+            "__input_ext": "\"input\""
+        },
+        "inputs": {
+            "invcf": {
+                "id": "f3116165c153ec17",
+                "src": "hda",
+                "uuid": "53ca7342-d0db-4e64-a44e-9cf48407dd0e"
+            }
+        },
+        "outputs": {
+            "outvcf": {
+                "id": "968c612e8e30a2e4",
+                "src": "hda",
+                "uuid": "e1ba0dc1-7163-487c-97ae-d3556a9e9cb2"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {
+            "outvcf": {
+                "src": "hdca",
+                "id": "e0a5585527ec309e"
+            }
+        },
+        "tool_stdout": "",
+        "tool_stderr": "Skipping default settings\nAt least one type of multiple testing correction requested. Doing first pass of vcf\nMTC application completed\nSuccessful exit.\n",
+        "job_stdout": "",
+        "job_stderr": "",
+        "stdout": "",
+        "stderr": "Skipping default settings\nAt least one type of multiple testing correction requested. Doing first pass of vcf\nMTC application completed\nSuccessful exit.\n",
+        "job_messages": [],
+        "dependencies": [],
+        "job_metrics": [
+            {
+                "title": "Container ID",
+                "value": "quay.io/biocontainers/lofreq:2.1.5--py312ha5e83ca_15",
+                "plugin": "core",
+                "name": "container_id",
+                "raw_value": "quay.io/biocontainers/lofreq:2.1.5--py312ha5e83ca_15"
+            },
+            {
+                "title": "Container Type",
+                "value": "docker",
+                "plugin": "core",
+                "name": "container_type",
+                "raw_value": "docker"
+            },
+            {
+                "title": "Cores Allocated",
+                "value": "1",
+                "plugin": "core",
+                "name": "galaxy_slots",
+                "raw_value": "1.0000000"
+            },
+            {
+                "title": "Memory Allocated (MB)",
+                "value": "15564",
+                "plugin": "core",
+                "name": "galaxy_memory_mb",
+                "raw_value": "15564.0000000"
+            },
+            {
+                "title": "Job Start Time",
+                "value": "2026-03-17 13:18:57",
+                "plugin": "core",
+                "name": "start_epoch",
+                "raw_value": "1773753537.0000000"
+            },
+            {
+                "title": "Job End Time",
+                "value": "2026-03-17 13:18:59",
+                "plugin": "core",
+                "name": "end_epoch",
+                "raw_value": "1773753539.0000000"
+            },
+            {
+                "title": "Job Runtime (Wall Clock)",
+                "value": "2 seconds",
+                "plugin": "core",
+                "name": "runtime_seconds",
+                "raw_value": "2.0000000"
+            }
+        ]
+    },
+    "status": "ok",
+    "server": "http://34.11.12.196",
+    "ref_data_size": [],
+    "input_data_size": [
+        957932045,
+        1289376399
+    ]
+}

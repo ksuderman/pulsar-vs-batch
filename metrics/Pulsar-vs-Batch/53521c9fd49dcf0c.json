@@ -1,0 +1,111 @@
+{
+    "run": "1",
+    "cloud": "pulsar",
+    "job_conf": "Default",
+    "workflow_id": "61063178972bd789",
+    "history_id": "3b57655e8d9e4e29",
+    "inputs": "SRR24043307-2GB GRCh38.p14.gbff.gz",
+    "metrics": {
+        "model_class": "Job",
+        "id": "53521c9fd49dcf0c",
+        "history_id": "3b57655e8d9e4e29",
+        "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/lofreq_indelqual/lofreq_indelqual/2.1.5+galaxy0",
+        "state": "ok",
+        "exit_code": 0,
+        "create_time": "2026-03-16T19:36:57.013079",
+        "update_time": "2026-03-16T22:05:15.920549",
+        "galaxy_version": "26.1",
+        "external_id": "39",
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": "ln -s '/mnt/disks/pulsar_staging/39/inputs/dataset_e2cd6872-dc91-40a3-be37-2c2eecb0a7d4.dat' reference.fa && lofreq faidx reference.fa 2>&1 || echo \"Error running samtools faidx for indexing fasta reference for lofreq\" >&2 &&  lofreq indelqual --dindel --ref reference.fa -o output.bam /mnt/disks/pulsar_staging/39/inputs/dataset_796d82fa-002e-4b31-9596-04ede6a98057.dat",
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "c9920f4561f91fbb",
+        "command_version": "2.1.5",
+        "params": {
+            "strategy": "{\"__current_case__\": 1, \"reference_source\": {\"__current_case__\": 1, \"ref\": {\"values\": [{\"id\": 33, \"src\": \"hda\"}]}, \"ref_selector\": \"history\"}, \"selector\": \"dindel\"}",
+            "__workflow_invocation_uuid__": "\"7a931e6e216f11f1b3b58eb315e7a5f6\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/?.len\"",
+            "dbkey": "\"?\"",
+            "__input_ext": "\"input\""
+        },
+        "inputs": {
+            "reads": {
+                "id": "53521c9fd49dcf0c",
+                "src": "hda",
+                "uuid": "796d82fa-002e-4b31-9596-04ede6a98057"
+            },
+            "strategy|reference_source|ref": {
+                "id": "4e376defa875bbe2",
+                "src": "hda",
+                "uuid": "e2cd6872-dc91-40a3-be37-2c2eecb0a7d4"
+            }
+        },
+        "outputs": {
+            "output": {
+                "id": "e6d7e66d3305a5d8",
+                "src": "hda",
+                "uuid": "3e3406a4-f780-4c21-bba2-9ad74cfabd72"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {
+            "output": {
+                "src": "hdca",
+                "id": "abafaab7e7e92688"
+            }
+        },
+        "tool_stdout": "",
+        "tool_stderr": "",
+        "job_stdout": "",
+        "job_stderr": "",
+        "stdout": "",
+        "stderr": "",
+        "job_messages": [],
+        "dependencies": [],
+        "job_metrics": [
+            {
+                "title": "Cores Allocated",
+                "value": "1",
+                "plugin": "core",
+                "name": "galaxy_slots",
+                "raw_value": "1.0000000"
+            },
+            {
+                "title": "Memory Allocated (MB)",
+                "value": "11673",
+                "plugin": "core",
+                "name": "galaxy_memory_mb",
+                "raw_value": "11673.0000000"
+            },
+            {
+                "title": "Job Start Time",
+                "value": "2026-03-16 22:01:13",
+                "plugin": "core",
+                "name": "start_epoch",
+                "raw_value": "1773698473.0000000"
+            },
+            {
+                "title": "Job End Time",
+                "value": "2026-03-16 22:03:51",
+                "plugin": "core",
+                "name": "end_epoch",
+                "raw_value": "1773698631.0000000"
+            },
+            {
+                "title": "Job Runtime (Wall Clock)",
+                "value": "2 minutes",
+                "plugin": "core",
+                "name": "runtime_seconds",
+                "raw_value": "158.0000000"
+            }
+        ]
+    },
+    "status": "ok",
+    "server": "http://35.194.76.109",
+    "ref_data_size": [],
+    "input_data_size": [
+        503642961,
+        1289376399
+    ]
+}

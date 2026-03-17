@@ -1,0 +1,80 @@
+{
+    "run": "1",
+    "cloud": "pulsar",
+    "job_conf": "Default",
+    "workflow_id": "c9920f4561f91fbb",
+    "history_id": "59de2da46f6c1d09",
+    "inputs": "SRR24043307-80 ucsc.hg38.knownGene.gtf",
+    "metrics": {
+        "model_class": "Job",
+        "id": "94470c2cb3b83710",
+        "history_id": "59de2da46f6c1d09",
+        "tool_id": "toolshed.g2.bx.psu.edu/repos/devteam/bamtools_filter/bamFilter/2.5.2+galaxy1",
+        "state": "deleted",
+        "exit_code": null,
+        "create_time": "2026-03-17T15:23:54.897087",
+        "update_time": "2026-03-17T16:34:08.069428",
+        "galaxy_version": "26.1",
+        "external_id": "75",
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": "cp '/mnt/disks/pulsar_staging/75/configs/tmpni14c9cd' '/mnt/disks/pulsar_staging/75/working/dataset_417d8474-8caa-4480-b12d-31bca7a4036c.dat' && ln -s '/mnt/disks/pulsar_staging/75/inputs/dataset_832c13e1-bf14-45cb-ae46-80af7ecfd4bf.dat' localbam.bam && ln -s '/mnt/disks/pulsar_staging/75/inputs/metadata_metadata_dd25aee6-8338-4653-9ccc-cc46d68ee551.dat' localbam.bam.bai && cat '/mnt/disks/pulsar_staging/75/configs/tmpni14c9cd' && bamtools filter -script '/mnt/disks/pulsar_staging/75/configs/tmpni14c9cd' -in localbam.bam -out '/mnt/disks/pulsar_staging/75/working/dataset_62960578-a6b3-42ea-9c95-b52f6698004e.dat'",
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "c9920f4561f91fbb",
+        "command_version": null,
+        "params": {
+            "conditions": "[{\"__index__\": 0, \"filters\": [{\"__index__\": 0, \"bam_property\": {\"__current_case__\": 21, \"bam_property_selector\": \"tag\", \"bam_property_value\": \"NH=1\"}}]}]",
+            "rule_configuration": "{\"__current_case__\": 0, \"rules_selector\": false}",
+            "__workflow_invocation_uuid__": "\"4c7c855a221511f1a45e8eb315e7a5f6\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/hg38.len\"",
+            "dbkey": "\"hg38\"",
+            "__input_ext": "\"bam\""
+        },
+        "inputs": {
+            "input_bam": {
+                "id": "b60865e0c21e75de",
+                "src": "hda",
+                "uuid": "832c13e1-bf14-45cb-ae46-80af7ecfd4bf"
+            }
+        },
+        "outputs": {
+            "out_file2": {
+                "id": "7ca40473f8008ad6",
+                "src": "hda",
+                "uuid": "417d8474-8caa-4480-b12d-31bca7a4036c"
+            },
+            "out_file1": {
+                "id": "60af6f4c29397577",
+                "src": "hda",
+                "uuid": "62960578-a6b3-42ea-9c95-b52f6698004e"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {
+            "out_file2": {
+                "src": "hdca",
+                "id": "e711070f5e61affb"
+            },
+            "out_file1": {
+                "src": "hdca",
+                "id": "35efa8ef37761ca6"
+            }
+        },
+        "tool_stdout": null,
+        "tool_stderr": null,
+        "job_stdout": null,
+        "job_stderr": null,
+        "stdout": "",
+        "stderr": "",
+        "job_messages": null,
+        "dependencies": [],
+        "job_metrics": []
+    },
+    "status": "deleted",
+    "server": "http://35.194.76.109",
+    "ref_data_size": [],
+    "input_data_size": [
+        2842083,
+        503642961
+    ]
+}

@@ -1,0 +1,111 @@
+{
+    "run": "1",
+    "cloud": "batch",
+    "job_conf": "Default",
+    "workflow_id": "b9eec48891b366cf",
+    "history_id": "f940ef928ade5946",
+    "inputs": "SRR24043307-80 ucsc.hg38.knownGene.gtf",
+    "metrics": {
+        "model_class": "Job",
+        "id": "77e4900356266ab5",
+        "history_id": "f940ef928ade5946",
+        "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/map_param_value/map_param_value/0.1.1",
+        "state": "ok",
+        "exit_code": 0,
+        "create_time": "2026-03-17T13:21:56.263024",
+        "update_time": "2026-03-17T13:24:58.303183",
+        "galaxy_version": "26.1",
+        "external_id": "galaxy-job-1773753718-3d59d639",
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": "cd ../; python _evaluate_expression_.py",
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "b9eec48891b366cf",
+        "command_version": "",
+        "params": {
+            "input_param_type": "{\"__current_case__\": 0, \"input_param\": \"stranded - forward\", \"mappings\": [{\"__index__\": 0, \"from\": \"stranded - forward\", \"to\": \"-strand +\"}, {\"__index__\": 1, \"from\": \"stranded - reverse\", \"to\": \"-strand -\"}, {\"__index__\": 2, \"from\": \"unstranded\", \"to\": \"-strand +\"}], \"type\": \"text\"}",
+            "output_param_type": "\"text\"",
+            "unmapped": "{\"__current_case__\": 1, \"on_unmapped\": \"fail\"}",
+            "__workflow_invocation_uuid__": "\"4429830a220411f1a2a082839cb514a4\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/?.len\"",
+            "dbkey": "\"?\"",
+            "__input_ext": "\"input\""
+        },
+        "inputs": {},
+        "outputs": {
+            "output_param_text": {
+                "id": "b02c38114ef0fb66",
+                "src": "hda",
+                "uuid": "7a2f1650-b887-4114-a6d4-be98c2f57710"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {},
+        "tool_stdout": "",
+        "tool_stderr": "",
+        "job_stdout": "",
+        "job_stderr": "",
+        "stdout": "",
+        "stderr": "",
+        "job_messages": [],
+        "dependencies": [],
+        "job_metrics": [
+            {
+                "title": "Container ID",
+                "value": "ksuderman/galaxy-min:26.1.dev1",
+                "plugin": "core",
+                "name": "container_id",
+                "raw_value": "ksuderman/galaxy-min:26.1.dev1"
+            },
+            {
+                "title": "Container Type",
+                "value": "docker",
+                "plugin": "core",
+                "name": "container_type",
+                "raw_value": "docker"
+            },
+            {
+                "title": "Cores Allocated",
+                "value": "1",
+                "plugin": "core",
+                "name": "galaxy_slots",
+                "raw_value": "1.0000000"
+            },
+            {
+                "title": "Memory Allocated (MB)",
+                "value": "3891",
+                "plugin": "core",
+                "name": "galaxy_memory_mb",
+                "raw_value": "3891.0000000"
+            },
+            {
+                "title": "Job Start Time",
+                "value": "2026-03-17 13:24:42",
+                "plugin": "core",
+                "name": "start_epoch",
+                "raw_value": "1773753882.0000000"
+            },
+            {
+                "title": "Job End Time",
+                "value": "2026-03-17 13:24:51",
+                "plugin": "core",
+                "name": "end_epoch",
+                "raw_value": "1773753891.0000000"
+            },
+            {
+                "title": "Job Runtime (Wall Clock)",
+                "value": "9 seconds",
+                "plugin": "core",
+                "name": "runtime_seconds",
+                "raw_value": "9.0000000"
+            }
+        ]
+    },
+    "status": "ok",
+    "server": "http://34.11.12.196",
+    "ref_data_size": [],
+    "input_data_size": [
+        2842083,
+        503642961
+    ]
+}
