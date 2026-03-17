@@ -34,11 +34,11 @@ title: Pulsar vs Direct GCP Batch - Variant Analysis
 | Runner | Run | Input Sizes | Wall Clock | Compute Time | Scheduling Overhead | Steps OK |
 |--------|-----|-------------|-----------|-------------|-------------------|----------|
 | batch | 1 | 10GB | 522.9 min | 501.6 min | 21.3 min (4%) | 12/12 |
-| batch | 1 | 2GB | 201.6 min | 182.9 min | 18.7 min (9%) | 12/12 |
-| batch | 1 | 5GB | 339.4 min | 320.1 min | 19.3 min (6%) | 12/12 |
 | pulsar | 1 | 10GB | 582.5 min | 449.7 min | 132.8 min (23%) | 12/12 |
-| pulsar | 1 | 2GB | 230.6 min | 155.3 min | 75.3 min (33%) | 12/12 |
+| batch | 1 | 5GB | 339.4 min | 320.1 min | 19.3 min (6%) | 12/12 |
 | pulsar | 1 | 5GB | 372.4 min | 276.0 min | 96.5 min (26%) | 12/12 |
+| batch | 1 | 2GB | 201.6 min | 182.9 min | 18.7 min (9%) | 12/12 |
+| pulsar | 1 | 2GB | 230.6 min | 155.3 min | 75.3 min (33%) | 12/12 |
 
 ### Head-to-Head: 10GB
 
