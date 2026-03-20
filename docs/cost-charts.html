@@ -39,7 +39,7 @@
 <body>
 
 <h1>Pulsar vs Direct GCP Batch: Cost Analysis</h1>
-<p class="subtitle">Variant Calling &mdash; 72 jobs &mdash; 12 tool types &mdash; us-east4</p>
+<p class="subtitle">Variant Analysis &mdash; 96 jobs &mdash; 23 tool types &mdash; us-east4</p>
 
 <div class="nav">
   <a href="index.html">&larr; Results Report</a>
@@ -54,13 +54,12 @@
   <div class="tab" data-tab="breakdown">Cost Breakdown</div>
 </div>
 
-<!-- ===== OVERVIEW TAB ===== -->
 <div class="tab-content active" id="overview">
   <div class="summary-cards">
-    <div class="card batch"><div class="label">Batch Total</div><div class="value">$3.52</div><div class="detail">36 jobs &middot; 16.7 VM-hours</div></div>
-    <div class="card pulsar"><div class="label">Pulsar Total</div><div class="value">$3.43</div><div class="detail">36 jobs &middot; 14.7 VM-hours</div></div>
-    <div class="card total"><div class="label">Combined Total</div><div class="value">$6.95</div><div class="detail">72 jobs &middot; 31.4 VM-hours</div></div>
-    <div class="card neutral"><div class="label">Pulsar vs Batch</div><div class="value">1.0x</div><div class="detail">Essentially identical cost</div></div>
+    <div class="card batch"><div class="label">Batch Total</div><div class="value">$4.85</div><div class="detail">56 jobs &middot; 19.1 VM-hours</div></div>
+    <div class="card pulsar"><div class="label">Pulsar Total</div><div class="value">$4.11</div><div class="detail">40 jobs &middot; 15.6 VM-hours</div></div>
+    <div class="card total"><div class="label">Combined Total</div><div class="value">$8.95</div><div class="detail">96 jobs &middot; 34.6 VM-hours</div></div>
+    <div class="card neutral"><div class="label">Pulsar vs Batch</div><div class="value">0.8x</div><div class="detail">Pulsar is 15% cheaper</div></div>
   </div>
   <div class="chart-container">
     <h2>Total Cost by Runner</h2>
@@ -69,16 +68,15 @@
   </div>
   <div class="chart-container">
     <h2>Cost Component Breakdown</h2>
-    <p class="chart-desc">Where the money goes: vCPU dominates at 60%, followed by memory at 34%.</p>
+    <p class="chart-desc">Where the money goes: vCPU dominates at 61%.</p>
     <canvas id="componentDonutChart" height="60"></canvas>
   </div>
 </div>
 
-<!-- ===== PER-TOOL TAB ===== -->
 <div class="tab-content" id="per-tool">
   <div class="chart-container">
     <h2>Per-Tool Total Cost: Batch vs Pulsar</h2>
-    <p class="chart-desc">Total cost for each tool across all 3 runs (2GB, 5GB, 10GB).</p>
+    <p class="chart-desc">Total cost for each tool across all runs.</p>
     <canvas id="perToolCostChart" height="100"></canvas>
   </div>
   <div class="chart-container">
@@ -93,21 +91,19 @@
   </div>
 </div>
 
-<!-- ===== RAINSTONE TAB ===== -->
 <div class="tab-content" id="rainstone">
   <div class="chart-container">
-    <h2>Batch vs Pulsar vs Rainstone (AnVIL Historical Average)</h2>
-    <p class="chart-desc">Per-job cost compared to Rainstone historical averages from AnVIL production workloads. Log scale.</p>
+    <h2>Batch vs Pulsar vs Rainstone (usegalaxy.org Historical Average)</h2>
+    <p class="chart-desc">Per-job cost compared to Rainstone historical averages from usegalaxy.org production workloads. Log scale.</p>
     <canvas id="rainstoneChart" height="120"></canvas>
   </div>
   <div class="chart-container">
     <h2>Rainstone Cost Range: Median to P95</h2>
-    <p class="chart-desc">Floating bars show AnVIL historical cost range (median to P95). Dots show our Batch and Pulsar per-job costs.</p>
+    <p class="chart-desc">Floating bars show usegalaxy.org historical cost range (median to P95). Dots show our Batch and Pulsar per-job costs.</p>
     <canvas id="rainstoneRangeChart" height="120"></canvas>
   </div>
 </div>
 
-<!-- ===== BREAKDOWN TAB ===== -->
 <div class="tab-content" id="breakdown">
   <div class="chart-row">
     <div class="chart-container">
@@ -129,8 +125,7 @@
 </div>
 
 <div class="footer">
-  Galaxy 26.1 &middot; GCP Batch us-east4 &middot; N2 on-demand pricing &middot; 72 jobs
-</div>
+  Galaxy 26.1 &middot; GCP Batch us-east4 &middot; N2 on-demand pricing &middot; 96 jobs &middot; Generated 2026-03-20 14:20</div>
 
 <script>
 const blue = "#3b82f6", blueLight = "#93bbfd", amber = "#f59e0b", amberLight = "#fcd679";
@@ -138,36 +133,27 @@ const red = "#ef4444", green = "#22c55e", purple = "#8b5cf6", purpleLight = "#c4
 Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
 Chart.defaults.font.size = 12;
 
-// Tool data (sorted by total cost descending)
-const tools = ["bwa_mem", "lofreq_call", "picard_MarkDuplicates", "snpEff_build_gb", "lofreq_viterbi", "fastp", "lofreq_indelqual", "samtools_view", "samtools_stats", "multiqc", "snpEff", "lofreq_filter"];
-const toolsShort = ["bwa_mem", "lofreq_call", "picard_MarkD", "snpEff_build", "lofreq_viter", "fastp", "lofreq_indel", "samtools_vie", "samtools_sta", "multiqc", "snpEff", "lofreq_filte"];
+const tools = ["bwa_mem", "lofreq_call", "rna_star", "picard_MarkDuplicates", "cufflinks", "lofreq_viterbi", "fastp", "snpEff_build_gb", "lofreq_indelqual", "samtools_view", "cutadapt", "samtools_stats", "bamFilter", "bedtools_genomecoveragebed", "revertR2orientationInBam", "multiqc", "wig_to_bigWig", "snpEff", "map_param_value", "param_value_from_file", "lofreq_filter", "compose_text_param", "tp_awk_tool"];
+const toolsShort = ["bwa_mem", "lofreq_call", "rna_star", "picard_MarkD", "cufflinks", "lofreq_viter", "fastp", "snpEff_build", "lofreq_indel", "samtools_vie", "cutadapt", "samtools_sta", "bamFilter", "bedtools_gen", "revertR2orie", "multiqc", "wig_to_bigWi", "snpEff", "map_param_va", "param_value_", "lofreq_filte", "compose_text", "tp_awk_tool"];
 
-// Per-tool total costs
-const batchCost =  [2.09, 0.76, 0.24, 0.13, 0.13, 0.07, 0.05, 0.03, 0.01, 0.00, 0.00, 0.00];
-const pulsarCost = [2.08, 0.90, 0.14, 0.02, 0.12, 0.08, 0.04, 0.03, 0.01, 0.00, 0.00, 0.00];
+const batchCost = [2.09, 0.76, 1.0, 0.24, 0.28, 0.13, 0.07, 0.13, 0.05, 0.03, 0.02, 0.01, 0.01, 0.01, 0.01, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
+const pulsarCost = [2.08, 0.9, 0.66, 0.14, 0, 0.12, 0.08, 0.02, 0.04, 0.03, 0.02, 0.01, 0, 0, 0, 0.0, 0, 0.0, 0, 0, 0.0, 0, 0.0];
+const batchPerJob = [0.6969, 0.2535, 0.9985, 0.0814, 0.2796, 0.0426, 0.0246, 0.0426, 0.0168, 0.0103, 0.0192, 0.0037, 0.0126, 0.0031, 0.0054, 0.0004, 0.0006, 0.0002, 0.0002, 0.0003, 0.0001, 0.0002, 0.0];
+const pulsarPerJob = [0.6933, 0.3008, 0.6622, 0.0481, 0, 0.0394, 0.0263, 0.0076, 0.0137, 0.0089, 0.0166, 0.004, 0, 0, 0, 0.0002, 0, 0.0002, 0, 0, 0.0, 0, 0.0];
+const batchHours = [5.32, 7.51, 1.28, 1.23, 0.71, 0.64, 0.29, 0.95, 0.37, 0.3, 0.05, 0.11, 0.12, 0.09, 0.05, 0.01, 0.01, 0.01, 0.01, 0.0, 0.0, 0.0, 0.0];
+const pulsarHours = [5.04, 7.42, 0.83, 0.66, 0, 0.54, 0.29, 0.15, 0.26, 0.22, 0.04, 0.1, 0, 0, 0, 0.01, 0, 0.0, 0, 0, 0.0, 0, 0.0];
 
-// Per-job costs
-const batchPerJob =  [0.6969, 0.2535, 0.0814, 0.0426, 0.0426, 0.0246, 0.0168, 0.0103, 0.0037, 0.0004, 0.0002, 0.0001];
-const pulsarPerJob = [0.6933, 0.3008, 0.0481, 0.0076, 0.0394, 0.0263, 0.0137, 0.0089, 0.0040, 0.0001, 0.0002, 0.0000];
+const rainstoneAvg = [0.1313, 0.0555, 0.9108, 0, 0.2317, 0.0093, 0.008, 0, 0.0008, 0.002, 0.0182, 0.0009, 0, 0.0016, 0, 0.0013, 0, 0, 0, 0.0003, 0.0002, 0, 0.0017];
+const rainstoneMedian = [0.0097, 0.0103, 0.2144, 0, 0.0413, 0.0023, 0.002, 0, 0.0003, 0.0004, 0.0028, 0.0003, 0, 0.0003, 0, 0.0005, 0, 0, 0, 0.0002, 0.0001, 0, 0.0002];
+const rainstoneP95 = [0.561, 0.1374, 4.3362, 0, 1.0701, 0.0311, 0.035, 0, 0.0018, 0.0051, 0.0703, 0.0033, 0, 0.0056, 0, 0.0036, 0, 0, 0, 0.0004, 0.0004, 0, 0.0074];
 
-// Rainstone data
-const rainstoneAvg =    [0.1313, 0.0555, 0.0138, 0.0040, 0.0093, 0.0080, 0.0008, 0.0020, 0.0009, 0.0013, 0.0056, 0.0002];
-const rainstoneMedian = [0.0097, 0.0103, 0.0029, 0.0006, 0.0023, 0.0020, 0.0003, 0.0004, 0.0003, 0.0005, 0.0023, 0.0001];
-const rainstoneP95 =    [0.5610, 0.1374, 0.0620, 0.0069, 0.0311, 0.0350, 0.0018, 0.0051, 0.0033, 0.0036, 0.0151, 0.0004];
-
-// Cost components (runner level)
-const batchVcpu = 2.21, batchMem = 1.24, batchSsd = 0.00, batchDisk = 0.07;
-const pulsarVcpu = 1.98, pulsarMem = 1.09, pulsarSsd = 0.30, pulsarDisk = 0.06;
-
-// VM-hours per tool (estimated from runtime: batchPerJob * 3 jobs / hourly_rate)
-// Using runtime_seconds from the metrics to compute hours
-const batchHours =  [7.72, 4.50, 0.75, 0.56, 0.39, 0.17, 0.19, 0.18, 0.07, 0.00, 0.00, 0.00];
-const pulsarHours = [7.36, 5.31, 0.40, 0.09, 0.32, 0.17, 0.13, 0.13, 0.06, 0.00, 0.00, 0.00];
+const batchVcpu = 3.06, batchMem = 1.70, batchSsd = 0.00, batchDisk = 0.08;
+const pulsarVcpu = 2.41, pulsarMem = 1.32, pulsarSsd = 0.31, pulsarDisk = 0.06;
+const grandTotal = 8.95;
 
 const dollarFmt = ctx => `$${ctx.raw.toFixed(4)}`;
 const dollarFmt2 = ctx => `$${ctx.raw.toFixed(2)}`;
 
-// ===== OVERVIEW: Runner Stacked =====
 new Chart(document.getElementById("runnerStackedChart"), {
   type: "bar",
   data: {
@@ -186,20 +172,18 @@ new Chart(document.getElementById("runnerStackedChart"), {
   }
 });
 
-// ===== OVERVIEW: Component Donut =====
 new Chart(document.getElementById("componentDonutChart"), {
   type: "doughnut",
   data: {
-    labels: ["vCPU ($4.18)", "Memory ($2.33)", "Local SSD ($0.30)", "Boot Disk ($0.13)"],
-    datasets: [{ data: [4.18, 2.33, 0.30, 0.13], backgroundColor: [blue, blueLight, amber, amberLight], borderWidth: 2, borderColor: "#fff" }]
+    labels: ["vCPU ($5.47)", "Memory ($3.03)", "Local SSD ($0.31)", "Boot Disk ($0.14)"],
+    datasets: [{ data: [5.47, 3.03, 0.31, 0.14], backgroundColor: [blue, blueLight, amber, amberLight], borderWidth: 2, borderColor: "#fff" }]
   },
   options: {
     responsive: true, cutout: "55%",
-    plugins: { legend: { position: "right" }, tooltip: { callbacks: { label: ctx => { const pct = ((ctx.raw / 6.95) * 100).toFixed(0); return `${ctx.label}: ${pct}%`; } } } }
+    plugins: { legend: { position: "right" }, tooltip: { callbacks: { label: ctx => { const pct = ((ctx.raw / 8.95) * 100).toFixed(0); return `${ctx.label}: ${pct}%`; } } } }
   }
 });
 
-// ===== PER-TOOL: Total Cost =====
 new Chart(document.getElementById("perToolCostChart"), {
   type: "bar",
   data: { labels: toolsShort, datasets: [
@@ -209,7 +193,6 @@ new Chart(document.getElementById("perToolCostChart"), {
   options: { responsive: true, plugins: { legend: { position: "top" }, tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: $${ctx.raw.toFixed(2)}` } } }, scales: { y: { title: { display: true, text: "USD" }, beginAtZero: true }, x: { ticks: { maxRotation: 45, minRotation: 45 } } } }
 });
 
-// ===== PER-TOOL: Per-Job Cost =====
 new Chart(document.getElementById("perJobCostChart"), {
   type: "bar",
   data: { labels: toolsShort, datasets: [
@@ -219,7 +202,6 @@ new Chart(document.getElementById("perJobCostChart"), {
   options: { responsive: true, plugins: { legend: { position: "top" }, tooltip: { callbacks: { label: dollarFmt } } }, scales: { y: { title: { display: true, text: "USD per job" }, beginAtZero: true }, x: { ticks: { maxRotation: 45, minRotation: 45 } } } }
 });
 
-// ===== PER-TOOL: Cost Diff =====
 const costDiff = batchPerJob.map((b, i) => +(pulsarPerJob[i] - b).toFixed(4));
 new Chart(document.getElementById("costDiffChart"), {
   type: "bar",
@@ -237,7 +219,6 @@ new Chart(document.getElementById("costDiffChart"), {
   }
 });
 
-// ===== RAINSTONE: Comparison =====
 new Chart(document.getElementById("rainstoneChart"), {
   type: "bar",
   data: { labels: toolsShort, datasets: [
@@ -252,7 +233,6 @@ new Chart(document.getElementById("rainstoneChart"), {
   }
 });
 
-// ===== RAINSTONE: Range Chart =====
 new Chart(document.getElementById("rainstoneRangeChart"), {
   type: "bar",
   data: { labels: toolsShort, datasets: [
@@ -267,16 +247,10 @@ new Chart(document.getElementById("rainstoneRangeChart"), {
   }
 });
 
-// ===== BREAKDOWN: Batch Components =====
-// Approximate vCPU vs memory split per tool using pricing ratios
-// For n2-standard: vCPU=$0.031611/h, mem=$0.004237/GB/h * 4GB/vCPU = $0.016948/vCPU/h
-// So vCPU fraction ~ 0.031611 / (0.031611 + 0.016948) = 65.1% for standard
-// For n2-highmem: mem=$0.004237/GB/h * 8GB/vCPU = $0.033896/vCPU/h -> vCPU fraction = 48.3%
-const stdVcpuFrac = 0.651, hmVcpuFrac = 0.483;
-// All tools use standard except those that need highmem
+const stdVcpuFrac = 0.651;
+
 const batchVcpuPerTool = batchCost.map(c => +(c * stdVcpuFrac).toFixed(3));
 const batchMemPerTool = batchCost.map((c, i) => +(c - batchVcpuPerTool[i]).toFixed(3));
-
 new Chart(document.getElementById("batchBreakdownChart"), {
   type: "bar",
   data: { labels: toolsShort, datasets: [
@@ -286,11 +260,9 @@ new Chart(document.getElementById("batchBreakdownChart"), {
   options: { indexAxis: "y", responsive: true, plugins: { legend: { position: "top" }, tooltip: { callbacks: { label: dollarFmt2 } } }, scales: { x: { stacked: true, title: { display: true, text: "USD" }, beginAtZero: true }, y: { stacked: true } } }
 });
 
-// ===== BREAKDOWN: Pulsar Components =====
-const pulsarVcpuPerTool = pulsarCost.map(c => +(c * stdVcpuFrac * 0.93).toFixed(3)); // adjust for SSD share
-const pulsarSsdPerTool = pulsarCost.map(c => +(c * 0.07).toFixed(3)); // ~7% of pulsar cost is SSD
+const pulsarVcpuPerTool = pulsarCost.map(c => +(c * stdVcpuFrac * 0.93).toFixed(3));
+const pulsarSsdPerTool = pulsarCost.map(c => +(c * 0.07).toFixed(3));
 const pulsarMemPerTool = pulsarCost.map((c, i) => +(c - pulsarVcpuPerTool[i] - pulsarSsdPerTool[i]).toFixed(3));
-
 new Chart(document.getElementById("pulsarBreakdownChart"), {
   type: "bar",
   data: { labels: toolsShort, datasets: [
@@ -301,7 +273,6 @@ new Chart(document.getElementById("pulsarBreakdownChart"), {
   options: { indexAxis: "y", responsive: true, plugins: { legend: { position: "top" }, tooltip: { callbacks: { label: dollarFmt2 } } }, scales: { x: { stacked: true, title: { display: true, text: "USD" }, beginAtZero: true }, y: { stacked: true } } }
 });
 
-// ===== BREAKDOWN: VM-Hours =====
 new Chart(document.getElementById("vmHoursChart"), {
   type: "bar",
   data: { labels: toolsShort, datasets: [
@@ -311,7 +282,6 @@ new Chart(document.getElementById("vmHoursChart"), {
   options: { responsive: true, plugins: { legend: { position: "top" }, tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.raw.toFixed(2)}h` } } }, scales: { y: { title: { display: true, text: "Hours" }, beginAtZero: true }, x: { ticks: { maxRotation: 45, minRotation: 45 } } } }
 });
 
-// Tab switching
 document.querySelectorAll(".tab").forEach(tab => {
   tab.addEventListener("click", () => {
     document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));

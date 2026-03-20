@@ -55,6 +55,7 @@ def load_metrics(metrics_dir):
             "run": d["run"],
             "cloud": d["cloud"],
             "history_id": d["history_id"],
+            "workflow_id": d.get("workflow_id", ""),
             "tool": tool,
             "state": d["metrics"]["state"],
             "runtime": runtime or 0,
@@ -68,6 +69,91 @@ def load_metrics(metrics_dir):
             "mem_mb": mem or 0,
         })
     return jobs
+
+
+def split_by_experiment(jobs):
+    """Split jobs into experiment groups based on tool set similarity.
+
+    Jobs from different Galaxy servers (batch vs pulsar) will have different
+    workflow_ids but the same set of tools.  We cluster workflow_ids whose
+    tool sets overlap by >= 50% into a single experiment.
+
+    Returns a list of (experiment_name, job_list) tuples.  The experiment
+    name is derived from the dominant tool (longest average runtime).
+    """
+    # Build tool set per workflow_id
+    wf_tools = defaultdict(set)
+    for j in jobs:
+        wf_tools[j["workflow_id"]].add(j["tool"])
+
+    wf_ids = list(wf_tools.keys())
+    if len(wf_ids) <= 1:
+        return [(None, jobs)]
+
+    # Cluster by Jaccard overlap >= 0.5
+    clusters = []  # list of sets of workflow_ids
+    assigned = set()
+    for wf in wf_ids:
+        if wf in assigned:
+            continue
+        cluster = {wf}
+        assigned.add(wf)
+        for other in wf_ids:
+            if other in assigned:
+                continue
+            a, b = wf_tools[wf], wf_tools[other]
+            overlap = len(a & b) / len(a | b) if a | b else 0
+            if overlap >= 0.5:
+                cluster.add(other)
+                assigned.add(other)
+        clusters.append(cluster)
+
+    if len(clusters) <= 1:
+        return [(None, jobs)]
+
+    # Name each cluster from its dominant tool
+    # Known workflow name mappings based on characteristic tools
+    TOOL_TO_WORKFLOW = {
+        "bwa_mem": "Variant-Calling",
+        "rna_star": "RNASeq",
+        "cufflinks": "RNASeq",
+        "cutadapt": "RNASeq",
+        "macs2_callpeak": "ChIPSeq",
+        "bamcompare": "ChIPSeq",
+    }
+
+    result = []
+    used_names = set()
+    for cluster in clusters:
+        cluster_jobs = [j for j in jobs if j["workflow_id"] in cluster]
+        # Try to match a known workflow name
+        all_tools = set()
+        for j in cluster_jobs:
+            all_tools.add(j["tool"])
+
+        name = None
+        for tool, wf_name in TOOL_TO_WORKFLOW.items():
+            if tool in all_tools and wf_name not in used_names:
+                name = wf_name
+                break
+
+        if name is None:
+            # Fall back to the tool with the longest average runtime
+            tool_runtimes = defaultdict(list)
+            for j in cluster_jobs:
+                if j["state"] == "ok" and j["runtime"] > 0:
+                    tool_runtimes[j["tool"]].append(j["runtime"])
+            if tool_runtimes:
+                dominant = max(tool_runtimes,
+                               key=lambda t: sum(tool_runtimes[t]) / len(tool_runtimes[t]))
+                name = dominant
+            else:
+                name = f"Experiment-{len(result) + 1}"
+
+        used_names.add(name)
+        result.append((name, cluster_jobs))
+
+    return result
 
 
 def get_size_label(inputs_str):
@@ -322,7 +408,9 @@ def generate_markdown(all_stats, matchups, experiment_name, tool_order, tool_sho
     w("")
     w(f"# Pulsar vs Direct GCP Batch: {workflow_title}")
     w("")
-    w("**[Interactive Charts](charts.html)**")
+    w("**[Interactive Charts](charts.html)** | "
+      "**[Cost Summary](costs.html)** | "
+      "**[Cost Charts](cost-charts.html)**")
     w("")
 
     # Setup
@@ -993,6 +1081,36 @@ def generate_html(all_stats, matchups, experiment_name, tool_order, tool_short):
 # Main
 # ---------------------------------------------------------------------------
 
+def generate_experiment(jobs, experiment_name, docs_dir):
+    """Generate docs for a single experiment's jobs."""
+    os.makedirs(docs_dir, exist_ok=True)
+
+    groups = group_by_history(jobs)
+    all_stats = [history_stats(g) for g in groups.values()]
+    tool_order, tool_short = discover_tool_order(jobs)
+    matchups = find_matchups(all_stats)
+
+    print(f"  {len(jobs)} jobs across {len(all_stats)} workflow runs")
+    print(f"  {len(tool_order)} unique tools: {', '.join(tool_order)}")
+    print(f"  Matchups: {', '.join(matchups.keys()) if matchups else 'none'}")
+
+    total_failed = sum(s["failed_steps"] for s in all_stats)
+    if total_failed > 0:
+        print(f"  {total_failed} failed/errored jobs")
+
+    md_path = os.path.join(docs_dir, "index.md")
+    md = generate_markdown(all_stats, matchups, experiment_name, tool_order, tool_short)
+    with open(md_path, "w") as f:
+        f.write(md)
+    print(f"  Wrote {md_path}")
+
+    html_path = os.path.join(docs_dir, "charts.html")
+    html = generate_html(all_stats, matchups, experiment_name, tool_order, tool_short)
+    with open(html_path, "w") as f:
+        f.write(html)
+    print(f"  Wrote {html_path}")
+
+
 def main():
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -1006,16 +1124,7 @@ def main():
 
     metrics_dir = args.metrics_dir
     exclude_patterns = args.exclude
-
-    # Determine output directory from experiment name
     experiment_name = os.path.basename(metrics_dir)
-    # Default experiment goes to docs/, others to docs/<experiment>/
-    if experiment_name == "Pulsar-vs-Batch":
-        docs_dir = os.path.join(base_dir, "docs")
-    else:
-        docs_dir = os.path.join(base_dir, "docs", experiment_name)
-
-    os.makedirs(docs_dir, exist_ok=True)
 
     print(f"Loading metrics from {metrics_dir}...")
     jobs = load_metrics(metrics_dir)
@@ -1029,36 +1138,22 @@ def main():
         if excluded:
             print(f"  Excluded {excluded} jobs matching: {', '.join(exclude_patterns)}")
 
-    groups = group_by_history(jobs)
+    # Split into per-workflow experiments
+    experiments = split_by_experiment(jobs)
 
-    all_stats = [history_stats(g) for g in groups.values()]
-
-    # Discover tools dynamically
-    tool_order, tool_short = discover_tool_order(jobs)
-
-    matchups = find_matchups(all_stats)
-
-    print(f"  {len(jobs)} jobs across {len(all_stats)} workflow runs")
-    print(f"  {len(tool_order)} unique tools: {', '.join(tool_order)}")
-    print(f"  Matchups: {', '.join(matchups.keys()) if matchups else 'none'}")
-
-    # Report failed jobs
-    total_failed = sum(s["failed_steps"] for s in all_stats)
-    if total_failed > 0:
-        print(f"  {total_failed} failed/errored jobs")
-    print()
-
-    md_path = os.path.join(docs_dir, "index.md")
-    md = generate_markdown(all_stats, matchups, experiment_name, tool_order, tool_short)
-    with open(md_path, "w") as f:
-        f.write(md)
-    print(f"  Wrote {md_path}")
-
-    html_path = os.path.join(docs_dir, "charts.html")
-    html = generate_html(all_stats, matchups, experiment_name, tool_order, tool_short)
-    with open(html_path, "w") as f:
-        f.write(html)
-    print(f"  Wrote {html_path}")
+    if len(experiments) == 1 and experiments[0][0] is None:
+        # Single experiment — use the metrics directory name
+        docs_dir = os.path.join(base_dir, "docs", experiment_name)
+        print(f"\n[{experiment_name}]")
+        generate_experiment(jobs, experiment_name, docs_dir)
+    else:
+        print(f"  Found {len(experiments)} experiments: "
+              f"{', '.join(name for name, _ in experiments)}")
+        for name, exp_jobs in experiments:
+            sub_name = f"{experiment_name}-{name}"
+            docs_dir = os.path.join(base_dir, "docs", sub_name)
+            print(f"\n[{sub_name}]")
+            generate_experiment(exp_jobs, sub_name, docs_dir)
 
 
 if __name__ == "__main__":
