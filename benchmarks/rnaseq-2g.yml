@@ -1,0 +1,17 @@
+- output_history_base_name: RNAseq-PE
+  workflow_id: RNAseq_PE
+  runs:
+  - history_name: 2GB
+    inputs:
+    - name: PE fastq input
+      collection: SRR24043307-80
+    - name: gtf
+      dataset_id: ucsc.hg38.knownGene.gtf
+    - name: forward_adapter
+      value: AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC
+    - name: reverse_adapter
+      value: AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT
+    - name: reference_genome
+      value: hg38
+    - name: strandness
+      value: stranded - forward
