@@ -6,7 +6,7 @@ runs: 1
 # configuration defines the Galaxy workflow and input datasets to be used.
 benchmark_confs:
 #  - benchmarks/variant.yml
-  - benchmarks/rnaseq.yml
+  - benchmarks/rnaseq-5g.yml
 #  - benchmarks/chipseq-pe.yml
 # The cloud instances, as defined in the .abm/profile.yml file.
 cloud:
