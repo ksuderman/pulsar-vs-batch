@@ -1,0 +1,113 @@
+{
+    "run": "1",
+    "cloud": "pulsar",
+    "job_conf": "Default",
+    "workflow_id": "a965afe3a7a615f9",
+    "history_id": "62b10560dc33595a",
+    "inputs": "SRR24043307-full ucsc.hg38.knownGene.gtf",
+    "metrics": {
+        "model_class": "Job",
+        "id": "f53deae9faef4c19",
+        "history_id": "62b10560dc33595a",
+        "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/bedtools/bedtools_genomecoveragebed/2.30.0",
+        "state": "ok",
+        "exit_code": 0,
+        "create_time": "2026-03-22T23:47:41.078649",
+        "update_time": "2026-03-23T01:17:50.625257",
+        "galaxy_version": "26.1",
+        "external_id": "186",
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": "bedtools genomecov  -ibam '/mnt/disks/pulsar_staging/186/inputs/dataset_b9476a9f-e519-435b-9ce0-6f633cbe3b2e.dat'   -split -strand +  -bg  -scale 0.0116211     > '/mnt/disks/pulsar_staging/186/working/dataset_1a1eb679-e27b-4518-902a-06748962018c.dat'",
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "a965afe3a7a615f9",
+        "command_version": "bedtools v2.30.0",
+        "params": {
+            "d": "false",
+            "dz": "false",
+            "five": "false",
+            "input_type": "{\"__current_case__\": 1, \"input\": {\"values\": [{\"id\": 291, \"src\": \"dce\"}]}, \"input_type_select\": \"bam\"}",
+            "report": "{\"__current_case__\": 0, \"report_select\": \"bg\", \"scale\": \"0.0116211\", \"zero_regions\": false}",
+            "split": "true",
+            "strand": "\"-strand +\"",
+            "three": "false",
+            "__workflow_invocation_uuid__": "\"de89ef68263a11f1a1b7bebd58c486e9\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/hg38.len\"",
+            "dbkey": "\"hg38\"",
+            "__input_ext": "\"input\""
+        },
+        "inputs": {
+            "input_type|input": {
+                "id": "8f60afa5c2625602",
+                "src": "hda",
+                "uuid": "b9476a9f-e519-435b-9ce0-6f633cbe3b2e"
+            }
+        },
+        "outputs": {
+            "output": {
+                "id": "f1b4ee9bdc3d2fa5",
+                "src": "hda",
+                "uuid": "1a1eb679-e27b-4518-902a-06748962018c"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {
+            "output": {
+                "src": "hdca",
+                "id": "bcd648073306fc90"
+            }
+        },
+        "tool_stdout": "",
+        "tool_stderr": "",
+        "job_stdout": "",
+        "job_stderr": "",
+        "stdout": "",
+        "stderr": "",
+        "job_messages": [],
+        "dependencies": [],
+        "job_metrics": [
+            {
+                "title": "Cores Allocated",
+                "value": "1",
+                "plugin": "core",
+                "name": "galaxy_slots",
+                "raw_value": "1.0000000"
+            },
+            {
+                "title": "Memory Allocated (MB)",
+                "value": "3891",
+                "plugin": "core",
+                "name": "galaxy_memory_mb",
+                "raw_value": "3891.0000000"
+            },
+            {
+                "title": "Job Start Time",
+                "value": "2026-03-23 01:10:05",
+                "plugin": "core",
+                "name": "start_epoch",
+                "raw_value": "1774228205.0000000"
+            },
+            {
+                "title": "Job End Time",
+                "value": "2026-03-23 01:15:46",
+                "plugin": "core",
+                "name": "end_epoch",
+                "raw_value": "1774228546.0000000"
+            },
+            {
+                "title": "Job Runtime (Wall Clock)",
+                "value": "5 minutes",
+                "plugin": "core",
+                "name": "runtime_seconds",
+                "raw_value": "341.0000000"
+            }
+        ]
+    },
+    "status": "ok",
+    "server": "http://35.188.245.115",
+    "ref_data_size": [],
+    "input_data_size": [
+        2824478,
+        503642961
+    ]
+}
