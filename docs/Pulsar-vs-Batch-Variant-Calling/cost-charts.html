@@ -119,12 +119,12 @@
 <div class="tab-content" id="rainstone">
   <div class="chart-container">
     <h2>Batch vs Pulsar vs Rainstone (usegalaxy.org Historical Average)</h2>
-    <p class="chart-desc">Per-job wallclock cost compared to Rainstone historical averages from usegalaxy.org production workloads. Log scale.</p>
+    <p class="chart-desc">Per-job compute cost compared to Rainstone historical averages from usegalaxy.org production workloads. Log scale.</p>
     <canvas id="rainstoneChart" height="120"></canvas>
   </div>
   <div class="chart-container">
     <h2>Rainstone Cost Range: Median to P95</h2>
-    <p class="chart-desc">Floating bars show usegalaxy.org historical cost range (median to P95). Dots show our wallclock per-job costs.</p>
+    <p class="chart-desc">Floating bars show usegalaxy.org historical cost range (median to P95). Dots show our compute per-job costs.</p>
     <canvas id="rainstoneRangeChart" height="120"></canvas>
   </div>
 </div>
@@ -150,7 +150,7 @@
 </div>
 
 <div class="footer">
-  Galaxy 26.1 &middot; GCP Batch us-east4 &middot; N2 on-demand pricing &middot; 72 jobs &middot; Generated 2026-03-20 15:37</div>
+  Galaxy 26.1 &middot; GCP Batch us-east4 &middot; N2 on-demand pricing &middot; 72 jobs &middot; Generated 2026-03-23 14:17</div>
 
 <script>
 const blue = "#3b82f6", blueLight = "#93bbfd", amber = "#f59e0b", amberLight = "#fcd679";
@@ -267,16 +267,16 @@ new Chart(document.getElementById("overheadRatioChart"), { type: "bar",
 
 new Chart(document.getElementById("rainstoneChart"), { type: "bar",
   data: { labels: toolsShort, datasets: [
-    { label: "Batch $/job", data: wBatchPerJob, backgroundColor: blue, borderRadius: 4 },
-    { label: "Pulsar $/job", data: wPulsarPerJob, backgroundColor: amber, borderRadius: 4 },
+    { label: "Batch $/job", data: cBatchPerJob, backgroundColor: blue, borderRadius: 4 },
+    { label: "Pulsar $/job", data: cPulsarPerJob, backgroundColor: amber, borderRadius: 4 },
     { label: "Rainstone Avg", data: rainstoneAvg, backgroundColor: purple, borderRadius: 4 }
   ]}, options: { responsive: true, plugins: { legend: { position: "top" }, tooltip: { callbacks: { label: dollarFmt } } }, scales: { y: { type: "logarithmic", title: { display: true, text: "USD per job (log)" }, ticks: { callback: v => "$" + v } }, x: { ticks: { maxRotation: 45, minRotation: 45 } } } } });
 
 new Chart(document.getElementById("rainstoneRangeChart"), { type: "bar",
   data: { labels: toolsShort, datasets: [
     { label: "Rainstone Median-P95 range", data: rainstoneMedian.map((m, i) => [m, rainstoneP95[i]]), backgroundColor: purpleLight + "66", borderColor: purple, borderWidth: 1, borderSkipped: false, borderRadius: 4 },
-    { type: "scatter", label: "Batch $/job", data: wBatchPerJob.map((v, i) => ({x: i, y: v})), backgroundColor: blue, pointRadius: 6, pointStyle: "circle" },
-    { type: "scatter", label: "Pulsar $/job", data: wPulsarPerJob.map((v, i) => ({x: i, y: v})), backgroundColor: amber, pointRadius: 6, pointStyle: "triangle" }
+    { type: "scatter", label: "Batch $/job", data: cBatchPerJob.map((v, i) => ({x: i, y: v})), backgroundColor: blue, pointRadius: 6, pointStyle: "circle" },
+    { type: "scatter", label: "Pulsar $/job", data: cPulsarPerJob.map((v, i) => ({x: i, y: v})), backgroundColor: amber, pointRadius: 6, pointStyle: "triangle" }
   ]}, options: { responsive: true, plugins: { legend: { position: "top" }, tooltip: { callbacks: { label: ctx => { if (ctx.datasetIndex === 0) { const [lo, hi] = ctx.raw; return `Rainstone range: $${lo.toFixed(4)} - $${hi.toFixed(4)}`; } return `${ctx.dataset.label}: $${ctx.raw.y.toFixed(4)}`; } } } }, scales: { y: { type: "logarithmic", title: { display: true, text: "USD per job (log)" }, ticks: { callback: v => "$" + v } }, x: { ticks: { maxRotation: 45, minRotation: 45 } } } } });
 
 const stdVcpuFrac = 0.651;

@@ -40,7 +40,7 @@
 <body>
 
 <h1>Pulsar vs Direct GCP Batch: Cost Analysis</h1>
-<p class="subtitle">RNASeq &mdash; 24 jobs &mdash; 12 tool types &mdash; us-east4</p>
+<p class="subtitle">RNASeq &mdash; 84 jobs &mdash; 12 tool types &mdash; us-east4</p>
 
 <div class="nav">
   <a href="index.html">&larr; Results Report</a>
@@ -59,9 +59,9 @@
 <div class="tab-content active" id="overview">
   <div class="summary-cards">
     <div class="card batch"><div class="label">Batch (Wallclock)</div><div class="value">$3.12</div><div class="detail">20 jobs &middot; 14.3 VM-hours &middot; compute: $1.33</div></div>
-    <div class="card pulsar"><div class="label">Pulsar (Wallclock)</div><div class="value">$1.24</div><div class="detail">4 jobs &middot; 3.5 VM-hours &middot; compute: $0.68</div></div>
-    <div class="card neutral"><div class="label">Pulsar vs Batch</div><div class="value">0.4x</div><div class="detail">Pulsar is 60% cheaper</div></div>
-    <div class="card overhead"><div class="label">Overhead Ratio</div><div class="value">2.3x / 1.8x</div><div class="detail">Wallclock / Compute (Batch / Pulsar)</div></div>
+    <div class="card pulsar"><div class="label">Pulsar (Wallclock)</div><div class="value">$12.93</div><div class="detail">64 jobs &middot; 56.9 VM-hours &middot; compute: $4.02</div></div>
+    <div class="card neutral"><div class="label">Pulsar vs Batch</div><div class="value">4.1x</div><div class="detail">Pulsar is 314% more expensive</div></div>
+    <div class="card overhead"><div class="label">Overhead Ratio</div><div class="value">2.3x / 3.2x</div><div class="detail">Wallclock / Compute (Batch / Pulsar)</div></div>
   </div>
   <div class="chart-container">
     <h2>Wallclock vs Compute Cost by Runner</h2>
@@ -75,7 +75,7 @@
   </div>
   <div class="chart-container">
     <h2>Component Distribution</h2>
-    <p class="chart-desc">Where the money goes: vCPU dominates at 61%.</p>
+    <p class="chart-desc">Where the money goes: vCPU dominates at 57%.</p>
     <canvas id="componentDonutChart" height="60"></canvas>
   </div>
 </div>
@@ -119,12 +119,12 @@
 <div class="tab-content" id="rainstone">
   <div class="chart-container">
     <h2>Batch vs Pulsar vs Rainstone (usegalaxy.org Historical Average)</h2>
-    <p class="chart-desc">Per-job wallclock cost compared to Rainstone historical averages from usegalaxy.org production workloads. Log scale.</p>
+    <p class="chart-desc">Per-job compute cost compared to Rainstone historical averages from usegalaxy.org production workloads. Log scale.</p>
     <canvas id="rainstoneChart" height="120"></canvas>
   </div>
   <div class="chart-container">
     <h2>Rainstone Cost Range: Median to P95</h2>
-    <p class="chart-desc">Floating bars show usegalaxy.org historical cost range (median to P95). Dots show our wallclock per-job costs.</p>
+    <p class="chart-desc">Floating bars show usegalaxy.org historical cost range (median to P95). Dots show our compute per-job costs.</p>
     <canvas id="rainstoneRangeChart" height="120"></canvas>
   </div>
 </div>
@@ -150,7 +150,7 @@
 </div>
 
 <div class="footer">
-  Galaxy 26.1 &middot; GCP Batch us-east4 &middot; N2 on-demand pricing &middot; 24 jobs &middot; Generated 2026-03-20 15:37</div>
+  Galaxy 26.1 &middot; GCP Batch us-east4 &middot; N2 on-demand pricing &middot; 84 jobs &middot; Generated 2026-03-23 14:17</div>
 
 <script>
 const blue = "#3b82f6", blueLight = "#93bbfd", amber = "#f59e0b", amberLight = "#fcd679";
@@ -158,26 +158,26 @@ const red = "#ef4444", green = "#22c55e", purple = "#8b5cf6", purpleLight = "#c4
 Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
 Chart.defaults.font.size = 12;
 
-const tools = ["rna_star", "cufflinks", "tp_awk_tool", "multiqc", "revertR2orientationInBam", "bamFilter", "param_value_from_file", "wig_to_bigWig", "cutadapt", "bedtools_genomecoveragebed", "map_param_value", "compose_text_param"];
-const toolsShort = ["rna_star", "cufflinks", "tp_awk_tool", "multiqc", "revertR2orie", "bamFilter", "param_value_", "wig_to_bigWi", "cutadapt", "bedtools_gen", "map_param_va", "compose_text"];
+const tools = ["rna_star", "cufflinks", "tp_awk_tool", "wig_to_bigWig", "multiqc", "bedtools_genomecoveragebed", "revertR2orientationInBam", "bamFilter", "param_value_from_file", "cutadapt", "map_param_value", "compose_text_param"];
+const toolsShort = ["rna_star", "cufflinks", "tp_awk_tool", "wig_to_bigWi", "multiqc", "bedtools_gen", "revertR2orie", "bamFilter", "param_value_", "cutadapt", "map_param_va", "compose_text"];
 
-const wBatchCost = [1.1, 0.83, 0.29, 0.2, 0.17, 0.16, 0.15, 0.1, 0.03, 0.06, 0.02, 0.01];
-const wPulsarCost = [0.87, 0, 0.14, 0.18, 0, 0, 0, 0, 0.06, 0, 0, 0];
-const wBatchPerJob = [1.102, 0.8315, 0.1443, 0.1969, 0.1698, 0.1602, 0.1518, 0.0332, 0.0321, 0.021, 0.005, 0.0051];
-const wPulsarPerJob = [0.8674, 0, 0.138, 0.1805, 0, 0, 0, 0, 0.0556, 0, 0, 0];
-const wBatchHours = [1.41, 2.12, 2.85, 1.46, 1.68, 1.58, 1.5, 0.74, 0.08, 0.62, 0.2, 0.05];
-const wPulsarHours = [1.08, 0, 1.14, 1.16, 0, 0, 0, 0, 0.13, 0, 0, 0];
-const cBatchCost = [1.0, 0.28, 0.0, 0.0, 0.01, 0.01, 0.0, 0.0, 0.02, 0.01, 0.0, 0.0];
-const cPulsarCost = [0.66, 0, 0.0, 0.0, 0, 0, 0, 0, 0.02, 0, 0, 0];
-const cBatchPerJob = [0.9985, 0.2796, 0.0, 0.0006, 0.0054, 0.0126, 0.0003, 0.0006, 0.0192, 0.0031, 0.0002, 0.0002];
-const cPulsarPerJob = [0.6622, 0, 0.0, 0.0004, 0, 0, 0, 0, 0.0166, 0, 0, 0];
+const wBatchCost = [1.1, 0.83, 0.29, 0.1, 0.2, 0.06, 0.17, 0.16, 0.15, 0.03, 0.02, 0.01];
+const wPulsarCost = [3.83, 2.86, 1.07, 1.2, 0.82, 0.87, 0.73, 0.62, 0.47, 0.42, 0.02, 0.0];
+const wBatchPerJob = [1.102, 0.8315, 0.1443, 0.0332, 0.1969, 0.021, 0.1698, 0.1602, 0.1518, 0.0321, 0.005, 0.0051];
+const wPulsarPerJob = [0.9568, 0.955, 0.1533, 0.1333, 0.2038, 0.0967, 0.2448, 0.2058, 0.1575, 0.1057, 0.0019, 0.0013];
+const wBatchHours = [1.41, 2.12, 2.85, 0.74, 1.46, 0.62, 1.68, 1.58, 1.5, 0.08, 0.2, 0.05];
+const wPulsarHours = [4.78, 6.94, 8.83, 7.72, 5.24, 7.16, 6.04, 5.08, 3.89, 1.02, 0.19, 0.03];
+const cBatchCost = [1.0, 0.28, 0.0, 0.0, 0.0, 0.01, 0.01, 0.01, 0.0, 0.02, 0.0, 0.0];
+const cPulsarCost = [2.38, 1.23, 0.0, 0.01, 0.0, 0.07, 0.05, 0.1, 0.0, 0.16, 0.01, 0.0];
+const cBatchPerJob = [0.9985, 0.2796, 0.0, 0.0006, 0.0006, 0.0031, 0.0054, 0.0126, 0.0003, 0.0192, 0.0002, 0.0002];
+const cPulsarPerJob = [0.5955, 0.4091, 0.0, 0.001, 0.0003, 0.0079, 0.0177, 0.0331, 0.0011, 0.0395, 0.0012, 0.0012];
 
-const rainstoneAvg = [0.9108, 0.2317, 0.0017, 0.0013, 0, 0, 0.0003, 0, 0.0182, 0.0016, 0, 0];
-const rainstoneMedian = [0.2144, 0.0413, 0.0002, 0.0005, 0, 0, 0.0002, 0, 0.0028, 0.0003, 0, 0];
-const rainstoneP95 = [4.3362, 1.0701, 0.0074, 0.0036, 0, 0, 0.0004, 0, 0.0703, 0.0056, 0, 0];
+const rainstoneAvg = [0.9108, 0.2317, 0.0017, 0, 0.0013, 0.0016, 0, 0, 0.0003, 0.0182, 0, 0];
+const rainstoneMedian = [0.2144, 0.0413, 0.0002, 0, 0.0005, 0.0003, 0, 0, 0.0002, 0.0028, 0, 0];
+const rainstoneP95 = [4.3362, 1.0701, 0.0074, 0, 0.0036, 0.0056, 0, 0, 0.0004, 0.0703, 0, 0];
 
 const wBatchVcpu = 1.94, wBatchMem = 1.12, wBatchSsd = 0.00, wBatchDisk = 0.06;
-const wPulsarVcpu = 0.73, wPulsarMem = 0.43, wPulsarSsd = 0.07, wPulsarDisk = 0.01;
+const wPulsarVcpu = 7.22, wPulsarMem = 4.31, wPulsarSsd = 1.15, wPulsarDisk = 0.24;
 
 const dollarFmt = ctx => `$${ctx.raw.toFixed(4)}`;
 const dollarFmt2 = ctx => `$${ctx.raw.toFixed(2)}`;
@@ -187,8 +187,8 @@ new Chart(document.getElementById("wallVsComputeChart"), {
   data: {
     labels: ["Batch", "Pulsar"],
     datasets: [
-      { label: "Compute Cost", data: [1.33, 0.68], backgroundColor: [blueLight, amberLight], borderRadius: 4 },
-      { label: "Wallclock Cost", data: [3.12, 1.24], backgroundColor: [blue, amber], borderRadius: 4 }
+      { label: "Compute Cost", data: [1.33, 4.02], backgroundColor: [blueLight, amberLight], borderRadius: 4 },
+      { label: "Wallclock Cost", data: [3.12, 12.93], backgroundColor: [blue, amber], borderRadius: 4 }
     ]
   },
   options: {
@@ -219,12 +219,12 @@ new Chart(document.getElementById("runnerStackedChart"), {
 new Chart(document.getElementById("componentDonutChart"), {
   type: "doughnut",
   data: {
-    labels: ["vCPU ($2.67)", "Memory ($1.55)", "Local SSD ($0.07)", "Boot Disk ($0.07)"],
-    datasets: [{ data: [2.67, 1.55, 0.07, 0.07], backgroundColor: [blue, blueLight, amber, amberLight], borderWidth: 2, borderColor: "#fff" }]
+    labels: ["vCPU ($9.17)", "Memory ($5.43)", "Local SSD ($1.15)", "Boot Disk ($0.30)"],
+    datasets: [{ data: [9.17, 5.43, 1.15, 0.30], backgroundColor: [blue, blueLight, amber, amberLight], borderWidth: 2, borderColor: "#fff" }]
   },
   options: {
     responsive: true, cutout: "55%",
-    plugins: { legend: { position: "right" }, tooltip: { callbacks: { label: ctx => { const pct = ((ctx.raw / 4.36) * 100).toFixed(0); return `${ctx.label}: ${pct}%`; } } } }
+    plugins: { legend: { position: "right" }, tooltip: { callbacks: { label: ctx => { const pct = ((ctx.raw / 16.05) * 100).toFixed(0); return `${ctx.label}: ${pct}%`; } } } }
   }
 });
 
@@ -267,16 +267,16 @@ new Chart(document.getElementById("overheadRatioChart"), { type: "bar",
 
 new Chart(document.getElementById("rainstoneChart"), { type: "bar",
   data: { labels: toolsShort, datasets: [
-    { label: "Batch $/job", data: wBatchPerJob, backgroundColor: blue, borderRadius: 4 },
-    { label: "Pulsar $/job", data: wPulsarPerJob, backgroundColor: amber, borderRadius: 4 },
+    { label: "Batch $/job", data: cBatchPerJob, backgroundColor: blue, borderRadius: 4 },
+    { label: "Pulsar $/job", data: cPulsarPerJob, backgroundColor: amber, borderRadius: 4 },
     { label: "Rainstone Avg", data: rainstoneAvg, backgroundColor: purple, borderRadius: 4 }
   ]}, options: { responsive: true, plugins: { legend: { position: "top" }, tooltip: { callbacks: { label: dollarFmt } } }, scales: { y: { type: "logarithmic", title: { display: true, text: "USD per job (log)" }, ticks: { callback: v => "$" + v } }, x: { ticks: { maxRotation: 45, minRotation: 45 } } } } });
 
 new Chart(document.getElementById("rainstoneRangeChart"), { type: "bar",
   data: { labels: toolsShort, datasets: [
     { label: "Rainstone Median-P95 range", data: rainstoneMedian.map((m, i) => [m, rainstoneP95[i]]), backgroundColor: purpleLight + "66", borderColor: purple, borderWidth: 1, borderSkipped: false, borderRadius: 4 },
-    { type: "scatter", label: "Batch $/job", data: wBatchPerJob.map((v, i) => ({x: i, y: v})), backgroundColor: blue, pointRadius: 6, pointStyle: "circle" },
-    { type: "scatter", label: "Pulsar $/job", data: wPulsarPerJob.map((v, i) => ({x: i, y: v})), backgroundColor: amber, pointRadius: 6, pointStyle: "triangle" }
+    { type: "scatter", label: "Batch $/job", data: cBatchPerJob.map((v, i) => ({x: i, y: v})), backgroundColor: blue, pointRadius: 6, pointStyle: "circle" },
+    { type: "scatter", label: "Pulsar $/job", data: cPulsarPerJob.map((v, i) => ({x: i, y: v})), backgroundColor: amber, pointRadius: 6, pointStyle: "triangle" }
   ]}, options: { responsive: true, plugins: { legend: { position: "top" }, tooltip: { callbacks: { label: ctx => { if (ctx.datasetIndex === 0) { const [lo, hi] = ctx.raw; return `Rainstone range: $${lo.toFixed(4)} - $${hi.toFixed(4)}`; } return `${ctx.dataset.label}: $${ctx.raw.y.toFixed(4)}`; } } } }, scales: { y: { type: "logarithmic", title: { display: true, text: "USD per job (log)" }, ticks: { callback: v => "$" + v } }, x: { ticks: { maxRotation: 45, minRotation: 45 } } } } });
 
 const stdVcpuFrac = 0.651;

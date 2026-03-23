@@ -95,22 +95,22 @@ The Rainstone Est. column shows the average cost per job from the [Rainstone cos
 
 ## Rainstone Comparison
 
-Per-job wallclock cost comparison against [Rainstone](https://rainstone.anvilproject.org) historical averages from usegalaxy.org. Rainstone data reflects median costs across thousands of production runs.
+Per-job compute cost comparison against [Rainstone](https://rainstone.anvilproject.org) historical averages from usegalaxy.org. Rainstone data reflects median costs across thousands of production runs.
 
 | Tool | Batch $/Job | Pulsar $/Job | Rainstone Avg | Rainstone Median | Rainstone P95 | usegalaxy.org Jobs |
 |------|-------------|--------------|---------------|-----------------|---------------|------------|
-| bwa_mem | $0.8621 | $0.9874 | $0.1313 | $0.0097 | $0.5610 | 158,991 |
-| snpEff | $0.7989 | $1.0237 | -- | -- | -- | -- |
-| lofreq_filter | $0.7936 | $1.0155 | $0.0002 | $0.0001 | $0.0004 | 60,578 |
-| lofreq_call | $0.5905 | $0.7871 | $0.0555 | $0.0103 | $0.1374 | 70,976 |
-| lofreq_viterbi | $0.6144 | $0.7491 | $0.0093 | $0.0023 | $0.0311 | 49,601 |
-| picard_MarkDuplicates | $0.5608 | $0.6516 | -- | -- | -- | -- |
-| lofreq_indelqual | $0.4436 | $0.5860 | $0.0008 | $0.0003 | $0.0018 | 46,590 |
-| multiqc | $0.3879 | $0.4972 | $0.0013 | $0.0005 | $0.0036 | 75,021 |
-| samtools_stats | $0.2463 | $0.3351 | $0.0009 | $0.0003 | $0.0033 | 88,828 |
-| samtools_view | $0.2393 | $0.3178 | $0.0020 | $0.0004 | $0.0051 | 83,527 |
-| fastp | $0.0325 | $0.0919 | $0.0080 | $0.0020 | $0.0350 | 212,086 |
-| snpEff_build_gb | $0.0489 | $0.0319 | -- | -- | -- | -- |
+| bwa_mem | $0.6969 | $0.6933 | $0.1313 | $0.0097 | $0.5610 | 158,991 |
+| snpEff | $0.0002 | $0.0002 | -- | -- | -- | -- |
+| lofreq_filter | $0.0001 | $0.0000 | $0.0002 | $0.0001 | $0.0004 | 60,578 |
+| lofreq_call | $0.2535 | $0.3008 | $0.0555 | $0.0103 | $0.1374 | 70,976 |
+| lofreq_viterbi | $0.0426 | $0.0394 | $0.0093 | $0.0023 | $0.0311 | 49,601 |
+| picard_MarkDuplicates | $0.0814 | $0.0481 | -- | -- | -- | -- |
+| lofreq_indelqual | $0.0168 | $0.0137 | $0.0008 | $0.0003 | $0.0018 | 46,590 |
+| multiqc | $0.0004 | $0.0001 | $0.0013 | $0.0005 | $0.0036 | 75,021 |
+| samtools_stats | $0.0037 | $0.0040 | $0.0009 | $0.0003 | $0.0033 | 88,828 |
+| samtools_view | $0.0103 | $0.0089 | $0.0020 | $0.0004 | $0.0051 | 83,527 |
+| fastp | $0.0246 | $0.0263 | $0.0080 | $0.0020 | $0.0350 | 212,086 |
+| snpEff_build_gb | $0.0426 | $0.0076 | -- | -- | -- | -- |
 
 ## Pricing Assumptions
 
