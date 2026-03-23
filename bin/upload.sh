@@ -14,7 +14,7 @@ function parallel() {
 CLOUDS="$@"
 for cloud in $CLOUDS ; do
     echo "Uploading ChipSeq datasets to $cloud"
-    hid=$(abm $cloud history create "ChipSeq-PE Input Data" | jq -r .id)
+    hid=$(abm $cloud history create "ChipSeq-PE Test Data" | jq -r .id)
     abm $cloud dataset import --name forward --history $hid chipseq-1
     abm $cloud dataset import --name reverse --history $hid chipseq-2
 done

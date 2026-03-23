@@ -7,36 +7,16 @@
 #
 # Upload the paired FASTQs to your Galaxy instance and create a list:paired
 # collection named "wt_H3K4me3" before running this benchmark.
-- output_history_base_name: ChIPseq-PE
+- output_history_base_name: ChIPseq-PE Mouse Test
   workflow_id: "ChIP-seq Analysis: Paired-End Read Processing"
   runs:
-  - history_name: 2GB
+  - history_name: wt_H3K4me3
     inputs:
     - name: PE fastq input
-      collection: chipseq-2gb
+      collection: wt_H3K4me3
     - name: Reference genome
-      value: hg38
+      value: mm10
     - name: Effective genome size
-      value: 2913022398
-    - name: Normalize profile
-      value: true
-  - history_name: 5GB
-    inputs:
-    - name: PE fastq input
-      collection: chipseq-5gb
-    - name: Reference genome
-      value: hg38
-    - name: Effective genome size
-      value: 2913022398
-    - name: Normalize profile
-      value: true
-  - history_name: 10GB
-    inputs:
-    - name: PE fastq input
-      collection: chipseq-10gb
-    - name: Reference genome
-      value: hg38
-    - name: Effective genome size
-      value: 2913022398
+      value: 1870000000
     - name: Normalize profile
       value: true

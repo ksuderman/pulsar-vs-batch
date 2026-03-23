@@ -476,11 +476,11 @@ def generate_markdown(compute_cloud, compute_tool, wall_cloud, wall_tool,
     _per_tool_table(w, compute_tool, tool_order, rainstone, "Compute")
     w("")
 
-    # Rainstone Comparison (use wallclock costs for comparison)
+    # Rainstone Comparison (use compute costs — Rainstone reflects cgroups-like runtimes)
     if rainstone:
         w("## Rainstone Comparison")
         w("")
-        w("Per-job wallclock cost comparison against "
+        w("Per-job compute cost comparison against "
           "[Rainstone](https://rainstone.anvilproject.org) "
           "historical averages from usegalaxy.org. Rainstone data reflects median costs "
           "across thousands of production runs.")
@@ -490,8 +490,8 @@ def generate_markdown(compute_cloud, compute_tool, wall_cloud, wall_tool,
         w("|------|-------------|--------------|---------------|"
           "-----------------|---------------|------------|")
         for tool in tool_order:
-            bd = wall_tool[tool].get("batch", _empty_cost_bucket())
-            pd = wall_tool[tool].get("pulsar", _empty_cost_bucket())
+            bd = compute_tool[tool].get("batch", _empty_cost_bucket())
+            pd = compute_tool[tool].get("pulsar", _empty_cost_bucket())
             b_per = bd["total_cost"] / bd["jobs"] if bd["jobs"] > 0 else 0
             p_per = pd["total_cost"] / pd["jobs"] if pd["jobs"] > 0 else 0
             if tool in rainstone:
@@ -760,12 +760,12 @@ def generate_html(compute_cloud, compute_tool, wall_cloud, wall_tool,
         h('<div class="tab-content" id="rainstone">')
         h('  <div class="chart-container">')
         h('    <h2>Batch vs Pulsar vs Rainstone (usegalaxy.org Historical Average)</h2>')
-        h('    <p class="chart-desc">Per-job wallclock cost compared to Rainstone historical averages from usegalaxy.org production workloads. Log scale.</p>')
+        h('    <p class="chart-desc">Per-job compute cost compared to Rainstone historical averages from usegalaxy.org production workloads. Log scale.</p>')
         h('    <canvas id="rainstoneChart" height="120"></canvas>')
         h('  </div>')
         h('  <div class="chart-container">')
         h('    <h2>Rainstone Cost Range: Median to P95</h2>')
-        h('    <p class="chart-desc">Floating bars show usegalaxy.org historical cost range (median to P95). Dots show our wallclock per-job costs.</p>')
+        h('    <p class="chart-desc">Floating bars show usegalaxy.org historical cost range (median to P95). Dots show our compute per-job costs.</p>')
         h('    <canvas id="rainstoneRangeChart" height="120"></canvas>')
         h('  </div>')
         h('</div>')
@@ -936,20 +936,20 @@ def generate_html(compute_cloud, compute_tool, wall_cloud, wall_tool,
     h('  ]}, options: { responsive: true, plugins: { legend: { position: "top" }, tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.raw}x` } } }, scales: { y: { title: { display: true, text: "Wallclock / Compute ratio" }, beginAtZero: true }, x: { ticks: { maxRotation: 45, minRotation: 45 } } } } });')
     h('')
 
-    # Rainstone Charts (use wallclock per-job costs)
+    # Rainstone Charts (use compute per-job costs for apples-to-apples comparison)
     if rainstone:
         h('new Chart(document.getElementById("rainstoneChart"), { type: "bar",')
         h('  data: { labels: toolsShort, datasets: [')
-        h('    { label: "Batch $/job", data: wBatchPerJob, backgroundColor: blue, borderRadius: 4 },')
-        h('    { label: "Pulsar $/job", data: wPulsarPerJob, backgroundColor: amber, borderRadius: 4 },')
+        h('    { label: "Batch $/job", data: cBatchPerJob, backgroundColor: blue, borderRadius: 4 },')
+        h('    { label: "Pulsar $/job", data: cPulsarPerJob, backgroundColor: amber, borderRadius: 4 },')
         h('    { label: "Rainstone Avg", data: rainstoneAvg, backgroundColor: purple, borderRadius: 4 }')
         h('  ]}, options: { responsive: true, plugins: { legend: { position: "top" }, tooltip: { callbacks: { label: dollarFmt } } }, scales: { y: { type: "logarithmic", title: { display: true, text: "USD per job (log)" }, ticks: { callback: v => "$" + v } }, x: { ticks: { maxRotation: 45, minRotation: 45 } } } } });')
         h('')
         h('new Chart(document.getElementById("rainstoneRangeChart"), { type: "bar",')
         h('  data: { labels: toolsShort, datasets: [')
         h('    { label: "Rainstone Median-P95 range", data: rainstoneMedian.map((m, i) => [m, rainstoneP95[i]]), backgroundColor: purpleLight + "66", borderColor: purple, borderWidth: 1, borderSkipped: false, borderRadius: 4 },')
-        h('    { type: "scatter", label: "Batch $/job", data: wBatchPerJob.map((v, i) => ({x: i, y: v})), backgroundColor: blue, pointRadius: 6, pointStyle: "circle" },')
-        h('    { type: "scatter", label: "Pulsar $/job", data: wPulsarPerJob.map((v, i) => ({x: i, y: v})), backgroundColor: amber, pointRadius: 6, pointStyle: "triangle" }')
+        h('    { type: "scatter", label: "Batch $/job", data: cBatchPerJob.map((v, i) => ({x: i, y: v})), backgroundColor: blue, pointRadius: 6, pointStyle: "circle" },')
+        h('    { type: "scatter", label: "Pulsar $/job", data: cPulsarPerJob.map((v, i) => ({x: i, y: v})), backgroundColor: amber, pointRadius: 6, pointStyle: "triangle" }')
         h('  ]}, options: { responsive: true, plugins: { legend: { position: "top" }, tooltip: { callbacks: { label: ctx => { if (ctx.datasetIndex === 0) { const [lo, hi] = ctx.raw; return `Rainstone range: $${lo.toFixed(4)} - $${hi.toFixed(4)}`; } return `${ctx.dataset.label}: $${ctx.raw.y.toFixed(4)}`; } } } }, scales: { y: { type: "logarithmic", title: { display: true, text: "USD per job (log)" }, ticks: { callback: v => "$" + v } }, x: { ticks: { maxRotation: 45, minRotation: 45 } } } } });')
         h('')
 
