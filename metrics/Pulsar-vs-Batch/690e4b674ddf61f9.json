@@ -1,0 +1,71 @@
+{
+    "run": "1",
+    "cloud": "batch",
+    "job_conf": "Default",
+    "workflow_id": "b9eec48891b366cf",
+    "history_id": "246897bdd29335f2",
+    "inputs": "SRR24043307-full ucsc.hg38.knownGene.gtf",
+    "metrics": {
+        "model_class": "Job",
+        "id": "690e4b674ddf61f9",
+        "history_id": "246897bdd29335f2",
+        "tool_id": "param_value_from_file",
+        "state": "deleting",
+        "exit_code": null,
+        "create_time": "2026-03-23T19:43:13.184307",
+        "update_time": "2026-03-23T20:24:30.713603",
+        "galaxy_version": "26.1",
+        "external_id": null,
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": null,
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "b9eec48891b366cf",
+        "command_version": null,
+        "params": {
+            "param_type": "\"float\"",
+            "remove_newlines": "true",
+            "__workflow_invocation_uuid__": "\"85cd7ae626f011f1b82b82839cb514a4\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/hg38.len\"",
+            "dbkey": "\"hg38\"",
+            "__input_ext": "\"input\""
+        },
+        "inputs": {
+            "input1": {
+                "id": "3c0eecc0dbc64f8c",
+                "src": "hda",
+                "uuid": "43d7ead1-d827-4b3f-babe-c35dc9a68e8a"
+            }
+        },
+        "outputs": {
+            "float_param": {
+                "id": "8aca8dcaec27f6bb",
+                "src": "hda",
+                "uuid": "75d54aa6-17c1-4218-8953-9c0cb10a52e7"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {
+            "float_param": {
+                "src": "hdca",
+                "id": "02d0c092eeaf262c"
+            }
+        },
+        "tool_stdout": null,
+        "tool_stderr": null,
+        "job_stdout": null,
+        "job_stderr": null,
+        "stdout": "",
+        "stderr": "",
+        "job_messages": null,
+        "dependencies": [],
+        "job_metrics": []
+    },
+    "status": "deleting",
+    "server": "http://34.11.12.196",
+    "ref_data_size": [],
+    "input_data_size": [
+        2824478,
+        503642961
+    ]
+}

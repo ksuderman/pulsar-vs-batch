@@ -1,0 +1,107 @@
+{
+    "run": "1",
+    "cloud": "batch",
+    "job_conf": "Default",
+    "workflow_id": "b9eec48891b366cf",
+    "history_id": "f34b292898bc0aa0",
+    "inputs": "SRR24043307-50 ucsc.hg38.knownGene.gtf",
+    "metrics": {
+        "model_class": "Job",
+        "id": "62e84d395d8a77eb",
+        "history_id": "f34b292898bc0aa0",
+        "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/rgrnastar/rna_star/2.7.8a+galaxy1",
+        "state": "error",
+        "exit_code": null,
+        "create_time": "2026-03-23T18:30:31.225294",
+        "update_time": "2026-03-23T18:39:43.577567",
+        "galaxy_version": "26.1",
+        "external_id": null,
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": null,
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "b9eec48891b366cf",
+        "command_version": null,
+        "params": {
+            "algo": "{\"params\": {\"__current_case__\": 3, \"align\": {\"alignEndsType\": false, \"alignIntronMax\": \"1000000\", \"alignIntronMin\": \"20\", \"alignMatesGapMax\": \"1000000\", \"alignSJDBoverhangMin\": \"1\", \"alignSJoverhangMin\": \"8\", \"alignSJstitchMismatchNmax\": {\"alignSJstitchMismatchNmax1\": \"0\", \"alignSJstitchMismatchNmax2\": \"-1\", \"alignSJstitchMismatchNmax3\": \"0\", \"alignSJstitchMismatchNmax4\": \"0\"}, \"alignSplicedMateMapLmin\": \"0\", \"alignSplicedMateMapLminOverLmate\": \"0.66\", \"alignTranscriptsPerReadNmax\": \"10000\", \"alignTranscriptsPerWindowNmax\": \"100\", \"alignWindowsPerReadNmax\": \"10000\", \"peOverlapMMp\": \"0.01\", \"peOverlapNbasesMin\": \"0\"}, \"chim_settings\": {\"chimFilter\": true, \"chimJunctionOverhangMin\": \"20\", \"chimMainSegmentMultNmax\": \"10\", \"chimMultimapNmax\": \"1\", \"chimMultimapScoreRange\": \"1\", \"chimScoreDropMax\": \"20\", \"chimScoreJunctionNonGTAG\": \"-1\", \"chimScoreMin\": \"0\", \"chimScoreSeparation\": \"10\", \"chimSegmentMin\": \"12\", \"chimSegmentReadGapMax\": \"0\"}, \"limits\": {\"limitOutSJcollapsed\": \"1000000\", \"limitOutSJoneRead\": \"1000\", \"limitSjdbInsertNsj\": \"1000000\"}, \"seed\": {\"seedMultimapNmax\": \"10000\", \"seedNoneLociPerWindow\": \"10\", \"seedPerReadNmax\": \"1000\", \"seedPerWindowNmax\": \"50\", \"seedSearchLmax\": \"0\", \"seedSearchStartLmax\": \"50\", \"seedSearchStartLmaxOverLread\": \"1.0\"}, \"settingsType\": \"full\"}}",
+            "chimOutType": "\"\"",
+            "filter": "{\"basic_filters\": [\"exclude_unmapped\"], \"output_params2\": {\"__current_case__\": 0, \"outFilterMatchNmin\": \"0\", \"outFilterMatchNminOverLread\": \"0.66\", \"outFilterMismatchNmax\": \"999\", \"outFilterMismatchNoverLmax\": \"0.3\", \"outFilterMismatchNoverReadLmax\": \"0.04\", \"outFilterMultimapNmax\": \"20\", \"outFilterMultimapScoreRange\": \"1\", \"outFilterScoreMin\": \"0\", \"outFilterScoreMinOverLread\": \"0.66\", \"outFilterType\": true, \"outSAMmultNmax\": \"-1\", \"outSAMtlen\": \"1\", \"output_select2\": \"yes\"}}",
+            "oformat": "{\"HI_offset\": \"1\", \"outSAMattributes\": [\"NH\", \"HI\", \"AS\", \"nM\"], \"outSAMmapqUnique\": \"255\", \"outSAMprimaryFlag\": \"OneBestScore\"}",
+            "perf": "{\"outBAMsortingBinsN\": \"50\", \"winAnchorMultimapNmax\": \"50\"}",
+            "quantmode_output": "{\"__current_case__\": 1, \"quantMode\": \"GeneCounts\"}",
+            "refGenomeSource": "{\"GTFconditional\": {\"GTFselect\": \"without-gtf\", \"__current_case__\": 1, \"genomeDir\": \"hg38\", \"sjdbGTFfile\": {\"values\": [{\"id\": 11, \"src\": \"hda\"}]}, \"sjdbOverhang\": \"99\"}, \"__current_case__\": 0, \"geneSource\": \"indexed\"}",
+            "singlePaired": "{\"__current_case__\": 2, \"input\": {\"values\": [{\"id\": 236, \"src\": \"dce\"}]}, \"sPaired\": \"paired_collection\"}",
+            "twopass": "{\"__current_case__\": 0, \"sj_precalculated\": \"\", \"twopassMode\": \"None\", \"twopass_read_subset\": \"\"}",
+            "__workflow_invocation_uuid__": "\"5eb9a9d426e611f1b82b82839cb514a4\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/?.len\"",
+            "dbkey": "\"?\"",
+            "__input_ext": "\"input\""
+        },
+        "inputs": {
+            "singlePaired|input1": {
+                "id": "fd84034150f6f425",
+                "src": "hda",
+                "uuid": "b3fcf782-2e9c-46a5-9e7a-e40494ae7f61"
+            },
+            "singlePaired|input2": {
+                "id": "7b724b98b976b160",
+                "src": "hda",
+                "uuid": "92167b97-f466-430e-ad7a-251f07c29aa1"
+            },
+            "refGenomeSource|GTFconditional|sjdbGTFfile": {
+                "id": "74703382d226c79f",
+                "src": "hda",
+                "uuid": "dd28c005-a1ad-4eca-b58e-5232e138fec8"
+            }
+        },
+        "outputs": {
+            "output_log": {
+                "id": "8ea35b2e59a4b2b0",
+                "src": "hda",
+                "uuid": "8616ce7b-1109-49ed-bdef-445c50797aeb"
+            },
+            "splice_junctions": {
+                "id": "f8adf05dc969539a",
+                "src": "hda",
+                "uuid": "20f06ad7-f7df-4bd2-85d0-d2828982a715"
+            },
+            "mapped_reads": {
+                "id": "c56999af95df192c",
+                "src": "hda",
+                "uuid": "ec32f55d-1e43-484f-8b53-1877f49ad02f"
+            },
+            "reads_per_gene": {
+                "id": "8ea8f8ede3ed2bf7",
+                "src": "hda",
+                "uuid": "f697f2f9-99c2-4026-8cba-eb7b587b9d86"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {
+            "splice_junctions": {
+                "src": "hdca",
+                "id": "795a12fa89c74d75"
+            },
+            "reads_per_gene": {
+                "src": "hdca",
+                "id": "bfb220aaa9bb100a"
+            }
+        },
+        "tool_stdout": "",
+        "tool_stderr": "",
+        "job_stdout": null,
+        "job_stderr": null,
+        "stdout": "",
+        "stderr": "",
+        "job_messages": null,
+        "dependencies": [],
+        "job_metrics": []
+    },
+    "status": "error",
+    "server": "http://34.11.12.196",
+    "ref_data_size": [],
+    "input_data_size": [
+        5099543128,
+        503642961
+    ]
+}

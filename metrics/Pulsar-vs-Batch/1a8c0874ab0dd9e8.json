@@ -1,0 +1,104 @@
+{
+    "run": "1",
+    "cloud": "batch",
+    "job_conf": "Default",
+    "workflow_id": "b9eec48891b366cf",
+    "history_id": "f34b292898bc0aa0",
+    "inputs": "SRR24043307-50 ucsc.hg38.knownGene.gtf",
+    "metrics": {
+        "model_class": "Job",
+        "id": "1a8c0874ab0dd9e8",
+        "history_id": "f34b292898bc0aa0",
+        "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/multiqc/multiqc/1.11+galaxy1",
+        "state": "deleting",
+        "exit_code": null,
+        "create_time": "2026-03-23T18:30:31.358859",
+        "update_time": "2026-03-23T19:42:58.541961",
+        "galaxy_version": "26.1",
+        "external_id": null,
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": null,
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "b9eec48891b366cf",
+        "command_version": null,
+        "params": {
+            "comment": "\"\"",
+            "export": "true",
+            "flat": "false",
+            "results": "[{\"__index__\": 0, \"software_cond\": {\"__current_case__\": 5, \"input\": {\"values\": [{\"id\": 157, \"src\": \"hdca\"}]}, \"software\": \"cutadapt\"}}, {\"__index__\": 1, \"software_cond\": {\"__current_case__\": 28, \"output\": [{\"__index__\": 0, \"type\": {\"__current_case__\": 0, \"input\": {\"values\": [{\"id\": 158, \"src\": \"hdca\"}]}, \"type\": \"log\"}}, {\"__index__\": 1, \"type\": {\"__current_case__\": 1, \"input\": {\"values\": [{\"id\": 161, \"src\": \"hdca\"}]}, \"type\": \"genecounts\"}}], \"software\": \"star\"}}]",
+            "saveLog": "false",
+            "title": "\"\"",
+            "__workflow_invocation_uuid__": "\"5eb9a9d426e611f1b82b82839cb514a4\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/hg38.len\"",
+            "dbkey": "\"hg38\"",
+            "__input_ext": "\"input\""
+        },
+        "inputs": {
+            "results_0|software_cond|input": {
+                "id": "7a93d0f47ffba07f",
+                "src": "hda",
+                "uuid": "828bceaa-5098-40fd-a33f-b8cf26ea55b8"
+            },
+            "results_0|software_cond|input1": {
+                "id": "7a93d0f47ffba07f",
+                "src": "hda",
+                "uuid": "828bceaa-5098-40fd-a33f-b8cf26ea55b8"
+            },
+            "results_1|software_cond|output_0|type|input": {
+                "id": "291a1a44d783bb48",
+                "src": "hda",
+                "uuid": "ea48ab66-e6f2-4ce5-9294-53f37fa5d94e"
+            },
+            "results_1|software_cond|output_0|type|input1": {
+                "id": "291a1a44d783bb48",
+                "src": "hda",
+                "uuid": "ea48ab66-e6f2-4ce5-9294-53f37fa5d94e"
+            },
+            "results_1|software_cond|output_1|type|input": {
+                "id": "313e729cc11840ce",
+                "src": "hda",
+                "uuid": "b1bccb46-adb1-438d-94d3-d79916c29f85"
+            },
+            "results_1|software_cond|output_1|type|input1": {
+                "id": "313e729cc11840ce",
+                "src": "hda",
+                "uuid": "b1bccb46-adb1-438d-94d3-d79916c29f85"
+            }
+        },
+        "outputs": {
+            "html_report": {
+                "id": "5bd5946fbffe156e",
+                "src": "hda",
+                "uuid": "98c92a9b-8572-4f61-b487-bc46ff117ed2"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {
+            "stats": {
+                "src": "hdca",
+                "id": "ac6bcee939c5f829"
+            },
+            "plots": {
+                "src": "hdca",
+                "id": "827c45c5cca992f1"
+            }
+        },
+        "tool_stdout": null,
+        "tool_stderr": null,
+        "job_stdout": null,
+        "job_stderr": null,
+        "stdout": "",
+        "stderr": "",
+        "job_messages": null,
+        "dependencies": [],
+        "job_metrics": []
+    },
+    "status": "deleting",
+    "server": "http://34.11.12.196",
+    "ref_data_size": [],
+    "input_data_size": [
+        5099543128,
+        503642961
+    ]
+}

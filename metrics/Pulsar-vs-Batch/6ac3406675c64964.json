@@ -1,0 +1,71 @@
+{
+    "run": "1",
+    "cloud": "batch",
+    "job_conf": "Default",
+    "workflow_id": "b9eec48891b366cf",
+    "history_id": "f34b292898bc0aa0",
+    "inputs": "SRR24043307-50 ucsc.hg38.knownGene.gtf",
+    "metrics": {
+        "model_class": "Job",
+        "id": "6ac3406675c64964",
+        "history_id": "f34b292898bc0aa0",
+        "tool_id": "param_value_from_file",
+        "state": "deleted",
+        "exit_code": null,
+        "create_time": "2026-03-23T18:30:31.982994",
+        "update_time": "2026-03-23T19:42:58.840572",
+        "galaxy_version": "26.1",
+        "external_id": null,
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": null,
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "b9eec48891b366cf",
+        "command_version": null,
+        "params": {
+            "param_type": "\"float\"",
+            "remove_newlines": "true",
+            "__workflow_invocation_uuid__": "\"5eb9a9d426e611f1b82b82839cb514a4\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/hg38.len\"",
+            "dbkey": "\"hg38\"",
+            "__input_ext": "\"input\""
+        },
+        "inputs": {
+            "input1": {
+                "id": "8f3245615307c6cb",
+                "src": "hda",
+                "uuid": "806e7068-a421-4c9b-b129-8f434b6f3ae3"
+            }
+        },
+        "outputs": {
+            "float_param": {
+                "id": "31d62de2689fa8db",
+                "src": "hda",
+                "uuid": "8903babc-14c5-4e7b-beb8-9e79ae0ebe9d"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {
+            "float_param": {
+                "src": "hdca",
+                "id": "62e84d395d8a77eb"
+            }
+        },
+        "tool_stdout": null,
+        "tool_stderr": null,
+        "job_stdout": null,
+        "job_stderr": null,
+        "stdout": "",
+        "stderr": "",
+        "job_messages": null,
+        "dependencies": [],
+        "job_metrics": []
+    },
+    "status": "deleting",
+    "server": "http://34.11.12.196",
+    "ref_data_size": [],
+    "input_data_size": [
+        5099543128,
+        503642961
+    ]
+}
