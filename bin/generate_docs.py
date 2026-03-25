@@ -156,19 +156,36 @@ def split_by_experiment(jobs):
     return result
 
 
+SIZE_ORDER = {"2GB": 0, "5GB": 1, "10GB": 2}
+
+
+def size_sort_key(size_str):
+    """Sort key for size labels: 2GB < 5GB < 10GB, unknowns last."""
+    return SIZE_ORDER.get(size_str, 999)
+
+
+# Map dataset identifiers to canonical size labels.  The SRR entries are
+# RNASeq paired-end FASTQ collections at different subsample depths.
+INPUT_SIZE_MAP = {
+    "SRR24043307-80": "2GB",
+    "SRR24043307-50": "5GB",
+    "SRR24043307-full": "10GB",
+}
+
+
 def get_size_label(inputs_str):
     """Derive a size label from the inputs string.
 
     For variant analysis data with explicit size markers (2GB, 5GB, 10GB),
-    returns a cumulative label showing total data processed. When multiple
-    sizes appear in one workflow invocation, all datasets are processed
-    together (e.g. "7GB (2+5)" means the 2GB and 5GB datasets were
-    processed in a single workflow run).
-
-    For other workflows (e.g. RNASeq with SRR identifiers), extracts
-    meaningful tokens from the input string to produce a short label.
+    returns the largest size present. For RNASeq data with SRR identifiers,
+    maps known collection names to canonical size labels.
     """
-    # Check for explicit size markers first.
+    # Check for known dataset-to-size mappings first
+    for pattern, label in INPUT_SIZE_MAP.items():
+        if pattern in inputs_str:
+            return label
+
+    # Check for explicit size markers (e.g. "SRR24043307-2GB").
     # The inputs field may contain datasets from prior runs in the same
     # history (an ABM reporting artifact).  Use the largest size marker
     # as the actual input size for this invocation.
@@ -254,6 +271,7 @@ def derive_experiment_title(experiment_name):
     """Derive a human-readable workflow title from the experiment directory name.
 
     e.g. 'Pulsar-vs-Batch-RNASeq' -> 'RNASeq'
+         'Variant-Calling' -> 'Variant Calling'
          'Pulsar-vs-Batch' -> 'Variant Analysis'
     """
     # Strip the common prefix
@@ -265,6 +283,7 @@ def derive_experiment_title(experiment_name):
     # If nothing left after stripping, use a default
     if not title:
         title = "Variant Analysis"
+    title = title.replace("-", " ")
     return title
 
 
@@ -321,7 +340,7 @@ def find_matchups(all_stats):
     for s in all_stats:
         by_size[s["size"]][s["cloud"]].append(s)
     matchups = {}
-    for size, clouds in sorted(by_size.items()):
+    for size, clouds in sorted(by_size.items(), key=lambda x: size_sort_key(x[0])):
         if clouds["batch"] and clouds["pulsar"]:
             matchups[size] = clouds
     return matchups
@@ -472,14 +491,14 @@ def generate_markdown(all_stats, matchups, experiment_name, tool_order, tool_sho
     w("")
     w("| Runner | Run | Input Sizes | Wall Clock | Compute Time | Scheduling Overhead | Steps OK |")
     w("|--------|-----|-------------|-----------|-------------|-------------------|----------|")
-    for s in sorted(all_stats, key=lambda x: (x["cloud"], x["run"], x["size"])):
+    for s in sorted(all_stats, key=lambda x: (x["cloud"], x["run"], size_sort_key(x["size"]))):
         oh_pct = f"{s['overhead'] / s['wall_clock'] * 100:.0f}%" if s["wall_clock"] > 0 else "--"
         steps_str = f"{s['ok_steps']}/{s['steps']}"
         w(f"| {s['cloud']} | {s['run']} | {s['size']} | {fmt_min(s['wall_clock'])} min | {fmt_min(s['compute'])} min | {fmt_min(s['overhead'])} min ({oh_pct}) | {steps_str} |")
     w("")
 
     # Head-to-head matchups
-    for size, clouds in sorted(matchups.items()):
+    for size, clouds in sorted(matchups.items(), key=lambda x: size_sort_key(x[0])):
         batch_stats = clouds["batch"]
         pulsar_stats = clouds["pulsar"]
         b_wall = sum(s["wall_clock"] for s in batch_stats) / len(batch_stats)
@@ -510,7 +529,7 @@ def generate_markdown(all_stats, matchups, experiment_name, tool_order, tool_sho
     # Per-step tables
     w("## Per-Step Compute Time (runtime_seconds)")
     w("")
-    for size, clouds in sorted(matchups.items()):
+    for size, clouds in sorted(matchups.items(), key=lambda x: size_sort_key(x[0])):
         batch_stats = clouds["batch"]
         pulsar_stats = clouds["pulsar"]
         b_times = avg_tool_times(batch_stats)
@@ -596,7 +615,7 @@ def generate_markdown(all_stats, matchups, experiment_name, tool_order, tool_sho
         w("")
 
     # Runtime ratio analysis
-    for size, clouds in sorted(matchups.items()):
+    for size, clouds in sorted(matchups.items(), key=lambda x: size_sort_key(x[0])):
         b_times = avg_tool_times(clouds["batch"])
         p_times = avg_tool_times(clouds["pulsar"])
         b_slots_map = avg_tool_slots(clouds["batch"])
@@ -623,13 +642,13 @@ def generate_markdown(all_stats, matchups, experiment_name, tool_order, tool_sho
     w("")
     w("| Runner | Input | Wall Clock | Compute | Overhead | Overhead % |")
     w("|--------|-------|-----------|---------|----------|------------|")
-    for s in sorted(all_stats, key=lambda x: (x["cloud"], x["size"])):
+    for s in sorted(all_stats, key=lambda x: (x["cloud"], size_sort_key(x["size"]))):
         oh_pct = f"{s['overhead'] / s['wall_clock'] * 100:.0f}%" if s["wall_clock"] > 0 else "--"
         w(f"| {s['cloud']} R{s['run']} | {s['size']} | {fmt_min(s['wall_clock'])}m | {fmt_min(s['compute'])}m | {fmt_min(s['overhead'])}m | {oh_pct} |")
     w("")
 
     # Batch scaling
-    batch_only = sorted([s for s in all_stats if s["cloud"] == "batch"], key=lambda x: x["size"])
+    batch_only = sorted([s for s in all_stats if s["cloud"] == "batch"], key=lambda x: size_sort_key(x["size"]))
     if len(set(s["size"] for s in batch_only)) > 1:
         w("## Batch Scaling Analysis")
         w("")
@@ -638,7 +657,7 @@ def generate_markdown(all_stats, matchups, experiment_name, tool_order, tool_sho
             by_size[s["size"]].append(s)
         w("| Input | Wall Clock | Compute |")
         w("|-------|-----------|---------|")
-        for size in sorted(by_size.keys()):
+        for size in sorted(by_size.keys(), key=size_sort_key):
             avg_wall = sum(s["wall_clock"] for s in by_size[size]) / len(by_size[size])
             avg_comp = sum(s["compute"] for s in by_size[size]) / len(by_size[size])
             n = len(by_size[size])
@@ -650,7 +669,7 @@ def generate_markdown(all_stats, matchups, experiment_name, tool_order, tool_sho
     w("## Key Findings")
     w("")
     finding_num = 1
-    for size, clouds in sorted(matchups.items()):
+    for size, clouds in sorted(matchups.items(), key=lambda x: size_sort_key(x[0])):
         b_wall = sum(s["wall_clock"] for s in clouds["batch"]) / len(clouds["batch"])
         p_wall = sum(s["wall_clock"] for s in clouds["pulsar"]) / len(clouds["pulsar"])
         b_comp = sum(s["compute"] for s in clouds["batch"]) / len(clouds["batch"])
@@ -663,7 +682,7 @@ def generate_markdown(all_stats, matchups, experiment_name, tool_order, tool_sho
         finding_num += 1
 
     # Tools faster on Pulsar
-    for size, clouds in sorted(matchups.items()):
+    for size, clouds in sorted(matchups.items(), key=lambda x: size_sort_key(x[0])):
         b_times = avg_tool_times(clouds["batch"])
         p_times = avg_tool_times(clouds["pulsar"])
         faster = [(t, b_times[t], p_times[t]) for t in tool_order
@@ -726,7 +745,7 @@ def generate_html(all_stats, matchups, experiment_name, tool_order, tool_short):
 
     # Prepare data for charts
     chart_data = {}
-    for size, clouds in sorted(matchups.items()):
+    for size, clouds in sorted(matchups.items(), key=lambda x: size_sort_key(x[0])):
         b_times = avg_tool_times(clouds["batch"])
         p_times = avg_tool_times(clouds["pulsar"])
         b_slots = avg_tool_slots(clouds["batch"])
@@ -738,7 +757,7 @@ def generate_html(all_stats, matchups, experiment_name, tool_order, tool_short):
 
     # Overview data
     overview_data = []
-    for s in sorted(all_stats, key=lambda x: (x["cloud"], x["size"], x["run"])):
+    for s in sorted(all_stats, key=lambda x: (x["cloud"], size_sort_key(x["size"]), x["run"])):
         overview_data.append({
             "label": f"{s['cloud']} R{s['run']} {s['size']}",
             "compute": round(s["compute"] / 60, 1),
@@ -753,13 +772,13 @@ def generate_html(all_stats, matchups, experiment_name, tool_order, tool_short):
             batch_by_size[s["size"]].append(s)
 
     scaling_data = {}
-    for size in sorted(batch_by_size.keys()):
+    for size in sorted(batch_by_size.keys(), key=size_sort_key):
         avg_times = avg_tool_times(batch_by_size[size])
         scaling_data[size] = [avg_times.get(t, 0) for t in tool_order]
 
     tools_json = json.dumps([tool_short.get(t, t) for t in tool_order])
     tools_full_json = json.dumps(tool_order)
-    matchup_sizes = sorted(matchups.keys())
+    matchup_sizes = sorted(matchups.keys(), key=size_sort_key)
 
     # Check Pulsar slots status
     pulsar_stats = [s for s in all_stats if s["cloud"] == "pulsar"]
@@ -957,7 +976,7 @@ def generate_html(all_stats, matchups, experiment_name, tool_order, tool_short):
     oh_per_step_labels = []
     oh_per_step_data = []
     oh_per_step_colors = []
-    for s in sorted(all_stats, key=lambda x: (x["cloud"], x["size"])):
+    for s in sorted(all_stats, key=lambda x: (x["cloud"], size_sort_key(x["size"]))):
         oh_per_step_labels.append(f"{s['cloud']} R{s['run']} {s['size']}")
         oh_per_step_data.append(round(s["overhead"] / s["steps"] / 60, 1))
         oh_per_step_colors.append(blue if s["cloud"] == "batch" else amber)
@@ -1001,7 +1020,7 @@ def generate_html(all_stats, matchups, experiment_name, tool_order, tool_short):
 
     # Scaling charts
     if len(scaling_data) > 1:
-        scaling_sizes = sorted(scaling_data.keys())
+        scaling_sizes = sorted(scaling_data.keys(), key=size_sort_key)
         colors = ['#93bbfd', '#3b82f6', '#1d4ed8', '#1e3a5f']
         h(f'new Chart(document.getElementById("scalingChart"), {{')
         h(f'  type: "bar", data: {{ labels: tools, datasets: [')
@@ -1150,10 +1169,9 @@ def main():
         print(f"  Found {len(experiments)} experiments: "
               f"{', '.join(name for name, _ in experiments)}")
         for name, exp_jobs in experiments:
-            sub_name = f"{experiment_name}-{name}"
-            docs_dir = os.path.join(base_dir, "docs", sub_name)
-            print(f"\n[{sub_name}]")
-            generate_experiment(exp_jobs, sub_name, docs_dir)
+            docs_dir = os.path.join(base_dir, "docs", name)
+            print(f"\n[{name}]")
+            generate_experiment(exp_jobs, name, docs_dir)
 
 
 if __name__ == "__main__":

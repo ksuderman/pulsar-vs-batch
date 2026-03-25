@@ -36,6 +36,18 @@ BOOT_DISK_PER_GB_MONTH = 0.10  # $/GB/month (pd-balanced)
 PULSAR_SSD_GB = 375   # Local SSD per Pulsar job
 BOOT_DISK_GB = 30     # Boot disk per job
 
+# Galaxy host VM: e2-standard-4 (4 vCPU, 16 GB)
+E2_VCPU_PER_HOUR = 0.02238
+E2_MEM_PER_GB_HOUR = 0.003000
+GALAXY_VM_VCPUS = 4
+GALAXY_VM_MEM_GB = 16
+GALAXY_VM_HOURLY = GALAXY_VM_VCPUS * E2_VCPU_PER_HOUR + GALAXY_VM_MEM_GB * E2_MEM_PER_GB_HOUR
+
+# Traditional single-VM model: n2-standard-20 (20 vCPU, 80 GB)
+LOCAL_VM_VCPUS = 20
+LOCAL_VM_MEM_GB = 80
+LOCAL_VM_HOURLY = LOCAL_VM_VCPUS * VCPU_PER_HOUR + LOCAL_VM_MEM_GB * MEM_PER_GB_HOUR
+
 # N2 standard machine types: vCPU -> memory GB
 N2_STANDARD = {2: 8, 4: 16, 8: 32, 16: 64, 32: 128, 48: 192, 64: 256, 80: 320, 96: 384, 128: 512}
 
@@ -364,7 +376,8 @@ def _per_tool_table(w, tool_data, tool_order, rainstone, label):
 
 
 def generate_markdown(compute_cloud, compute_tool, wall_cloud, wall_tool,
-                      tool_order, rainstone, experiment_name, date_range):
+                      tool_order, rainstone, experiment_name, date_range,
+                      galaxy_vm=None, local_vm=None):
     workflow_title = derive_experiment_title(experiment_name)
     total_jobs = sum(ct["jobs"] for ct in wall_cloud.values())
 
@@ -395,12 +408,47 @@ def generate_markdown(compute_cloud, compute_tool, wall_cloud, wall_tool,
     w("")
     wall_grand = _runner_summary_table(w, wall_cloud, "Wallclock")
     w("")
-    if "batch" in wall_cloud and "pulsar" in wall_cloud:
+
+    # Galaxy VM cost (e2-standard-4 host, not included in per-tool costs)
+    if galaxy_vm:
+        w("### Galaxy Host VM Cost")
+        w("")
+        w("Each runner requires a Galaxy host VM (e2-standard-4, 4 vCPU, 16 GB) "
+          "running for the duration of the experiment. This cost is not included "
+          "in the per-tool or compute-time calculations above.")
+        w("")
+        w("| Runner | Duration | Galaxy VM Cost |")
+        w("|--------|----------|----------------|")
+        for cloud in ["batch", "pulsar"]:
+            if cloud in galaxy_vm:
+                gv = galaxy_vm[cloud]
+                w(f"| **{cloud.title()}** | {gv['hours']:.1f}h | ${gv['cost']:.2f} |")
+        w("")
+
+    # Total wallclock + Galaxy VM
+    if galaxy_vm:
+        w("### Total Estimated Cost (Batch Jobs + Galaxy VM)")
+        w("")
+        w("| Runner | Batch Job Cost | Galaxy VM Cost | **Total** |")
+        w("|--------|---------------|----------------|-----------|")
+        for cloud in ["batch", "pulsar"]:
+            if cloud in wall_cloud and cloud in galaxy_vm:
+                jc = wall_cloud[cloud]["total_cost"]
+                gc = galaxy_vm[cloud]["cost"]
+                w(f"| **{cloud.title()}** | ${jc:.2f} | ${gc:.2f} | **${jc + gc:.2f}** |")
+        w("")
+        if "batch" in wall_cloud and "pulsar" in wall_cloud:
+            b = wall_cloud["batch"]["total_cost"] + galaxy_vm.get("batch", {}).get("cost", 0)
+            p = wall_cloud["pulsar"]["total_cost"] + galaxy_vm.get("pulsar", {}).get("cost", 0)
+            ratio = p / b if b > 0 else 0
+            w(f"Pulsar costs **${p:.2f}** vs Batch **${b:.2f}** ({ratio:.1f}x) including Galaxy VM.")
+        w("")
+    elif "batch" in wall_cloud and "pulsar" in wall_cloud:
         b = wall_cloud["batch"]["total_cost"]
         p = wall_cloud["pulsar"]["total_cost"]
         ratio = p / b if b > 0 else 0
         w(f"Pulsar costs **${p:.2f}** vs Batch **${b:.2f}** ({ratio:.1f}x).")
-    w("")
+        w("")
 
     # ---- Compute-only costs (cgroups runtime) ----
     w("## Compute-Only Cost (cgroups)")
@@ -535,6 +583,54 @@ def generate_markdown(compute_cloud, compute_tool, wall_cloud, wall_tool,
           "and reflect historical averages across usegalaxy.org production workloads.")
     w("")
 
+    # Deployment Model Comparison
+    if local_vm and galaxy_vm:
+        w("## Deployment Model Comparison")
+        w("")
+        w("Comparison of our GCP Batch approach (Galaxy + Batch VMs) against the "
+          "traditional deployment model where Galaxy runs jobs locally on a single "
+          "large VM (n2-standard-20, 20 vCPU, 80 GB).")
+        w("")
+        w("In the local model, the single VM must run for the entire experiment "
+          "duration. In the Batch model, per-job VMs are provisioned on demand "
+          "and the Galaxy host is a smaller e2-standard-4.")
+        w("")
+        w("| Model | Runner | Duration | Job Cost | Galaxy VM | **Total** |")
+        w("|-------|--------|----------|----------|-----------|-----------|")
+        for cloud in ["batch", "pulsar"]:
+            if cloud not in wall_cloud or cloud not in galaxy_vm:
+                continue
+            jc = wall_cloud[cloud]["total_cost"]
+            gc = galaxy_vm[cloud]["cost"]
+            batch_total = jc + gc
+            lc = local_vm[cloud]["cost"]
+            dur = galaxy_vm[cloud]["hours"]
+            w(f"| **GCP Batch** | {cloud.title()} | {dur:.1f}h | ${jc:.2f} | "
+              f"${gc:.2f} | **${batch_total:.2f}** |")
+            w(f"| **Local VM** | {cloud.title()} | {dur:.1f}h | -- | "
+              f"${lc:.2f} | **${lc:.2f}** |")
+        w("")
+
+        # Summary comparison
+        for cloud in ["batch", "pulsar"]:
+            if cloud not in wall_cloud or cloud not in galaxy_vm:
+                continue
+            batch_total = wall_cloud[cloud]["total_cost"] + galaxy_vm[cloud]["cost"]
+            lv = local_vm[cloud]["cost"]
+            if lv > 0:
+                ratio = batch_total / lv
+                if ratio < 1:
+                    w(f"**{cloud.title()}**: GCP Batch is **{(1 - ratio) * 100:.0f}% cheaper** "
+                      f"than a local n2-standard-20 (${batch_total:.2f} vs ${lv:.2f}).")
+                else:
+                    w(f"**{cloud.title()}**: GCP Batch is **{(ratio - 1) * 100:.0f}% more expensive** "
+                      f"than a local n2-standard-20 (${batch_total:.2f} vs ${lv:.2f}).")
+        w("")
+        w(f"Local VM pricing: n2-standard-20 at ${LOCAL_VM_HOURLY:.4f}/hour "
+          f"({LOCAL_VM_VCPUS} vCPU × ${VCPU_PER_HOUR}/h + "
+          f"{LOCAL_VM_MEM_GB} GB × ${MEM_PER_GB_HOUR}/h).")
+        w("")
+
     return "\n".join(lines)
 
 
@@ -575,7 +671,8 @@ def _ratio_label(b_total, p_total):
 
 
 def generate_html(compute_cloud, compute_tool, wall_cloud, wall_tool,
-                  tool_order, rainstone, experiment_name):
+                  tool_order, rainstone, experiment_name,
+                  galaxy_vm=None, local_vm=None):
     workflow_title = derive_experiment_title(experiment_name)
     total_jobs = sum(ct["jobs"] for ct in wall_cloud.values())
     num_tools = len(tool_order)
@@ -693,6 +790,16 @@ def generate_html(compute_cloud, compute_tool, wall_cloud, wall_tool,
     h(f'    <div class="card overhead"><div class="label">Overhead Ratio</div>'
       f'<div class="value">{b_overhead:.1f}x / {p_overhead:.1f}x</div>'
       f'<div class="detail">Wallclock / Compute (Batch / Pulsar)</div></div>')
+
+    # Galaxy VM + total cost cards
+    if galaxy_vm:
+        b_gv = galaxy_vm.get("batch", {"cost": 0})
+        p_gv = galaxy_vm.get("pulsar", {"cost": 0})
+        b_total_all = w_b_ct["total_cost"] + b_gv["cost"]
+        p_total_all = w_p_ct["total_cost"] + p_gv["cost"]
+        h(f'    <div class="card total"><div class="label">Total (Jobs + Galaxy VM)</div>'
+          f'<div class="value">${b_total_all:.2f} / ${p_total_all:.2f}</div>'
+          f'<div class="detail">Batch / Pulsar (incl. e2-standard-4 host)</div></div>')
     h('  </div>')
 
     h('  <div class="chart-container">')
@@ -1015,6 +1122,7 @@ def derive_experiment_title(experiment_name):
             break
     if not title:
         title = "Variant Analysis"
+    title = title.replace("-", " ")
     return title
 
 
@@ -1036,6 +1144,30 @@ def generate_experiment(jobs, experiment_name, docs_dir, no_rainstone=False):
     date_range = (f"{min(all_creates)[:19].replace('T', ' ')} to "
                   f"{max(all_updates)[:19].replace('T', ' ')} UTC")
 
+    # Galaxy VM cost: each cloud has its own Galaxy host VM running for the
+    # duration of that cloud's experiment (first create to last update).
+    galaxy_vm = {}
+    for cloud in ["batch", "pulsar"]:
+        cloud_jobs = [j for j in ok_jobs if j["cloud"] == cloud]
+        if not cloud_jobs:
+            continue
+        creates = [datetime.fromisoformat(j["create_time"]) for j in cloud_jobs]
+        updates = [datetime.fromisoformat(j["update_time"]) for j in cloud_jobs]
+        duration_hours = (max(updates) - min(creates)).total_seconds() / 3600
+        galaxy_vm[cloud] = {
+            "hours": duration_hours,
+            "cost": duration_hours * GALAXY_VM_HOURLY,
+        }
+
+    # Local single-VM model cost (n2-standard-20 for experiment duration)
+    local_vm = {}
+    for cloud in ["batch", "pulsar"]:
+        if cloud in galaxy_vm:
+            local_vm[cloud] = {
+                "hours": galaxy_vm[cloud]["hours"],
+                "cost": galaxy_vm[cloud]["hours"] * LOCAL_VM_HOURLY,
+            }
+
     # Rainstone
     rainstone = {}
     if not no_rainstone:
@@ -1045,7 +1177,8 @@ def generate_experiment(jobs, experiment_name, docs_dir, no_rainstone=False):
 
     # Generate Markdown
     md = generate_markdown(compute_cloud, compute_tool, wall_cloud, wall_tool,
-                           tool_order, rainstone, experiment_name, date_range)
+                           tool_order, rainstone, experiment_name, date_range,
+                           galaxy_vm, local_vm)
     md_path = os.path.join(docs_dir, "costs.md")
     with open(md_path, "w") as f:
         f.write(md)
@@ -1053,7 +1186,8 @@ def generate_experiment(jobs, experiment_name, docs_dir, no_rainstone=False):
 
     # Generate HTML
     html = generate_html(compute_cloud, compute_tool, wall_cloud, wall_tool,
-                         tool_order, rainstone, experiment_name)
+                         tool_order, rainstone, experiment_name,
+                         galaxy_vm, local_vm)
     html_path = os.path.join(docs_dir, "cost-charts.html")
     with open(html_path, "w") as f:
         f.write(html)
@@ -1109,10 +1243,9 @@ def main():
         print(f"  Found {len(experiments)} experiments: "
               f"{', '.join(name for name, _ in experiments)}")
         for name, exp_jobs in experiments:
-            sub_name = f"{experiment_name}-{name}"
-            docs_dir = os.path.join(base_dir, "docs", sub_name)
-            print(f"\n[{sub_name}]")
-            generate_experiment(exp_jobs, sub_name, docs_dir, args.no_rainstone)
+            docs_dir = os.path.join(base_dir, "docs", name)
+            print(f"\n[{name}]")
+            generate_experiment(exp_jobs, name, docs_dir, args.no_rainstone)
 
 
 if __name__ == "__main__":
