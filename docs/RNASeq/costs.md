@@ -26,17 +26,17 @@ Each runner requires a Galaxy host VM (e2-standard-4, 4 vCPU, 16 GB) running for
 
 | Runner | Duration | Galaxy VM Cost |
 |--------|----------|----------------|
-| **Batch** | 151.0h | $20.77 |
-| **Pulsar** | 7.5h | $1.03 |
+| **Batch** | 3.0h | $0.41 |
+| **Pulsar** | 7.1h | $0.98 |
 
 ### Total Estimated Cost (Batch Jobs + Galaxy VM)
 
 | Runner | Batch Job Cost | Galaxy VM Cost | **Total** |
 |--------|---------------|----------------|-----------|
-| **Batch** | $3.94 | $20.77 | **$24.70** |
-| **Pulsar** | $11.68 | $1.03 | **$12.71** |
+| **Batch** | $3.94 | $0.41 | **$4.35** |
+| **Pulsar** | $11.68 | $0.98 | **$12.66** |
 
-Pulsar costs **$12.71** vs Batch **$24.70** (0.5x) including Galaxy VM.
+Pulsar costs **$12.66** vs Batch **$4.35** (2.9x) including Galaxy VM.
 
 ## Compute-Only Cost (cgroups)
 
@@ -155,12 +155,12 @@ In the local model, the single VM must run for the entire experiment duration. I
 
 | Model | Runner | Duration | Job Cost | Galaxy VM | **Total** |
 |-------|--------|----------|----------|-----------|-----------|
-| **GCP Batch** | Batch | 151.0h | $3.94 | $20.77 | **$24.70** |
-| **Local VM** | Batch | 151.0h | -- | $146.65 | **$146.65** |
-| **GCP Batch** | Pulsar | 7.5h | $11.68 | $1.03 | **$12.71** |
-| **Local VM** | Pulsar | 7.5h | -- | $7.24 | **$7.24** |
+| **GCP Batch** | Batch | 3.0h | $3.94 | $0.41 | **$4.35** |
+| **Local VM** | Batch | 3.0h | -- | $2.89 | **$2.89** |
+| **GCP Batch** | Pulsar | 7.1h | $11.68 | $0.98 | **$12.66** |
+| **Local VM** | Pulsar | 7.1h | -- | $6.93 | **$6.93** |
 
-**Batch**: GCP Batch is **83% cheaper** than a local n2-standard-20 ($24.70 vs $146.65).
-**Pulsar**: GCP Batch is **75% more expensive** than a local n2-standard-20 ($12.71 vs $7.24).
+**Batch**: GCP Batch is **51% more expensive** than a local n2-standard-20 ($4.35 vs $2.89).
+**Pulsar**: GCP Batch is **83% more expensive** than a local n2-standard-20 ($12.66 vs $6.93).
 
 Local VM pricing: n2-standard-20 at $0.9712/hour (20 vCPU × $0.031611/h + 80 GB × $0.004237/h).

@@ -156,11 +156,11 @@ In the local model, the single VM must run for the entire experiment duration. I
 | Model | Runner | Duration | Job Cost | Galaxy VM | **Total** |
 |-------|--------|----------|----------|-----------|-----------|
 | **GCP Batch** | Batch | 17.7h | $16.86 | $2.44 | **$19.30** |
-| **Local VM** | Batch | 17.7h | -- | $17.23 | **$17.23** |
+| **Local VM** | Batch | 17.7h | -- | $17.22 | **$17.22** |
 | **GCP Batch** | Pulsar | 19.8h | $21.22 | $2.72 | **$23.94** |
-| **Local VM** | Pulsar | 19.8h | -- | $19.21 | **$19.21** |
+| **Local VM** | Pulsar | 19.8h | -- | $19.19 | **$19.19** |
 
-**Batch**: GCP Batch is **12% more expensive** than a local n2-standard-20 ($19.30 vs $17.23).
-**Pulsar**: GCP Batch is **25% more expensive** than a local n2-standard-20 ($23.94 vs $19.21).
+**Batch**: GCP Batch is **12% more expensive** than a local n2-standard-20 ($19.30 vs $17.22).
+**Pulsar**: GCP Batch is **25% more expensive** than a local n2-standard-20 ($23.94 vs $19.19).
 
 Local VM pricing: n2-standard-20 at $0.9712/hour (20 vCPU × $0.031611/h + 80 GB × $0.004237/h).

@@ -85,6 +85,7 @@ def load_metrics(metrics_dir):
         jobs.append({
             "cloud": d["cloud"],
             "workflow_id": d.get("workflow_id", ""),
+            "history_id": d.get("history_id", ""),
             "tool": tool,
             "state": d["metrics"]["state"],
             "runtime": runtime or 0,
@@ -1146,19 +1147,25 @@ def generate_experiment(jobs, experiment_name, docs_dir, no_rainstone=False):
     date_range = (f"{min(all_creates)[:19].replace('T', ' ')} to "
                   f"{max(all_updates)[:19].replace('T', ' ')} UTC")
 
-    # Galaxy VM cost: each cloud has its own Galaxy host VM running for the
-    # duration of that cloud's experiment (first create to last update).
+    # Galaxy VM cost: sum per-run durations (each history is one workflow
+    # invocation).  This avoids inflating the cost when runs were submitted
+    # days apart on the same server.
     galaxy_vm = {}
     for cloud in ["batch", "pulsar"]:
         cloud_jobs = [j for j in ok_jobs if j["cloud"] == cloud]
         if not cloud_jobs:
             continue
-        creates = [datetime.fromisoformat(j["create_time"]) for j in cloud_jobs]
-        updates = [datetime.fromisoformat(j["update_time"]) for j in cloud_jobs]
-        duration_hours = (max(updates) - min(creates)).total_seconds() / 3600
+        by_history = defaultdict(list)
+        for j in cloud_jobs:
+            by_history[j.get("history_id", "")].append(j)
+        total_hours = 0
+        for hist_jobs in by_history.values():
+            creates = [datetime.fromisoformat(j["create_time"]) for j in hist_jobs]
+            updates = [datetime.fromisoformat(j["update_time"]) for j in hist_jobs]
+            total_hours += (max(updates) - min(creates)).total_seconds() / 3600
         galaxy_vm[cloud] = {
-            "hours": duration_hours,
-            "cost": duration_hours * GALAXY_VM_HOURLY,
+            "hours": total_hours,
+            "cost": total_hours * GALAXY_VM_HOURLY,
         }
 
     # Local single-VM model cost (n2-standard-20 for experiment duration)
