@@ -390,7 +390,8 @@ def generate_markdown(compute_cloud, compute_tool, wall_cloud, wall_tool,
     w("")
     w(f"# {workflow_title} Cost Summary")
     w("")
-    w(f"**[Interactive Cost Charts](cost-charts.html)** | "
+    w(f"**[Home](../index.html)** | "
+      f"**[Interactive Cost Charts](cost-charts.html)** | "
       f"**[Performance Report](index.html)** | "
       f"**[Performance Charts](charts.html)**")
     w("")
@@ -752,9 +753,10 @@ def generate_html(compute_cloud, compute_tool, wall_cloud, wall_tool,
     h(f'<p class="subtitle">{workflow_title} &mdash; {total_jobs} jobs &mdash; {num_tools} tool types &mdash; us-east4</p>')
     h('')
     h('<div class="nav">')
-    h('  <a href="index.html">&larr; Results Report</a>')
+    h('  <a href="../index.html">&larr; Home</a>')
+    h('  <a href="index.html">Results Report</a>')
     h('  <a href="charts.html">Performance Charts</a>')
-    h('  <a href="costs.html">Cost Tables (Markdown)</a>')
+    h('  <a href="costs.html">Cost Tables</a>')
     h('</div>')
     h('')
     h('<div class="tabs">')

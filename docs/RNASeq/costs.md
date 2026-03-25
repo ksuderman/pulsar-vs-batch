@@ -4,7 +4,7 @@ title: RNASeq Cost Summary
 
 # RNASeq Cost Summary
 
-**[Interactive Cost Charts](cost-charts.html)** | **[Performance Report](index.html)** | **[Performance Charts](charts.html)**
+**[Home](../index.html)** | **[Interactive Cost Charts](cost-charts.html)** | **[Performance Report](index.html)** | **[Performance Charts](charts.html)**
 
 **Period:** 2026-03-17 13:21:55 to 2026-03-23 20:22:17 UTC  
 **Region:** us-east4  

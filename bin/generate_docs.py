@@ -427,7 +427,8 @@ def generate_markdown(all_stats, matchups, experiment_name, tool_order, tool_sho
     w("")
     w(f"# Pulsar vs Direct GCP Batch: {workflow_title}")
     w("")
-    w("**[Interactive Charts](charts.html)** | "
+    w("**[Home](../index.html)** | "
+      "**[Interactive Charts](charts.html)** | "
       "**[Cost Summary](costs.html)** | "
       "**[Cost Charts](cost-charts.html)**")
     w("")
