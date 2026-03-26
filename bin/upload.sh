@@ -19,10 +19,16 @@ for cloud in $CLOUDS ; do
     abm $cloud dataset import --name reverse --history $hid chipseq-2
 done
 
-for history in rna rna-20 rna-50 variant-test variant-2g variant-5g variant-10g ; do
+for history in rna rna-20 rna-50 variant-test ; do
     echo "Importing history $history"
     parallel "$CLOUDS" history import $history
 done
+for size in 2g 5g 10g ; do
+    echo "Importing history $history"
+    parallel "$CLOUDS" histor import variant-$size
+    parallel "$CLOUDS" histor import chipseq-$size
+done
+
 for workflow in rnaseq-pe variant chipseq-pe ; do
     echo "Importing workflow $workflow to $cloud"
     parallel "$CLOUDS" workflow import $workflow

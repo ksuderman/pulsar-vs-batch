@@ -13,7 +13,7 @@
   - history_name: 2GB
     inputs:
     - name: PE fastq input
-      collection: chipseq-2gb
+      collection: chipseq-2g
     - name: Reference genome
       value: hg38
     - name: Effective genome size
@@ -23,7 +23,7 @@
   - history_name: 5GB
     inputs:
     - name: PE fastq input
-      collection: chipseq-5gb
+      collection: chipseq-5g
     - name: Reference genome
       value: hg38
     - name: Effective genome size
@@ -33,7 +33,7 @@
   - history_name: 10GB
     inputs:
     - name: PE fastq input
-      collection: chipseq-10gb
+      collection: chipseq-10g
     - name: Reference genome
       value: hg38
     - name: Effective genome size
