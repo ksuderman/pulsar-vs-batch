@@ -8,7 +8,7 @@ fi
 
 while [[ $# -gt 0 ]] ; do
     case $1 in
-        batch|bucket|pulsar)
+        batch|bucket|pulsar|single)
             cloud=$1
             abm $cloud history list | grep imported | while read -r input ; do
                 hid=$(echo $input | awk '{print $1}')

@@ -20,7 +20,7 @@ function rename_rnaseq_dataset() {
 
 while [[ $# -gt 0 ]] ; do
     case $1 in
-        batch|bucket|pulsar)
+        batch|bucket|pulsar|single)
             for size in 2GB 5GB 10GB ; do
                 dsid=$(get_dataset_id $1 "Variant calling inputs - $size")
                 echo abm $1 dataset rename "Variant calling inputs - $size" $dsid SRR24043307-$size
