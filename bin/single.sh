@@ -1,0 +1,102 @@
+#!/usr/bin/env bash
+
+CLOUD=single
+BRANCH=gcs-and-pulsar
+SERVER=ks-$CLOUD-test
+REPO=${REPO:-https://github.com/ksuderman/galaxy-k8s-boot}
+DRY_RUN=""
+
+export ZONE=${ZONE:-"us-east4-c"}
+
+# ANSI formatting
+reset="\033[0m"
+bold="\033[1m"
+
+function hi() {
+    echo -e "$bold$@$reset"
+}
+
+NAME=$(basename "$0")
+
+function help() {
+    cat << EOF
+
+$(hi NAME)
+    $NAME
+
+$(hi DESCRIPTION)
+    Quick-start wrapper around $(hi launch_vm.sh) with preset defaults for
+    launching a Galaxy Kubernetes VM configured to route single core jobs
+    to the K8S runner.
+
+$(hi SYNOPSIS)
+    $NAME [start|stop|bounce|kube|help]
+
+$(hi OPTIONS)
+    $(hi start)             start the Galaxy VM
+    $(hi stop)              stop the Galaxy VM
+    $(hi bounce)            stop and restart the Galaxy VM
+    $(hi kube)              download the kubeconfig file for the cluster
+    $(hi -h)|$(hi --help)|$(hi help)    show this help message
+
+$(hi EXAMPLES)
+    \$> $NAME
+    \$> $NAME start
+    \$> $NAME stop
+    \$> $NAME help
+
+EOF
+}
+
+if [[ $# -eq 0 ]] ; then
+	help
+	exit
+fi
+
+function start() {
+	echo "Launching ${SERVER}"
+	bin/launch_vm.sh $SERVER \
+	  --git-repo $REPO \
+	  --git-branch $BRANCH \
+	  --disk-size 512 \
+	  -f values/values.yml \
+      -f mixins/multiuser.yml \
+      -f mixins/single.yml \
+	  -f mixins/local.yml \
+      -f mixins/admins.yml \
+      -f mixins/debug.yml \
+	  -f mixins/v26.1.yml
+
+}
+
+function stop() {
+	echo "Stopping $SERVER"
+	gcloud compute instances delete $SERVER --zone $ZONE --quiet
+	for disk in $(gcloud compute disks list --filter="name~.*${SERVER}.*" --format='value(name)') ; do
+		gcloud compute disks delete $disk --zone $ZONE --quiet
+	done
+}
+
+case $1 in
+	kube)
+		if [[ -e .kubeconfig ]] ; then
+			rm .kubeconfig
+		fi
+		bin/kube.sh --server $SERVER --cloud $CLOUD
+		;;
+	start) start ;;
+	stop) stop ;;
+	bounce)
+		stop
+		start
+		;;
+	-h|--help|help)
+		help
+		exit
+		;;
+	*)
+		echo "Unrecognized parameter $1"
+		help
+		exit 1
+		;;
+esac
