@@ -12,3 +12,4 @@ benchmark_confs:
 cloud:
   - batch
   - pulsar
+  - single
