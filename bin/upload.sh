@@ -25,8 +25,8 @@ for history in rna rna-20 rna-50 variant-test ; do
 done
 for size in 2g 5g 10g ; do
     echo "Importing history $history"
-    parallel "$CLOUDS" histor import variant-$size
-    parallel "$CLOUDS" histor import chipseq-$size
+    parallel "$CLOUDS" history import variant-$size
+    parallel "$CLOUDS" history import chipseq-$size
 done
 
 for workflow in rnaseq-pe variant chipseq-pe ; do
