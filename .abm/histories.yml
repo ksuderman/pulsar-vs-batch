@@ -12,6 +12,6 @@ variant-10g:
   https://benchmarking-inputs.s3.amazonaws.com/Variant/Variant-calling-inputs---10GB.rocrate.zip
 variant-test: 
   https://benchmarking-inputs.s3.amazonaws.com/ERR3485802/Galaxy-History-VC-Test-Data.tar.gz
-chipseq-2g: https://benchmarking-inputs.s3.us-east-1.amazonaws.com/ChiP-seq/Galaxy-History-ChiPSeq-Input-Data-2G.tar.gz
-chipseq-5g: https://benchmarking-inputs.s3.us-east-1.amazonaws.com/ChiP-seq/Galaxy-History-ChiPSeq-Input-Data-5G.tar.gz
-chipseq-10g: https://benchmarking-inputs.s3.us-east-1.amazonaws.com/ChiP-seq/Galaxy-History-ChiPSeq-Input-Data-10G.tar.gz
+chipseq-2g: https://benchmarking-inputs.s3.us-east-1.amazonaws.com/ChiP-seq/Galaxy-History-ChiPSeq-2G.tar.gz
+chipseq-5g: https://benchmarking-inputs.s3.us-east-1.amazonaws.com/ChiP-seq/Galaxy-History-ChiPSeq-5G.tar.gz
+chipseq-10g: https://benchmarking-inputs.s3.us-east-1.amazonaws.com/ChiP-seq/Galaxy-History-ChiPSeq-10G.tar.gz
