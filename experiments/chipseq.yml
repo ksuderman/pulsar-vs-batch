@@ -1,11 +1,11 @@
 # Comparing the Pulsar Batch runner to the direct GCP batch runner
-name: Pulsar-vs-Batch-RNASeq
+name: Pulsar-vs-Batch-ChiPSeq
 # The number of times each benchmark will be executed.
 runs: 1
 # The benchmarks that will be run as part of the experiment. Each benchmark
 # configuration defines the Galaxy workflow and input datasets to be used.
 benchmark_confs:
-  - benchmarks/rnaseq.yml
+  - benchmarks/chipseq-pe.yml
 # The cloud instances, as defined in the .abm/profile.yml file.
 cloud:
   - batch
