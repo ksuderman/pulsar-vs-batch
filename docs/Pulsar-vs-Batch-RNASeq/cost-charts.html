@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RNASeq: Cost Analysis</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f5f7fa; color: #1a1a2e; padding: 2rem; max-width: 1200px; margin: 0 auto; }
+h1 { font-size: 1.8rem; margin-bottom: 0.3rem; }
+.subtitle { color: #666; font-size: 0.95rem; margin-bottom: 1.5rem; }
+.nav { display: flex; gap: 1.5rem; margin-bottom: 1.5rem; font-size: 0.9rem; }
+.nav a { color: #3b82f6; text-decoration: none; }
+.tabs { display: flex; gap: 0; margin-bottom: 2rem; border-bottom: 2px solid #e5e7eb; flex-wrap: wrap; }
+.tab { padding: 0.7rem 1.4rem; cursor: pointer; font-size: 0.9rem; font-weight: 500; color: #666; border-bottom: 2px solid transparent; margin-bottom: -2px; user-select: none; }
+.tab:hover { color: #1a1a2e; }
+.tab.active { color: #3b82f6; border-bottom-color: #3b82f6; }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+.summary-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+.card { background: #fff; border-radius: 10px; padding: 1.2rem 1.5rem; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+.card .label { font-size: 0.8rem; color: #888; text-transform: uppercase; }
+.card .value { font-size: 1.8rem; font-weight: 700; margin-top: 0.2rem; }
+.card .detail { font-size: 0.85rem; color: #666; margin-top: 0.2rem; }
+.chart-container { background: #fff; border-radius: 10px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+.chart-container h2 { font-size: 1.1rem; margin-bottom: 0.3rem; }
+.chart-container .chart-desc { font-size: 0.85rem; color: #888; margin-bottom: 1rem; }
+.footer { text-align: center; color: #aaa; font-size: 0.8rem; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #e5e7eb; }
+</style></head><body>
+
+<h1>RNASeq: Cost Analysis</h1>
+<p class="subtitle">126 jobs &mdash; 12 tools &mdash; Batch, Pulsar, Single</p>
+<div class="nav">
+  <a href="../index.html">&larr; Home</a>
+  <a href="index.html">Results Report</a>
+  <a href="charts.html">Performance Charts</a>
+  <a href="costs.html">Cost Tables</a>
+</div>
+
+<div class="tabs">
+  <div class="tab active" data-tab="overview">Overview</div>
+  <div class="tab" data-tab="per-tool-wall">Per-Tool (Wallclock)</div>
+  <div class="tab" data-tab="per-tool-compute">Per-Tool (Compute)</div>
+  <div class="tab" data-tab="rainstone">Rainstone</div>
+</div>
+
+<div class="tab-content active" id="overview">
+  <div class="summary-cards">
+    <div class="card"><div class="label" style="color:#3b82f6">Batch</div><div class="value" style="color:#3b82f6">$5.61</div><div class="detail">46 jobs &middot; compute: $2.41</div></div>
+    <div class="card"><div class="label" style="color:#f59e0b">Pulsar</div><div class="value" style="color:#f59e0b">$2.53</div><div class="detail">20 jobs &middot; compute: $0.82</div></div>
+    <div class="card"><div class="label" style="color:#22c55e">Single</div><div class="value" style="color:#22c55e">$9.35</div><div class="detail">60 jobs &middot; compute: $3.45</div></div>
+  </div>
+  <div class="chart-container">
+    <h2>Wallclock vs Compute Cost</h2>
+    <p class="chart-desc">Grouped bars: what the CPU used vs what you pay.</p>
+    <canvas id="wallVsCompute" height="60"></canvas>
+  </div>
+  <div class="chart-container">
+    <h2>VM-Hours by Tool (Wallclock)</h2>
+    <p class="chart-desc">Total billed VM-hours per tool.</p>
+    <canvas id="vmHoursChart" height="100"></canvas>
+  </div>
+</div>
+<div class="tab-content" id="per-tool-wall">
+  <div class="chart-container"><h2>Per-Tool Wallclock Cost</h2>
+    <p class="chart-desc">Total wallclock cost per tool.</p>
+    <canvas id="perToolWall" height="100"></canvas></div>
+  <div class="chart-container"><h2>Per-Job Wallclock Cost</h2>
+    <p class="chart-desc">Average wallclock cost per job.</p>
+    <canvas id="perJobWall" height="100"></canvas></div>
+</div>
+<div class="tab-content" id="per-tool-compute">
+  <div class="chart-container"><h2>Per-Tool Compute Cost</h2>
+    <p class="chart-desc">Cost based on cgroups runtime only.</p>
+    <canvas id="perToolComp" height="100"></canvas></div>
+  <div class="chart-container"><h2>Per-Job Compute Cost</h2>
+    <p class="chart-desc">Average compute cost per job.</p>
+    <canvas id="perJobComp" height="100"></canvas></div>
+</div>
+<div class="tab-content" id="rainstone">
+  <div class="chart-container"><h2>Compute Cost vs Rainstone (usegalaxy.org)</h2>
+    <p class="chart-desc">Per-job compute cost vs Rainstone historical averages. Log scale.</p>
+    <canvas id="rainstoneChart" height="120"></canvas></div>
+</div>
+<div class="footer">Galaxy 26.1 &middot; us-east4 &middot; 126 jobs &middot; Generated 2026-04-01 15:11</div>
+<script>
+Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+Chart.defaults.font.size = 12;
+const tools = ["rna_star", "cufflinks", "wig_to_bigWig", "tp_awk_tool", "bedtools_genomecoveragebed", "revertR2orientationInBam", "multiqc", "bamFilter", "param_value_from_file", "cutadapt", "map_param_value", "compose_text_param"];
+const toolsShort = ["rna_star", "cufflinks", "wig_to_bigWi", "tp_awk_tool", "bedtools_gen", "revertR2orie", "multiqc", "bamFilter", "param_value_", "cutadapt", "map_param_va", "compose_text"];
+const dollarFmt = ctx => `$${ctx.raw.toFixed(4)}`;
+
+const w_batch_cost = [1.68, 1.58, 0.32, 0.44, 0.22, 0.3, 0.3, 0.27, 0.23, 0.19, 0.06, 0.02];
+const w_batch_pj = [0.8393, 0.7877, 0.053, 0.1097, 0.0363, 0.1504, 0.1512, 0.1356, 0.1171, 0.0648, 0.0051, 0.0054];
+const w_batch_hrs = [2.15, 4.01, 2.35, 4.33, 2.15, 2.97, 2.24, 2.68, 2.31, 0.5, 0.61, 0.16];
+const c_batch_cost = [1.42, 0.74, 0.0, 0.0, 0.03, 0.02, 0.0, 0.04, 0.0, 0.15, 0.0, 0.0];
+const c_batch_pj = [0.7091, 0.3696, 0.0007, 0.0, 0.0051, 0.0097, 0.0006, 0.0217, 0.0003, 0.0512, 0.0002, 0.0003];
+const w_pulsar_cost = [0.72, 0.64, 0.19, 0.23, 0.13, 0.15, 0.15, 0.13, 0.12, 0.06, 0.01, 0.0];
+const w_pulsar_pj = [0.7209, 0.6441, 0.0627, 0.1165, 0.0425, 0.1508, 0.1536, 0.1324, 0.1158, 0.0574, 0.0023, 0.0015];
+const w_pulsar_hrs = [0.9, 1.56, 1.21, 1.92, 1.05, 1.24, 0.99, 1.09, 0.95, 0.14, 0.07, 0.01];
+const c_pulsar_cost = [0.52, 0.24, 0.0, 0.0, 0.01, 0.01, 0.0, 0.01, 0.0, 0.02, 0.01, 0.0];
+const c_pulsar_pj = [0.5191, 0.2443, 0.0006, 0.0, 0.0035, 0.0071, 0.0003, 0.0124, 0.001, 0.0169, 0.0014, 0.0013];
+const w_single_cost = [2.81, 1.92, 1.02, 0.73, 0.73, 0.56, 0.5, 0.49, 0.37, 0.19, 0.02, 0.0];
+const w_single_pj = [0.9372, 0.6409, 0.1131, 0.122, 0.0808, 0.1855, 0.1678, 0.1636, 0.1234, 0.0648, 0.0017, 0.0012];
+const w_single_hrs = [3.6, 7.38, 7.53, 7.23, 7.18, 5.49, 3.72, 4.85, 3.66, 0.5, 0.2, 0.04];
+const c_single_cost = [2.28, 0.73, 0.01, 0.0, 0.09, 0.05, 0.0, 0.11, 0.0, 0.15, 0.01, 0.0];
+const c_single_pj = [0.7604, 0.2441, 0.0009, 0.0, 0.0101, 0.0181, 0.0005, 0.036, 0.0008, 0.0503, 0.001, 0.0012];
+const rainstoneAvg = [0.9108, 0.2317, 0, 0.0017, 0.0016, 0, 0.0013, 0, 0.0003, 0.0182, 0, 0];
+
+new Chart(document.getElementById("wallVsCompute"), { type: "bar", data: { labels: ["Batch", "Pulsar", "Single"], datasets: [
+  { label: "Compute", data: [2.41, 0.82, 3.45], backgroundColor: ["#93bbfd", "#fcd679", "#86efac"], borderRadius: 4 },
+  { label: "Wallclock", data: [5.61, 2.53, 9.35], backgroundColor: ["#3b82f6", "#f59e0b", "#22c55e"], borderRadius: 4 }
+] }, options: { responsive: true, plugins: { tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: $${ctx.raw.toFixed(2)}` } } }, scales: { y: { title: { display: true, text: "USD" }, beginAtZero: true } } } });
+
+new Chart(document.getElementById("vmHoursChart"), { type: "bar", data: { labels: toolsShort, datasets: [
+  { label: "Batch", data: w_batch_hrs, backgroundColor: "#3b82f6", borderRadius: 4 },
+  { label: "Pulsar", data: w_pulsar_hrs, backgroundColor: "#f59e0b", borderRadius: 4 },
+  { label: "Single", data: w_single_hrs, backgroundColor: "#22c55e", borderRadius: 4 },
+] }, options: { responsive: true, plugins: { legend: { position: "top" } }, scales: { y: { title: { display: true, text: "Hours" }, beginAtZero: true }, x: { ticks: { maxRotation: 45, minRotation: 45 } } } } });
+
+new Chart(document.getElementById("perToolWall"), { type: "bar", data: { labels: toolsShort, datasets: [
+  { label: "Batch", data: w_batch_cost, backgroundColor: "#3b82f6", borderRadius: 4 },
+  { label: "Pulsar", data: w_pulsar_cost, backgroundColor: "#f59e0b", borderRadius: 4 },
+  { label: "Single", data: w_single_cost, backgroundColor: "#22c55e", borderRadius: 4 },
+] }, options: { responsive: true, plugins: { legend: { position: "top" }, tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: $${ctx.raw.toFixed(2)}` } } }, scales: { y: { title: { display: true, text: "USD" }, beginAtZero: true }, x: { ticks: { maxRotation: 45, minRotation: 45 } } } } });
+
+new Chart(document.getElementById("perJobWall"), { type: "bar", data: { labels: toolsShort, datasets: [
+  { label: "Batch", data: w_batch_pj, backgroundColor: "#3b82f6", borderRadius: 4 },
+  { label: "Pulsar", data: w_pulsar_pj, backgroundColor: "#f59e0b", borderRadius: 4 },
+  { label: "Single", data: w_single_pj, backgroundColor: "#22c55e", borderRadius: 4 },
+] }, options: { responsive: true, plugins: { legend: { position: "top" }, tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: $${ctx.raw.toFixed(4)}` } } }, scales: { y: { title: { display: true, text: "USD per job" }, beginAtZero: true }, x: { ticks: { maxRotation: 45, minRotation: 45 } } } } });
+
+new Chart(document.getElementById("perToolComp"), { type: "bar", data: { labels: toolsShort, datasets: [
+  { label: "Batch", data: c_batch_cost, backgroundColor: "#3b82f6", borderRadius: 4 },
+  { label: "Pulsar", data: c_pulsar_cost, backgroundColor: "#f59e0b", borderRadius: 4 },
+  { label: "Single", data: c_single_cost, backgroundColor: "#22c55e", borderRadius: 4 },
+] }, options: { responsive: true, plugins: { legend: { position: "top" }, tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: $${ctx.raw.toFixed(2)}` } } }, scales: { y: { title: { display: true, text: "USD" }, beginAtZero: true }, x: { ticks: { maxRotation: 45, minRotation: 45 } } } } });
+
+new Chart(document.getElementById("perJobComp"), { type: "bar", data: { labels: toolsShort, datasets: [
+  { label: "Batch", data: c_batch_pj, backgroundColor: "#3b82f6", borderRadius: 4 },
+  { label: "Pulsar", data: c_pulsar_pj, backgroundColor: "#f59e0b", borderRadius: 4 },
+  { label: "Single", data: c_single_pj, backgroundColor: "#22c55e", borderRadius: 4 },
+] }, options: { responsive: true, plugins: { legend: { position: "top" }, tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: $${ctx.raw.toFixed(4)}` } } }, scales: { y: { title: { display: true, text: "USD per job" }, beginAtZero: true }, x: { ticks: { maxRotation: 45, minRotation: 45 } } } } });
+
+new Chart(document.getElementById("rainstoneChart"), { type: "bar", data: { labels: toolsShort, datasets: [
+  { label: "Batch", data: c_batch_pj, backgroundColor: "#3b82f6", borderRadius: 4 },
+  { label: "Pulsar", data: c_pulsar_pj, backgroundColor: "#f59e0b", borderRadius: 4 },
+  { label: "Single", data: c_single_pj, backgroundColor: "#22c55e", borderRadius: 4 },
+  { label: "Rainstone Avg", data: rainstoneAvg, backgroundColor: "#8b5cf6", borderRadius: 4 }
+] }, options: { responsive: true, plugins: { tooltip: { callbacks: { label: dollarFmt } } }, scales: { y: { type: "logarithmic", title: { display: true, text: "USD per job (log)" } }, x: { ticks: { maxRotation: 45, minRotation: 45 } } } } });
+
+document.querySelectorAll(".tab").forEach(tab => {
+  tab.addEventListener("click", () => {
+    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+    document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
+    tab.classList.add("active");
+    document.getElementById(tab.dataset.tab).classList.add("active");
+  });
+});
+</script></body></html>

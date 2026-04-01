@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Variant Benchmark Charts</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f5f7fa; color: #1a1a2e; padding: 2rem; max-width: 1200px; margin: 0 auto; }
+  h1 { font-size: 1.8rem; margin-bottom: 0.3rem; }
+  .subtitle { color: #666; font-size: 0.95rem; margin-bottom: 1.5rem; }
+  .nav { display: flex; gap: 1.5rem; margin-bottom: 1.5rem; font-size: 0.9rem; }
+  .nav a { color: #3b82f6; text-decoration: none; }
+  .nav a:hover { text-decoration: underline; }
+  .tabs { display: flex; gap: 0; margin-bottom: 2rem; border-bottom: 2px solid #e5e7eb; flex-wrap: wrap; }
+  .tab { padding: 0.7rem 1.4rem; cursor: pointer; font-size: 0.9rem; font-weight: 500; color: #666; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: color 0.2s, border-color 0.2s; user-select: none; }
+  .tab:hover { color: #1a1a2e; }
+  .tab.active { color: #3b82f6; border-bottom-color: #3b82f6; }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+  .chart-container { background: #fff; border-radius: 10px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+  .chart-container h2 { font-size: 1.1rem; margin-bottom: 0.3rem; }
+  .chart-container .chart-desc { font-size: 0.85rem; color: #888; margin-bottom: 1rem; }
+  .footer { text-align: center; color: #aaa; font-size: 0.8rem; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #e5e7eb; }
+</style>
+</head>
+<body>
+
+<h1>Variant Benchmark</h1>
+<p class="subtitle">12 tool types &mdash; 9 runs &mdash; Batch, Pulsar, Single</p>
+
+<div class="nav">
+  <a href="../index.html">&larr; Home</a>
+  <a href="index.html">Results Report</a>
+  <a href="costs.html">Cost Summary</a>
+  <a href="cost-charts.html">Cost Charts</a>
+</div>
+
+<div class="tabs">
+  <div class="tab active" data-tab="overview">Overview</div>
+  <div class="tab" data-tab="tab-2gb">2GB</div>
+  <div class="tab" data-tab="tab-5gb">5GB</div>
+  <div class="tab" data-tab="tab-10gb">10GB</div>
+</div>
+
+<div class="tab-content active" id="overview">
+  <div class="chart-container">
+    <h2>Wall Clock: Compute vs Scheduling Overhead</h2>
+    <p class="chart-desc">Stacked bars: compute time (solid) + scheduling/staging overhead (lighter) for each run.</p>
+    <canvas id="overviewStacked" height="80"></canvas>
+  </div>
+  <div class="chart-container">
+    <h2>Per-Step Scheduling Overhead</h2>
+    <p class="chart-desc">Average overhead per workflow step.</p>
+    <canvas id="overviewOHPerStep" height="80"></canvas>
+  </div>
+</div>
+
+<div class="tab-content" id="tab-2gb">
+  <div class="chart-container"><h2>Per-Step Compute Time &mdash; 2GB</h2>
+    <p class="chart-desc">Actual runtime_seconds per tool, all runners.</p>
+    <canvas id="bar_tab-2gb" height="100"></canvas></div>
+  <div class="chart-container"><h2>Cumulative Compute &mdash; 2GB</h2>
+    <p class="chart-desc">Running total of compute seconds.</p>
+    <canvas id="cum_tab-2gb" height="100"></canvas></div>
+</div>
+
+<div class="tab-content" id="tab-5gb">
+  <div class="chart-container"><h2>Per-Step Compute Time &mdash; 5GB</h2>
+    <p class="chart-desc">Actual runtime_seconds per tool, all runners.</p>
+    <canvas id="bar_tab-5gb" height="100"></canvas></div>
+  <div class="chart-container"><h2>Cumulative Compute &mdash; 5GB</h2>
+    <p class="chart-desc">Running total of compute seconds.</p>
+    <canvas id="cum_tab-5gb" height="100"></canvas></div>
+</div>
+
+<div class="tab-content" id="tab-10gb">
+  <div class="chart-container"><h2>Per-Step Compute Time &mdash; 10GB</h2>
+    <p class="chart-desc">Actual runtime_seconds per tool, all runners.</p>
+    <canvas id="bar_tab-10gb" height="100"></canvas></div>
+  <div class="chart-container"><h2>Cumulative Compute &mdash; 10GB</h2>
+    <p class="chart-desc">Running total of compute seconds.</p>
+    <canvas id="cum_tab-10gb" height="100"></canvas></div>
+</div>
+
+<div class="footer">
+  Galaxy 26.1 &middot; us-east4 &middot; 9 workflow runs &middot; Generated 2026-04-01 15:10</div>
+
+<script>
+const tools = ["lofreq_call", "bwa_mem", "picard_MarkD", "snpEff_build", "lofreq_viter", "lofreq_indel", "fastp", "samtools_vie", "samtools_sta", "snpEff", "multiqc", "lofreq_filte"];
+Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+Chart.defaults.font.size = 12;
+const secTooltip = ctx => `${ctx.dataset.label}: ${ctx.raw}s (${(ctx.raw/60).toFixed(1)}m)`;
+function cumSum(arr) { let s=0; return arr.map(v => s += v); }
+
+const data_batch_2gb = [3948, 4496, 491, 1295, 355, 226, 162, 145, 46, 0, 8, 1];
+const data_pulsar_2gb = [3872, 4319, 298, 179, 287, 158, 159, 98, 47, 4, 3, 0];
+const data_single_2gb = [3973, 4409, 473, 857, 351, 223, 166, 140, 46, 6, 7, 1];
+const data_batch_5gb = [8479, 6437, 1258, 1095, 734, 406, 401, 318, 113, 6, 8, 1];
+const data_pulsar_5gb = [8383, 5704, 710, 176, 617, 304, 403, 237, 105, 11, 3, 0];
+const data_single_5gb = [8546, 6015, 1150, 832, 722, 400, 402, 379, 129, 7, 7, 1];
+const data_batch_10gb = [0, 0, 0, 998, 0, 0, 510, 0, 0, 0, 0, 0];
+const data_pulsar_10gb = [14387, 8253, 1365, 174, 1047, 491, 477, 457, 204, 7, 2, 0];
+const data_single_10gb = [14641, 8545, 2297, 812, 1144, 617, 486, 709, 225, 7, 7, 2];
+
+const ovLabels = ["batch R1 2GB", "batch R1 5GB", "batch R1 10GB", "pulsar R1 2GB", "pulsar R1 5GB", "pulsar R1 10GB", "single R1 2GB", "single R1 5GB", "single R1 10GB"];
+const ovCompute = [186.2, 320.9, 25.1, 157.1, 277.6, 447.7, 177.5, 309.8, 491.5];
+const ovOverhead = [19.4, 16.7, 86.4, 78.9, 96.9, 131.8, 16.9, 13.6, 16.6];
+const ovColors = ["#3b82f6", "#3b82f6", "#3b82f6", "#f59e0b", "#f59e0b", "#f59e0b", "#22c55e", "#22c55e", "#22c55e"];
+const ovOHColors = ["#93bbfd", "#93bbfd", "#93bbfd", "#fcd679", "#fcd679", "#fcd679", "#86efac", "#86efac", "#86efac"];
+
+new Chart(document.getElementById("overviewStacked"), {
+  type: "bar",
+  data: { labels: ovLabels, datasets: [
+    { label: "Compute", data: ovCompute, backgroundColor: ovColors, borderRadius: 4 },
+    { label: "Scheduling Overhead", data: ovOverhead, backgroundColor: ovOHColors, borderRadius: 4 }
+  ]},
+  options: { responsive: true, plugins: { legend: { position: "top" }, tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.raw} min` } } }, scales: { x: { stacked: true, ticks: { maxRotation: 45, minRotation: 45 } }, y: { stacked: true, title: { display: true, text: "Minutes" }, beginAtZero: true } } }
+});
+
+new Chart(document.getElementById("overviewOHPerStep"), {
+  type: "bar",
+  data: { labels: ["batch R1 2GB", "batch R1 5GB", "batch R1 10GB", "pulsar R1 2GB", "pulsar R1 5GB", "pulsar R1 10GB", "single R1 2GB", "single R1 5GB", "single R1 10GB"], datasets: [{ label: "Overhead per step", data: [1.6, 1.4, 6.2, 6.1, 8.1, 11.0, 1.4, 1.1, 1.4], backgroundColor: ["#3b82f6", "#3b82f6", "#3b82f6", "#f59e0b", "#f59e0b", "#f59e0b", "#22c55e", "#22c55e", "#22c55e"], borderRadius: 4 }] },
+  options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { title: { display: true, text: "Minutes" }, beginAtZero: true }, x: { ticks: { maxRotation: 45, minRotation: 45 } } } }
+});
+
+new Chart(document.getElementById("bar_tab-2gb"), {
+  type: "bar", data: { labels: tools, datasets: [
+    { label: "Batch", data: data_batch_2gb, backgroundColor: "#3b82f6", borderRadius: 4 },
+    { label: "Pulsar", data: data_pulsar_2gb, backgroundColor: "#f59e0b", borderRadius: 4 },
+    { label: "Single", data: data_single_2gb, backgroundColor: "#22c55e", borderRadius: 4 },
+  ] }, options: { responsive: true, plugins: { legend: { position: "top" }, tooltip: { callbacks: { label: secTooltip } } }, scales: { y: { title: { display: true, text: "Seconds" }, beginAtZero: true }, x: { ticks: { maxRotation: 45, minRotation: 45 } } } }
+});
+new Chart(document.getElementById("cum_tab-2gb"), {
+  type: "line", data: { labels: tools, datasets: [
+    { label: "Batch", data: cumSum(data_batch_2gb).map(v => +(v/60).toFixed(1)), borderColor: "#3b82f6", backgroundColor: "#93bbfd33", fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: "#3b82f6" },
+    { label: "Pulsar", data: cumSum(data_pulsar_2gb).map(v => +(v/60).toFixed(1)), borderColor: "#f59e0b", backgroundColor: "#fcd67933", fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: "#f59e0b" },
+    { label: "Single", data: cumSum(data_single_2gb).map(v => +(v/60).toFixed(1)), borderColor: "#22c55e", backgroundColor: "#86efac33", fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: "#22c55e" },
+  ] }, options: { responsive: true, plugins: { tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.raw} min` } } }, scales: { y: { title: { display: true, text: "Minutes" }, beginAtZero: true }, x: { ticks: { maxRotation: 45, minRotation: 45 } } } }
+});
+
+new Chart(document.getElementById("bar_tab-5gb"), {
+  type: "bar", data: { labels: tools, datasets: [
+    { label: "Batch", data: data_batch_5gb, backgroundColor: "#3b82f6", borderRadius: 4 },
+    { label: "Pulsar", data: data_pulsar_5gb, backgroundColor: "#f59e0b", borderRadius: 4 },
+    { label: "Single", data: data_single_5gb, backgroundColor: "#22c55e", borderRadius: 4 },
+  ] }, options: { responsive: true, plugins: { legend: { position: "top" }, tooltip: { callbacks: { label: secTooltip } } }, scales: { y: { title: { display: true, text: "Seconds" }, beginAtZero: true }, x: { ticks: { maxRotation: 45, minRotation: 45 } } } }
+});
+new Chart(document.getElementById("cum_tab-5gb"), {
+  type: "line", data: { labels: tools, datasets: [
+    { label: "Batch", data: cumSum(data_batch_5gb).map(v => +(v/60).toFixed(1)), borderColor: "#3b82f6", backgroundColor: "#93bbfd33", fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: "#3b82f6" },
+    { label: "Pulsar", data: cumSum(data_pulsar_5gb).map(v => +(v/60).toFixed(1)), borderColor: "#f59e0b", backgroundColor: "#fcd67933", fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: "#f59e0b" },
+    { label: "Single", data: cumSum(data_single_5gb).map(v => +(v/60).toFixed(1)), borderColor: "#22c55e", backgroundColor: "#86efac33", fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: "#22c55e" },
+  ] }, options: { responsive: true, plugins: { tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.raw} min` } } }, scales: { y: { title: { display: true, text: "Minutes" }, beginAtZero: true }, x: { ticks: { maxRotation: 45, minRotation: 45 } } } }
+});
+
+new Chart(document.getElementById("bar_tab-10gb"), {
+  type: "bar", data: { labels: tools, datasets: [
+    { label: "Batch", data: data_batch_10gb, backgroundColor: "#3b82f6", borderRadius: 4 },
+    { label: "Pulsar", data: data_pulsar_10gb, backgroundColor: "#f59e0b", borderRadius: 4 },
+    { label: "Single", data: data_single_10gb, backgroundColor: "#22c55e", borderRadius: 4 },
+  ] }, options: { responsive: true, plugins: { legend: { position: "top" }, tooltip: { callbacks: { label: secTooltip } } }, scales: { y: { title: { display: true, text: "Seconds" }, beginAtZero: true }, x: { ticks: { maxRotation: 45, minRotation: 45 } } } }
+});
+new Chart(document.getElementById("cum_tab-10gb"), {
+  type: "line", data: { labels: tools, datasets: [
+    { label: "Batch", data: cumSum(data_batch_10gb).map(v => +(v/60).toFixed(1)), borderColor: "#3b82f6", backgroundColor: "#93bbfd33", fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: "#3b82f6" },
+    { label: "Pulsar", data: cumSum(data_pulsar_10gb).map(v => +(v/60).toFixed(1)), borderColor: "#f59e0b", backgroundColor: "#fcd67933", fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: "#f59e0b" },
+    { label: "Single", data: cumSum(data_single_10gb).map(v => +(v/60).toFixed(1)), borderColor: "#22c55e", backgroundColor: "#86efac33", fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: "#22c55e" },
+  ] }, options: { responsive: true, plugins: { tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.raw} min` } } }, scales: { y: { title: { display: true, text: "Minutes" }, beginAtZero: true }, x: { ticks: { maxRotation: 45, minRotation: 45 } } } }
+});
+
+document.querySelectorAll(".tab").forEach(tab => {
+  tab.addEventListener("click", () => {
+    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+    document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
+    tab.classList.add("active");
+    document.getElementById(tab.dataset.tab).classList.add("active");
+  });
+});
+</script>
+</body>
+</html>

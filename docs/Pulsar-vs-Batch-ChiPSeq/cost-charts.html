@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ChiPSeq: Cost Analysis</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f5f7fa; color: #1a1a2e; padding: 2rem; max-width: 1200px; margin: 0 auto; }
+h1 { font-size: 1.8rem; margin-bottom: 0.3rem; }
+.subtitle { color: #666; font-size: 0.95rem; margin-bottom: 1.5rem; }
+.nav { display: flex; gap: 1.5rem; margin-bottom: 1.5rem; font-size: 0.9rem; }
+.nav a { color: #3b82f6; text-decoration: none; }
+.tabs { display: flex; gap: 0; margin-bottom: 2rem; border-bottom: 2px solid #e5e7eb; flex-wrap: wrap; }
+.tab { padding: 0.7rem 1.4rem; cursor: pointer; font-size: 0.9rem; font-weight: 500; color: #666; border-bottom: 2px solid transparent; margin-bottom: -2px; user-select: none; }
+.tab:hover { color: #1a1a2e; }
+.tab.active { color: #3b82f6; border-bottom-color: #3b82f6; }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+.summary-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+.card { background: #fff; border-radius: 10px; padding: 1.2rem 1.5rem; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+.card .label { font-size: 0.8rem; color: #888; text-transform: uppercase; }
+.card .value { font-size: 1.8rem; font-weight: 700; margin-top: 0.2rem; }
+.card .detail { font-size: 0.85rem; color: #666; margin-top: 0.2rem; }
+.chart-container { background: #fff; border-radius: 10px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+.chart-container h2 { font-size: 1.1rem; margin-bottom: 0.3rem; }
+.chart-container .chart-desc { font-size: 0.85rem; color: #888; margin-bottom: 1rem; }
+.footer { text-align: center; color: #aaa; font-size: 0.8rem; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #e5e7eb; }
+</style></head><body>
+
+<h1>ChiPSeq: Cost Analysis</h1>
+<p class="subtitle">63 jobs &mdash; 7 tools &mdash; Batch, Pulsar, Single</p>
+<div class="nav">
+  <a href="../index.html">&larr; Home</a>
+  <a href="index.html">Results Report</a>
+  <a href="charts.html">Performance Charts</a>
+  <a href="costs.html">Cost Tables</a>
+</div>
+
+<div class="tabs">
+  <div class="tab active" data-tab="overview">Overview</div>
+  <div class="tab" data-tab="per-tool-wall">Per-Tool (Wallclock)</div>
+  <div class="tab" data-tab="per-tool-compute">Per-Tool (Compute)</div>
+  <div class="tab" data-tab="rainstone">Rainstone</div>
+</div>
+
+<div class="tab-content active" id="overview">
+  <div class="summary-cards">
+    <div class="card"><div class="label" style="color:#3b82f6">Batch</div><div class="value" style="color:#3b82f6">$6.15</div><div class="detail">21 jobs &middot; compute: $2.01</div></div>
+    <div class="card"><div class="label" style="color:#f59e0b">Pulsar</div><div class="value" style="color:#f59e0b">$8.77</div><div class="detail">21 jobs &middot; compute: $2.02</div></div>
+    <div class="card"><div class="label" style="color:#22c55e">Single</div><div class="value" style="color:#22c55e">$6.19</div><div class="detail">21 jobs &middot; compute: $2.02</div></div>
+  </div>
+  <div class="chart-container">
+    <h2>Wallclock vs Compute Cost</h2>
+    <p class="chart-desc">Grouped bars: what the CPU used vs what you pay.</p>
+    <canvas id="wallVsCompute" height="60"></canvas>
+  </div>
+  <div class="chart-container">
+    <h2>VM-Hours by Tool (Wallclock)</h2>
+    <p class="chart-desc">Total billed VM-hours per tool.</p>
+    <canvas id="vmHoursChart" height="100"></canvas>
+  </div>
+</div>
+<div class="tab-content" id="per-tool-wall">
+  <div class="chart-container"><h2>Per-Tool Wallclock Cost</h2>
+    <p class="chart-desc">Total wallclock cost per tool.</p>
+    <canvas id="perToolWall" height="100"></canvas></div>
+  <div class="chart-container"><h2>Per-Job Wallclock Cost</h2>
+    <p class="chart-desc">Average wallclock cost per job.</p>
+    <canvas id="perJobWall" height="100"></canvas></div>
+</div>
+<div class="tab-content" id="per-tool-compute">
+  <div class="chart-container"><h2>Per-Tool Compute Cost</h2>
+    <p class="chart-desc">Cost based on cgroups runtime only.</p>
+    <canvas id="perToolComp" height="100"></canvas></div>
+  <div class="chart-container"><h2>Per-Job Compute Cost</h2>
+    <p class="chart-desc">Average compute cost per job.</p>
+    <canvas id="perJobComp" height="100"></canvas></div>
+</div>
+<div class="tab-content" id="rainstone">
+  <div class="chart-container"><h2>Compute Cost vs Rainstone (usegalaxy.org)</h2>
+    <p class="chart-desc">Per-job compute cost vs Rainstone historical averages. Log scale.</p>
+    <canvas id="rainstoneChart" height="120"></canvas></div>
+</div>
+<div class="footer">Galaxy 26.1 &middot; us-east4 &middot; 63 jobs &middot; Generated 2026-04-01 15:11</div>
+<script>
+Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+Chart.defaults.font.size = 12;
+const tools = ["bowtie2", "wig_to_bigWig", "multiqc", "macs2_callpeak", "samtool_filter2", "tp_grep_tool", "fastp"];
+const toolsShort = ["bowtie2", "wig_to_bigWi", "multiqc", "macs2_callpe", "samtool_filt", "tp_grep_tool", "fastp"];
+const dollarFmt = ctx => `$${ctx.raw.toFixed(4)}`;
+
+const w_batch_cost = [2.04, 0.88, 0.88, 0.86, 0.78, 0.65, 0.08];
+const w_batch_pj = [0.6784, 0.2925, 0.2917, 0.2861, 0.2601, 0.2167, 0.0252];
+const w_batch_hrs = [5.18, 6.49, 6.47, 6.35, 5.77, 6.42, 0.3];
+const c_batch_cost = [1.83, 0.01, 0.0, 0.06, 0.05, 0.0, 0.05];
+const c_batch_pj = [0.61, 0.0034, 0.001, 0.0198, 0.0178, 0.0, 0.0181];
+const w_pulsar_cost = [2.51, 1.32, 1.31, 1.27, 1.11, 1.02, 0.24];
+const w_pulsar_pj = [0.8375, 0.4402, 0.4354, 0.4246, 0.3685, 0.3393, 0.0786];
+const w_pulsar_hrs = [6.09, 8.5, 8.4, 8.2, 7.11, 8.37, 0.86];
+const c_pulsar_cost = [1.84, 0.01, 0.0, 0.06, 0.05, 0.0, 0.06];
+const c_pulsar_pj = [0.6129, 0.0038, 0.0006, 0.0194, 0.0163, 0.0, 0.019];
+const w_single_cost = [2.05, 0.88, 0.88, 0.86, 0.79, 0.65, 0.08];
+const w_single_pj = [0.6848, 0.2941, 0.2931, 0.2878, 0.2618, 0.2158, 0.0271];
+const w_single_hrs = [5.23, 6.53, 6.51, 6.39, 5.81, 6.39, 0.32];
+const c_single_cost = [1.84, 0.01, 0.0, 0.06, 0.05, 0.0, 0.05];
+const c_single_pj = [0.6146, 0.0035, 0.001, 0.02, 0.0171, 0.0, 0.0182];
+const rainstoneAvg = [0.1872, 0, 0.0013, 0.0165, 0.0034, 0.0006, 0.008];
+
+new Chart(document.getElementById("wallVsCompute"), { type: "bar", data: { labels: ["Batch", "Pulsar", "Single"], datasets: [
+  { label: "Compute", data: [2.01, 2.02, 2.02], backgroundColor: ["#93bbfd", "#fcd679", "#86efac"], borderRadius: 4 },
+  { label: "Wallclock", data: [6.15, 8.77, 6.19], backgroundColor: ["#3b82f6", "#f59e0b", "#22c55e"], borderRadius: 4 }
+] }, options: { responsive: true, plugins: { tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: $${ctx.raw.toFixed(2)}` } } }, scales: { y: { title: { display: true, text: "USD" }, beginAtZero: true } } } });
+
+new Chart(document.getElementById("vmHoursChart"), { type: "bar", data: { labels: toolsShort, datasets: [
+  { label: "Batch", data: w_batch_hrs, backgroundColor: "#3b82f6", borderRadius: 4 },
+  { label: "Pulsar", data: w_pulsar_hrs, backgroundColor: "#f59e0b", borderRadius: 4 },
+  { label: "Single", data: w_single_hrs, backgroundColor: "#22c55e", borderRadius: 4 },
+] }, options: { responsive: true, plugins: { legend: { position: "top" } }, scales: { y: { title: { display: true, text: "Hours" }, beginAtZero: true }, x: { ticks: { maxRotation: 45, minRotation: 45 } } } } });
+
+new Chart(document.getElementById("perToolWall"), { type: "bar", data: { labels: toolsShort, datasets: [
+  { label: "Batch", data: w_batch_cost, backgroundColor: "#3b82f6", borderRadius: 4 },
+  { label: "Pulsar", data: w_pulsar_cost, backgroundColor: "#f59e0b", borderRadius: 4 },
+  { label: "Single", data: w_single_cost, backgroundColor: "#22c55e", borderRadius: 4 },
+] }, options: { responsive: true, plugins: { legend: { position: "top" }, tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: $${ctx.raw.toFixed(2)}` } } }, scales: { y: { title: { display: true, text: "USD" }, beginAtZero: true }, x: { ticks: { maxRotation: 45, minRotation: 45 } } } } });
+
+new Chart(document.getElementById("perJobWall"), { type: "bar", data: { labels: toolsShort, datasets: [
+  { label: "Batch", data: w_batch_pj, backgroundColor: "#3b82f6", borderRadius: 4 },
+  { label: "Pulsar", data: w_pulsar_pj, backgroundColor: "#f59e0b", borderRadius: 4 },
+  { label: "Single", data: w_single_pj, backgroundColor: "#22c55e", borderRadius: 4 },
+] }, options: { responsive: true, plugins: { legend: { position: "top" }, tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: $${ctx.raw.toFixed(4)}` } } }, scales: { y: { title: { display: true, text: "USD per job" }, beginAtZero: true }, x: { ticks: { maxRotation: 45, minRotation: 45 } } } } });
+
+new Chart(document.getElementById("perToolComp"), { type: "bar", data: { labels: toolsShort, datasets: [
+  { label: "Batch", data: c_batch_cost, backgroundColor: "#3b82f6", borderRadius: 4 },
+  { label: "Pulsar", data: c_pulsar_cost, backgroundColor: "#f59e0b", borderRadius: 4 },
+  { label: "Single", data: c_single_cost, backgroundColor: "#22c55e", borderRadius: 4 },
+] }, options: { responsive: true, plugins: { legend: { position: "top" }, tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: $${ctx.raw.toFixed(2)}` } } }, scales: { y: { title: { display: true, text: "USD" }, beginAtZero: true }, x: { ticks: { maxRotation: 45, minRotation: 45 } } } } });
+
+new Chart(document.getElementById("perJobComp"), { type: "bar", data: { labels: toolsShort, datasets: [
+  { label: "Batch", data: c_batch_pj, backgroundColor: "#3b82f6", borderRadius: 4 },
+  { label: "Pulsar", data: c_pulsar_pj, backgroundColor: "#f59e0b", borderRadius: 4 },
+  { label: "Single", data: c_single_pj, backgroundColor: "#22c55e", borderRadius: 4 },
+] }, options: { responsive: true, plugins: { legend: { position: "top" }, tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: $${ctx.raw.toFixed(4)}` } } }, scales: { y: { title: { display: true, text: "USD per job" }, beginAtZero: true }, x: { ticks: { maxRotation: 45, minRotation: 45 } } } } });
+
+new Chart(document.getElementById("rainstoneChart"), { type: "bar", data: { labels: toolsShort, datasets: [
+  { label: "Batch", data: c_batch_pj, backgroundColor: "#3b82f6", borderRadius: 4 },
+  { label: "Pulsar", data: c_pulsar_pj, backgroundColor: "#f59e0b", borderRadius: 4 },
+  { label: "Single", data: c_single_pj, backgroundColor: "#22c55e", borderRadius: 4 },
+  { label: "Rainstone Avg", data: rainstoneAvg, backgroundColor: "#8b5cf6", borderRadius: 4 }
+] }, options: { responsive: true, plugins: { tooltip: { callbacks: { label: dollarFmt } } }, scales: { y: { type: "logarithmic", title: { display: true, text: "USD per job (log)" } }, x: { ticks: { maxRotation: 45, minRotation: 45 } } } } });
+
+document.querySelectorAll(".tab").forEach(tab => {
+  tab.addEventListener("click", () => {
+    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+    document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
+    tab.classList.add("active");
+    document.getElementById(tab.dataset.tab).classList.add("active");
+  });
+});
+</script></body></html>
