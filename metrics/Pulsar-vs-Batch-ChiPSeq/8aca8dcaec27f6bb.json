@@ -1,0 +1,125 @@
+{
+    "run": "1",
+    "cloud": "batch",
+    "job_conf": "Default",
+    "workflow_id": "5a74a44058fe6c0a",
+    "history_id": "6b81d9e22cb78f7f",
+    "inputs": "chipseq-2g chipseq-5g",
+    "metrics": {
+        "model_class": "Job",
+        "id": "8aca8dcaec27f6bb",
+        "history_id": "6b81d9e22cb78f7f",
+        "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_grep_tool/9.5+galaxy2",
+        "state": "ok",
+        "exit_code": 0,
+        "create_time": "2026-03-30T01:59:51.580269",
+        "update_time": "2026-03-30T03:58:52.084178",
+        "galaxy_version": "26.1",
+        "external_id": "galaxy-job-1774843020-44af8130",
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": "grep -P -A 0 -B 0 --no-group-separator  -i -- '^#' '/galaxy/server/database/objects/6/1/8/dataset_6181ddba-23e2-45fa-8a02-3686072784e5.dat' > '/galaxy/server/database/jobs_directory/000/330/outputs/dataset_b21e181d-3a33-4003-8104-9109227c77c3.dat'",
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "b9eec48891b366cf",
+        "command_version": "grep (GNU grep) 3.11",
+        "params": {
+            "case_sensitive": "\"-i\"",
+            "color": "\"NOCOLOR\"",
+            "invert": "\"\"",
+            "lines_after": "\"0\"",
+            "lines_before": "\"0\"",
+            "regex_type": "\"-P\"",
+            "url_paste": "\"^#\"",
+            "__workflow_invocation_uuid__": "\"22824c0a2bdc11f1a65a82839cb514a4\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/hg38.len\"",
+            "dbkey": "\"hg38\"",
+            "__input_ext": "\"input\""
+        },
+        "inputs": {
+            "infile": {
+                "id": "fb6fcae9dd3d9e8e",
+                "src": "hda",
+                "uuid": "6181ddba-23e2-45fa-8a02-3686072784e5"
+            }
+        },
+        "outputs": {
+            "output": {
+                "id": "8c907fa7fd34bc0e",
+                "src": "hda",
+                "uuid": "b21e181d-3a33-4003-8104-9109227c77c3"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {
+            "output": {
+                "src": "hdca",
+                "id": "9917f772cad14fa3"
+            }
+        },
+        "tool_stdout": "",
+        "tool_stderr": "",
+        "job_stdout": "",
+        "job_stderr": "",
+        "stdout": "",
+        "stderr": "",
+        "job_messages": [],
+        "dependencies": [],
+        "job_metrics": [
+            {
+                "title": "Container ID",
+                "value": "quay.io/biocontainers/mulled-v2-a8b1e1ec4fafcddd7d4c96fdaa021e5b6c1e8a67:27f652719ff0f4dfc5e3d483435124548d01020c-0",
+                "plugin": "core",
+                "name": "container_id",
+                "raw_value": "quay.io/biocontainers/mulled-v2-a8b1e1ec4fafcddd7d4c96fdaa021e5b6c1e8a67:27f652719ff0f4dfc5e3d483435124548d01020c-0"
+            },
+            {
+                "title": "Container Type",
+                "value": "docker",
+                "plugin": "core",
+                "name": "container_type",
+                "raw_value": "docker"
+            },
+            {
+                "title": "Cores Allocated",
+                "value": "1",
+                "plugin": "core",
+                "name": "galaxy_slots",
+                "raw_value": "1.0000000"
+            },
+            {
+                "title": "Memory Allocated (MB)",
+                "value": "3891",
+                "plugin": "core",
+                "name": "galaxy_memory_mb",
+                "raw_value": "3891.0000000"
+            },
+            {
+                "title": "Job Start Time",
+                "value": "2026-03-30 03:58:43",
+                "plugin": "core",
+                "name": "start_epoch",
+                "raw_value": "1774843123.0000000"
+            },
+            {
+                "title": "Job End Time",
+                "value": "2026-03-30 03:58:43",
+                "plugin": "core",
+                "name": "end_epoch",
+                "raw_value": "1774843123.0000000"
+            },
+            {
+                "title": "Job Runtime (Wall Clock)",
+                "value": "0 seconds",
+                "plugin": "core",
+                "name": "runtime_seconds",
+                "raw_value": "0E-7"
+            }
+        ]
+    },
+    "status": "ok",
+    "server": "http://34.11.12.196",
+    "ref_data_size": [],
+    "input_data_size": [
+        0
+    ]
+}

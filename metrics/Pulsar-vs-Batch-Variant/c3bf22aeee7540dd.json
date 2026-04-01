@@ -1,0 +1,108 @@
+{
+    "run": "1",
+    "cloud": "batch",
+    "job_conf": "Default",
+    "workflow_id": "bddcdd049e475662",
+    "history_id": "d1d010ed6bae1d2a",
+    "inputs": "SRR24043307-2GB GRCh38.p14.gbff.gz SRR24043307-5GB GRCh38.p14.gbff.gz SRR24043307-10GB GRCh38.p14.gbff.gz",
+    "metrics": {
+        "model_class": "Job",
+        "id": "c3bf22aeee7540dd",
+        "history_id": "d1d010ed6bae1d2a",
+        "tool_id": "toolshed.g2.bx.psu.edu/repos/devteam/bwa/bwa_mem/0.7.17.2",
+        "state": "error",
+        "exit_code": null,
+        "create_time": "2026-03-31T22:21:43.264419",
+        "update_time": "2026-03-31T23:27:15.447852",
+        "galaxy_version": "26.1",
+        "external_id": "galaxy-job-1774996834-2d99e19a",
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": "set -o | grep -q pipefail && set -o pipefail;  ln -s '/galaxy/server/database/objects/6/d/0/dataset_6d02ded5-16c8-491f-b12c-3358e8bcb554.dat' 'localref.fa' && bwa index 'localref.fa' &&    bwa mem  -t \"${GALAXY_SLOTS:-1}\" -v 1     -T '30' -h '5'    -Y   -q                'localref.fa' '/galaxy/server/database/objects/9/c/e/dataset_9cecba7f-6f4b-4042-87b8-24d8a74a2873.dat' '/galaxy/server/database/objects/d/a/a/dataset_daad5bc3-5724-48af-90bb-ca194ea02008.dat'  | samtools sort -@${GALAXY_SLOTS:-2} -T \"${TMPDIR:-.}\" -O bam -o '/galaxy/server/database/jobs_directory/000/478/outputs/dataset_6fa04f85-80ba-4776-93e2-f72117568590.dat'",
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "b9eec48891b366cf",
+        "command_version": null,
+        "params": {
+            "analysis_type": "{\"__current_case__\": 4, \"algorithmic_options\": {\"__current_case__\": 1, \"algorithmic_options_selector\": \"do_not_set\"}, \"analysis_type_selector\": \"full\", \"io_options\": {\"C\": false, \"M\": false, \"T\": \"30\", \"V\": false, \"Y\": true, \"__current_case__\": 0, \"a\": false, \"five\": false, \"h\": \"5\", \"io_options_selector\": \"set\", \"q\": true}, \"scoring_options\": {\"__current_case__\": 1, \"scoring_options_selector\": \"do_not_set\"}}",
+            "fastq_input": "{\"__current_case__\": 2, \"fastq_input1\": {\"values\": [{\"id\": 786, \"src\": \"dce\"}]}, \"fastq_input_selector\": \"paired_collection\", \"iset_stats\": \"\"}",
+            "output_sort": "\"coordinate\"",
+            "reference_source": "{\"__current_case__\": 1, \"index_a\": \"auto\", \"ref_file\": {\"values\": [{\"id\": 949, \"src\": \"hda\"}]}, \"reference_source_selector\": \"history\"}",
+            "rg": "{\"__current_case__\": 3, \"rg_selector\": \"do_not_set\"}",
+            "__workflow_invocation_uuid__": "\"fe73352a2d4f11f1b6cf82839cb514a4\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/?.len\"",
+            "dbkey": "\"?\"",
+            "__input_ext": "\"fasta\""
+        },
+        "inputs": {
+            "reference_source|ref_file": {
+                "id": "ffe6bf8c3c3475e4",
+                "src": "hda",
+                "uuid": "6d02ded5-16c8-491f-b12c-3358e8bcb554"
+            },
+            "fastq_input|fastq_input11": {
+                "id": "586d1f4867e03b18",
+                "src": "hda",
+                "uuid": "9cecba7f-6f4b-4042-87b8-24d8a74a2873"
+            },
+            "fastq_input|fastq_input12": {
+                "id": "8fbfa872425329a0",
+                "src": "hda",
+                "uuid": "daad5bc3-5724-48af-90bb-ca194ea02008"
+            }
+        },
+        "outputs": {
+            "bam_output": {
+                "id": "0ed9c7573096abe6",
+                "src": "hda",
+                "uuid": "6fa04f85-80ba-4776-93e2-f72117568590"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {},
+        "tool_stdout": "",
+        "tool_stderr": "",
+        "job_stdout": null,
+        "job_stderr": null,
+        "stdout": "",
+        "stderr": "",
+        "job_messages": [],
+        "dependencies": [],
+        "job_metrics": [
+            {
+                "title": "Container ID",
+                "value": "quay.io/biocontainers/mulled-v2-fe8faa35dbf6dc65a0f7f5d4ea12e31a79f73e40:1476e745a911a5a2ac22207311b275c51e745ba9-2",
+                "plugin": "core",
+                "name": "container_id",
+                "raw_value": "quay.io/biocontainers/mulled-v2-fe8faa35dbf6dc65a0f7f5d4ea12e31a79f73e40:1476e745a911a5a2ac22207311b275c51e745ba9-2"
+            },
+            {
+                "title": "Container Type",
+                "value": "docker",
+                "plugin": "core",
+                "name": "container_type",
+                "raw_value": "docker"
+            },
+            {
+                "title": "Cores Allocated",
+                "value": "8",
+                "plugin": "core",
+                "name": "galaxy_slots",
+                "raw_value": "8.0000000"
+            },
+            {
+                "title": "Memory Allocated (MB)",
+                "value": "30720",
+                "plugin": "core",
+                "name": "galaxy_memory_mb",
+                "raw_value": "30720.0000000"
+            }
+        ]
+    },
+    "status": "error",
+    "server": "http://34.11.12.196",
+    "ref_data_size": [],
+    "input_data_size": [
+        957932045,
+        1289376399
+    ]
+}

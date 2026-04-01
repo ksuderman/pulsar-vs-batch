@@ -1,0 +1,113 @@
+{
+    "run": "1",
+    "cloud": "pulsar",
+    "job_conf": "Default",
+    "workflow_id": "c1c9b96fba7a9aa3",
+    "history_id": "7eb5d46bd48c07da",
+    "inputs": "chipseq-2g",
+    "metrics": {
+        "model_class": "Job",
+        "id": "c877de9441acfeac",
+        "history_id": "7eb5d46bd48c07da",
+        "tool_id": "toolshed.g2.bx.psu.edu/repos/devteam/samtool_filter2/samtool_filter2/1.8+galaxy1",
+        "state": "ok",
+        "exit_code": 0,
+        "create_time": "2026-03-30T01:02:52.748714",
+        "update_time": "2026-03-30T02:00:51.289298",
+        "galaxy_version": "26.1",
+        "external_id": "269",
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": "ln -s '/mnt/disks/pulsar_staging/269/inputs/dataset_bc1cd168-7dea-44c3-a04c-d45f137a534d.dat' input.bam && ln -s '/mnt/disks/pulsar_staging/269/inputs/metadata_metadata_f3ab171f-439d-4572-a924-0926efd8fc21.dat' input.bai && samtools view -o '/mnt/disks/pulsar_staging/269/working/dataset_63049be9-076d-4f46-83ac-20793f09ed92.dat' -h   -b  -q 30 -f 0x2 input.bam",
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "a965afe3a7a615f9",
+        "command_version": "",
+        "params": {
+            "bed_file": null,
+            "flag": "{\"__current_case__\": 1, \"filter\": \"yes\", \"reqBits\": [\"0x0002\"], \"skipBits\": null}",
+            "header": "\"-h\"",
+            "library": "\"\"",
+            "mapq": "\"30\"",
+            "outputtype": "\"bam\"",
+            "possibly_select_inverse": "false",
+            "read_group": "\"\"",
+            "regions": "\"\"",
+            "__workflow_invocation_uuid__": "\"2cf253c22bd411f1becebebd58c486e9\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/hg38.len\"",
+            "dbkey": "\"hg38\"",
+            "__input_ext": "\"bam\""
+        },
+        "inputs": {
+            "input1": {
+                "id": "083101f4263b1af7",
+                "src": "hda",
+                "uuid": "bc1cd168-7dea-44c3-a04c-d45f137a534d"
+            }
+        },
+        "outputs": {
+            "output1": {
+                "id": "36dd71af63c8a2ee",
+                "src": "hda",
+                "uuid": "63049be9-076d-4f46-83ac-20793f09ed92"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {
+            "output1": {
+                "src": "hdca",
+                "id": "f9096237db894122"
+            }
+        },
+        "tool_stdout": "",
+        "tool_stderr": "",
+        "job_stdout": "",
+        "job_stderr": "",
+        "stdout": "",
+        "stderr": "",
+        "job_messages": [],
+        "dependencies": [],
+        "job_metrics": [
+            {
+                "title": "Cores Allocated",
+                "value": "1",
+                "plugin": "core",
+                "name": "galaxy_slots",
+                "raw_value": "1.0000000"
+            },
+            {
+                "title": "Memory Allocated (MB)",
+                "value": "11673",
+                "plugin": "core",
+                "name": "galaxy_memory_mb",
+                "raw_value": "11673.0000000"
+            },
+            {
+                "title": "Job Start Time",
+                "value": "2026-03-30 01:55:31",
+                "plugin": "core",
+                "name": "start_epoch",
+                "raw_value": "1774835731.0000000"
+            },
+            {
+                "title": "Job End Time",
+                "value": "2026-03-30 01:57:51",
+                "plugin": "core",
+                "name": "end_epoch",
+                "raw_value": "1774835871.0000000"
+            },
+            {
+                "title": "Job Runtime (Wall Clock)",
+                "value": "2 minutes",
+                "plugin": "core",
+                "name": "runtime_seconds",
+                "raw_value": "140.0000000"
+            }
+        ]
+    },
+    "status": "ok",
+    "server": "http://35.188.245.115",
+    "ref_data_size": [],
+    "input_data_size": [
+        146
+    ]
+}

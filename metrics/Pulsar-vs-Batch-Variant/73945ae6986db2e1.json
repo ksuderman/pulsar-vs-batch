@@ -1,0 +1,133 @@
+{
+    "run": "1",
+    "cloud": "batch",
+    "job_conf": "Default",
+    "workflow_id": "bddcdd049e475662",
+    "history_id": "07e13a80c73d5b02",
+    "inputs": "SRR24043307-2GB GRCh38.p14.gbff.gz SRR24043307-5GB GRCh38.p14.gbff.gz",
+    "metrics": {
+        "model_class": "Job",
+        "id": "73945ae6986db2e1",
+        "history_id": "07e13a80c73d5b02",
+        "tool_id": "toolshed.g2.bx.psu.edu/repos/devteam/samtools_stats/samtools_stats/2.0.2+galaxy2",
+        "state": "ok",
+        "exit_code": 0,
+        "create_time": "2026-03-31T16:43:28.987692",
+        "update_time": "2026-03-31T19:07:26.458315",
+        "galaxy_version": "26.1",
+        "external_id": "galaxy-job-1774983822-482454d6",
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": "addthreads=${GALAXY_SLOTS:-1} && (( addthreads-- )) &&   ln -s '/galaxy/server/database/objects/3/d/3/dataset_3d31e198-4abe-4258-b1fb-3e4841864500.dat' infile && ln -s '/galaxy/server/database/objects/_metadata_files/9/0/e/metadata_90e8cdad-f0fa-4073-8a0d-d8a94df68930.dat' infile.bai &&    samtools stats       -@ $addthreads infile   > '/galaxy/server/database/jobs_directory/000/469/outputs/dataset_70a9ac11-720e-4e4b-a7bf-3a3db9bed7b9.dat'",
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "b9eec48891b366cf",
+        "command_version": "Version: 1.9 (using htslib 1.9)",
+        "params": {
+            "most_inserts": null,
+            "read_length": null,
+            "filter_by_flags": "{\"__current_case__\": 1, \"filter_flags\": \"nofilter\"}",
+            "gc_depth": null,
+            "addref_cond": "{\"__current_case__\": 0, \"addref_select\": \"no\"}",
+            "cond_region": "{\"__current_case__\": 0, \"select_region\": \"no\"}",
+            "cov_threshold": null,
+            "coverage_cond": "{\"__current_case__\": 0, \"coverage_select\": \"no\"}",
+            "insert_size": null,
+            "remove_dups": "false",
+            "remove_overlaps": "false",
+            "sparse": "false",
+            "split_output_cond": "{\"__current_case__\": 0, \"split_output_selector\": \"no\"}",
+            "trim_quality": null,
+            "__workflow_invocation_uuid__": "\"be1de4e02d2011f1be8e82839cb514a4\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/?.len\"",
+            "dbkey": "\"?\"",
+            "__input_ext": "\"bam\""
+        },
+        "inputs": {
+            "input": {
+                "id": "eb058d5c2c4061b1",
+                "src": "hda",
+                "uuid": "3d31e198-4abe-4258-b1fb-3e4841864500"
+            }
+        },
+        "outputs": {
+            "output": {
+                "id": "ae24bdf18d09d4fd",
+                "src": "hda",
+                "uuid": "70a9ac11-720e-4e4b-a7bf-3a3db9bed7b9"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {
+            "output": {
+                "src": "hdca",
+                "id": "0dd57fdda52ead1a"
+            }
+        },
+        "tool_stdout": "",
+        "tool_stderr": "",
+        "job_stdout": "",
+        "job_stderr": "",
+        "stdout": "",
+        "stderr": "",
+        "job_messages": [],
+        "dependencies": [],
+        "job_metrics": [
+            {
+                "title": "Container ID",
+                "value": "quay.io/biocontainers/samtools:1.9--h10a08f8_12",
+                "plugin": "core",
+                "name": "container_id",
+                "raw_value": "quay.io/biocontainers/samtools:1.9--h10a08f8_12"
+            },
+            {
+                "title": "Container Type",
+                "value": "docker",
+                "plugin": "core",
+                "name": "container_type",
+                "raw_value": "docker"
+            },
+            {
+                "title": "Cores Allocated",
+                "value": "2",
+                "plugin": "core",
+                "name": "galaxy_slots",
+                "raw_value": "2.0000000"
+            },
+            {
+                "title": "Memory Allocated (MB)",
+                "value": "7782",
+                "plugin": "core",
+                "name": "galaxy_memory_mb",
+                "raw_value": "7782.0000000"
+            },
+            {
+                "title": "Job Start Time",
+                "value": "2026-03-31 19:05:19",
+                "plugin": "core",
+                "name": "start_epoch",
+                "raw_value": "1774983919.0000000"
+            },
+            {
+                "title": "Job End Time",
+                "value": "2026-03-31 19:07:12",
+                "plugin": "core",
+                "name": "end_epoch",
+                "raw_value": "1774984032.0000000"
+            },
+            {
+                "title": "Job Runtime (Wall Clock)",
+                "value": "1 minute",
+                "plugin": "core",
+                "name": "runtime_seconds",
+                "raw_value": "113.0000000"
+            }
+        ]
+    },
+    "status": "ok",
+    "server": "http://34.11.12.196",
+    "ref_data_size": [],
+    "input_data_size": [
+        943609340,
+        1289376399
+    ]
+}

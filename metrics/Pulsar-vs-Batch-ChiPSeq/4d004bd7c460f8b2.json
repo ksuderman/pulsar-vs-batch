@@ -1,0 +1,113 @@
+{
+    "run": "1",
+    "cloud": "pulsar",
+    "job_conf": "Default",
+    "workflow_id": "c1c9b96fba7a9aa3",
+    "history_id": "33b5856670ba036c",
+    "inputs": "chipseq-2g chipseq-5g chipseq-10g",
+    "metrics": {
+        "model_class": "Job",
+        "id": "4d004bd7c460f8b2",
+        "history_id": "33b5856670ba036c",
+        "tool_id": "toolshed.g2.bx.psu.edu/repos/devteam/samtool_filter2/samtool_filter2/1.8+galaxy1",
+        "state": "ok",
+        "exit_code": 0,
+        "create_time": "2026-03-30T04:52:34.199516",
+        "update_time": "2026-03-30T08:52:53.107358",
+        "galaxy_version": "26.1",
+        "external_id": "283",
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": "ln -s '/mnt/disks/pulsar_staging/283/inputs/dataset_109be2a9-8c66-4770-8a50-2300550cb4b6.dat' input.bam && ln -s '/mnt/disks/pulsar_staging/283/inputs/metadata_metadata_454df215-58d3-432b-8124-8b4a1f296ee1.dat' input.bai && samtools view -o '/mnt/disks/pulsar_staging/283/working/dataset_bf448a38-0632-4a42-bfda-862f547d9730.dat' -h   -b  -q 30 -f 0x2 input.bam",
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "a965afe3a7a615f9",
+        "command_version": "",
+        "params": {
+            "bed_file": null,
+            "flag": "{\"__current_case__\": 1, \"filter\": \"yes\", \"reqBits\": [\"0x0002\"], \"skipBits\": null}",
+            "header": "\"-h\"",
+            "library": "\"\"",
+            "mapq": "\"30\"",
+            "outputtype": "\"bam\"",
+            "possibly_select_inverse": "false",
+            "read_group": "\"\"",
+            "regions": "\"\"",
+            "__workflow_invocation_uuid__": "\"43453a162bf411f192d5bebd58c486e9\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/hg38.len\"",
+            "dbkey": "\"hg38\"",
+            "__input_ext": "\"bam\""
+        },
+        "inputs": {
+            "input1": {
+                "id": "0bf68107e6383e0f",
+                "src": "hda",
+                "uuid": "109be2a9-8c66-4770-8a50-2300550cb4b6"
+            }
+        },
+        "outputs": {
+            "output1": {
+                "id": "82ae43db5553dc6c",
+                "src": "hda",
+                "uuid": "bf448a38-0632-4a42-bfda-862f547d9730"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {
+            "output1": {
+                "src": "hdca",
+                "id": "e0987156a723d142"
+            }
+        },
+        "tool_stdout": "",
+        "tool_stderr": "",
+        "job_stdout": "",
+        "job_stderr": "",
+        "stdout": "",
+        "stderr": "",
+        "job_messages": [],
+        "dependencies": [],
+        "job_metrics": [
+            {
+                "title": "Cores Allocated",
+                "value": "1",
+                "plugin": "core",
+                "name": "galaxy_slots",
+                "raw_value": "1.0000000"
+            },
+            {
+                "title": "Memory Allocated (MB)",
+                "value": "11673",
+                "plugin": "core",
+                "name": "galaxy_memory_mb",
+                "raw_value": "11673.0000000"
+            },
+            {
+                "title": "Job Start Time",
+                "value": "2026-03-30 08:30:28",
+                "plugin": "core",
+                "name": "start_epoch",
+                "raw_value": "1774859428.0000000"
+            },
+            {
+                "title": "Job End Time",
+                "value": "2026-03-30 08:41:20",
+                "plugin": "core",
+                "name": "end_epoch",
+                "raw_value": "1774860080.0000000"
+            },
+            {
+                "title": "Job Runtime (Wall Clock)",
+                "value": "10 minutes",
+                "plugin": "core",
+                "name": "runtime_seconds",
+                "raw_value": "652.0000000"
+            }
+        ]
+    },
+    "status": "ok",
+    "server": "http://35.188.245.115",
+    "ref_data_size": [],
+    "input_data_size": [
+        146
+    ]
+}

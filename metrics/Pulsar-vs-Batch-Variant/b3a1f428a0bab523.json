@@ -1,0 +1,126 @@
+{
+    "run": "1",
+    "cloud": "single",
+    "job_conf": "Default",
+    "workflow_id": "4d0b2179415336a2",
+    "history_id": "bf7cfc51da764fc1",
+    "inputs": "SRR24043307-2GB GRCh38.p14.gbff.gz",
+    "metrics": {
+        "model_class": "Job",
+        "id": "b3a1f428a0bab523",
+        "history_id": "bf7cfc51da764fc1",
+        "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/lofreq_viterbi/lofreq_viterbi/2.1.5+galaxy0",
+        "state": "ok",
+        "exit_code": 0,
+        "create_time": "2026-03-31T13:17:26.868979",
+        "update_time": "2026-03-31T15:12:39.723094",
+        "galaxy_version": "26.1",
+        "external_id": "galaxy-single-1774969468-187f5249",
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": "ln -s '/galaxy/server/database/objects/2/d/1/dataset_2d17f1d7-3c9d-4b85-ba7a-b4ee9184d76a.dat' reference.fa && lofreq faidx reference.fa 2>&1 || echo \"Error running samtools faidx for indexing fasta reference for lofreq\" >&2 &&  lofreq viterbi --ref 'reference.fa'  --defqual 2 --out tmp.bam '/galaxy/server/database/objects/0/8/2/dataset_0824ef4b-6846-4079-a32a-d5de1f2dd695.dat' &&  samtools sort --no-PG -T \"${TMPDIR:-.}\" -@ ${GALAXY_SLOTS:-1} -O BAM -o '/galaxy/server/database/jobs_directory/000/296/outputs/dataset_641951bb-124c-47fb-ae50-f473df42fda8.dat' tmp.bam",
+        "user_email": "suderman@jhu.edu",
+        "user_id": "447c77e97866a6c5",
+        "command_version": "2.1.5",
+        "params": {
+            "adv_options": "{\"bq2_handling\": {\"__current_case__\": 0, \"defqual\": \"2\", \"replace_bq2\": \"keep\"}, \"keepflags\": false}",
+            "reference_source": "{\"__current_case__\": 1, \"ref\": {\"values\": [{\"id\": 562, \"src\": \"hda\"}]}, \"ref_selector\": \"history\"}",
+            "__workflow_invocation_uuid__": "\"f55635242d0311f1bbd8066664bb3ded\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/?.len\"",
+            "dbkey": "\"?\"",
+            "__input_ext": "\"input\""
+        },
+        "inputs": {
+            "reads": {
+                "id": "c34be7c033cc9925",
+                "src": "hda",
+                "uuid": "0824ef4b-6846-4079-a32a-d5de1f2dd695"
+            },
+            "reference_source|ref": {
+                "id": "275a7ac287e0497f",
+                "src": "hda",
+                "uuid": "2d17f1d7-3c9d-4b85-ba7a-b4ee9184d76a"
+            }
+        },
+        "outputs": {
+            "realigned": {
+                "id": "b5bdf4d18e557fda",
+                "src": "hda",
+                "uuid": "641951bb-124c-47fb-ae50-f473df42fda8"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {
+            "realigned": {
+                "src": "hdca",
+                "id": "97a533506a6b6504"
+            }
+        },
+        "tool_stdout": "",
+        "tool_stderr": "[bam_sort_core] merging from 2 files and 4 in-memory blocks...\n",
+        "job_stdout": "",
+        "job_stderr": "",
+        "stdout": "",
+        "stderr": "[bam_sort_core] merging from 2 files and 4 in-memory blocks...\n",
+        "job_messages": [],
+        "dependencies": [],
+        "job_metrics": [
+            {
+                "title": "Container ID",
+                "value": "quay.io/biocontainers/lofreq:2.1.5--py312ha5e83ca_15",
+                "plugin": "core",
+                "name": "container_id",
+                "raw_value": "quay.io/biocontainers/lofreq:2.1.5--py312ha5e83ca_15"
+            },
+            {
+                "title": "Container Type",
+                "value": "docker",
+                "plugin": "core",
+                "name": "container_type",
+                "raw_value": "docker"
+            },
+            {
+                "title": "Cores Allocated",
+                "value": "4",
+                "plugin": "core",
+                "name": "galaxy_slots",
+                "raw_value": "4.0000000"
+            },
+            {
+                "title": "Memory Allocated (MB)",
+                "value": "16384",
+                "plugin": "core",
+                "name": "galaxy_memory_mb",
+                "raw_value": "16384.0000000"
+            },
+            {
+                "title": "Job Start Time",
+                "value": "2026-03-31 15:06:15",
+                "plugin": "core",
+                "name": "start_epoch",
+                "raw_value": "1774969575.0000000"
+            },
+            {
+                "title": "Job End Time",
+                "value": "2026-03-31 15:12:06",
+                "plugin": "core",
+                "name": "end_epoch",
+                "raw_value": "1774969926.0000000"
+            },
+            {
+                "title": "Job Runtime (Wall Clock)",
+                "value": "5 minutes",
+                "plugin": "core",
+                "name": "runtime_seconds",
+                "raw_value": "351.0000000"
+            }
+        ]
+    },
+    "status": "ok",
+    "server": "http://35.194.88.166",
+    "ref_data_size": [],
+    "input_data_size": [
+        503642961,
+        1289376399
+    ]
+}

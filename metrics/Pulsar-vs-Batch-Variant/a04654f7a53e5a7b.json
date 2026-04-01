@@ -1,0 +1,136 @@
+{
+    "run": "1",
+    "cloud": "batch",
+    "job_conf": "Default",
+    "workflow_id": "bddcdd049e475662",
+    "history_id": "07e13a80c73d5b02",
+    "inputs": "SRR24043307-2GB GRCh38.p14.gbff.gz SRR24043307-5GB GRCh38.p14.gbff.gz",
+    "metrics": {
+        "model_class": "Job",
+        "id": "a04654f7a53e5a7b",
+        "history_id": "07e13a80c73d5b02",
+        "tool_id": "toolshed.g2.bx.psu.edu/repos/devteam/picard/picard_MarkDuplicates/2.18.2.2",
+        "state": "ok",
+        "exit_code": 0,
+        "create_time": "2026-03-31T16:43:28.840804",
+        "update_time": "2026-03-31T19:27:46.332179",
+        "galaxy_version": "26.1",
+        "external_id": "galaxy-job-1774983821-cfcedc38",
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": "_JAVA_OPTIONS=${_JAVA_OPTIONS:-'-Xmx2048m -Xms256m'} && export _JAVA_OPTIONS &&   ln -f -s '/galaxy/server/database/objects/3/d/3/dataset_3d31e198-4abe-4258-b1fb-3e4841864500.dat' 'SRR24043307_fastq' &&  picard MarkDuplicates  INPUT='SRR24043307_fastq' OUTPUT='/galaxy/server/database/jobs_directory/000/468/outputs/dataset_6ec16a90-4398-44e0-8859-5d0bebc0164b.dat'  METRICS_FILE='/galaxy/server/database/jobs_directory/000/468/outputs/dataset_d249a63c-349d-4346-a546-1a6129551a09.dat'  REMOVE_DUPLICATES='true' ASSUME_SORTED='true'  DUPLICATE_SCORING_STRATEGY='SUM_OF_BASE_QUALITIES'  OPTICAL_DUPLICATE_PIXEL_DISTANCE='100'   VALIDATION_STRINGENCY='LENIENT' QUIET=true VERBOSITY=ERROR  `if [ -n \"$TMPDIR\" ] ; then echo 'TMP_DIR=$TMPDIR' ; else if [ -n \"$TEMP\" ] ; then echo 'TMP_DIR=$TEMP' ; fi ; fi`",
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "b9eec48891b366cf",
+        "command_version": "",
+        "params": {
+            "assume_sorted": "true",
+            "barcode_tag": "\"\"",
+            "comments": "[]",
+            "duplicate_scoring_strategy": "\"SUM_OF_BASE_QUALITIES\"",
+            "optical_duplicate_pixel_distance": "\"100\"",
+            "read_name_regex": "\"\"",
+            "remove_duplicates": "true",
+            "validation_stringency": "\"LENIENT\"",
+            "__workflow_invocation_uuid__": "\"be1de4e02d2011f1be8e82839cb514a4\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/?.len\"",
+            "dbkey": "\"?\"",
+            "__input_ext": "\"bam\""
+        },
+        "inputs": {
+            "inputFile": {
+                "id": "eb058d5c2c4061b1",
+                "src": "hda",
+                "uuid": "3d31e198-4abe-4258-b1fb-3e4841864500"
+            }
+        },
+        "outputs": {
+            "metrics_file": {
+                "id": "4471d69109cfbf4c",
+                "src": "hda",
+                "uuid": "d249a63c-349d-4346-a546-1a6129551a09"
+            },
+            "outFile": {
+                "id": "9926cdb890350cef",
+                "src": "hda",
+                "uuid": "6ec16a90-4398-44e0-8859-5d0bebc0164b"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {
+            "metrics_file": {
+                "src": "hdca",
+                "id": "1140a0fd624b442b"
+            },
+            "outFile": {
+                "src": "hdca",
+                "id": "21913977d61146a3"
+            }
+        },
+        "tool_stdout": "",
+        "tool_stderr": "/usr/local/bin/picard: line 5: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8): No such file or directory\nPicked up _JAVA_OPTIONS: -Xmx12G -Xms1G\n19:05:47.312 INFO  NativeLibraryLoader - Loading libgkl_compression.so from jar:file:/usr/local/share/picard-2.18.2-0/picard.jar!/com/intel/gkl/native/libgkl_compression.so\n",
+        "job_stdout": "",
+        "job_stderr": "",
+        "stdout": "",
+        "stderr": "/usr/local/bin/picard: line 5: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8): No such file or directory\nPicked up _JAVA_OPTIONS: -Xmx12G -Xms1G\n19:05:47.312 INFO  NativeLibraryLoader - Loading libgkl_compression.so from jar:file:/usr/local/share/picard-2.18.2-0/picard.jar!/com/intel/gkl/native/libgkl_compression.so\n",
+        "job_messages": [],
+        "dependencies": [],
+        "job_metrics": [
+            {
+                "title": "Container ID",
+                "value": "quay.io/biocontainers/picard:2.18.2--py36_0",
+                "plugin": "core",
+                "name": "container_id",
+                "raw_value": "quay.io/biocontainers/picard:2.18.2--py36_0"
+            },
+            {
+                "title": "Container Type",
+                "value": "docker",
+                "plugin": "core",
+                "name": "container_type",
+                "raw_value": "docker"
+            },
+            {
+                "title": "Cores Allocated",
+                "value": "3",
+                "plugin": "core",
+                "name": "galaxy_slots",
+                "raw_value": "3.0000000"
+            },
+            {
+                "title": "Memory Allocated (MB)",
+                "value": "12288",
+                "plugin": "core",
+                "name": "galaxy_memory_mb",
+                "raw_value": "12288.0000000"
+            },
+            {
+                "title": "Job Start Time",
+                "value": "2026-03-31 19:05:46",
+                "plugin": "core",
+                "name": "start_epoch",
+                "raw_value": "1774983946.0000000"
+            },
+            {
+                "title": "Job End Time",
+                "value": "2026-03-31 19:26:44",
+                "plugin": "core",
+                "name": "end_epoch",
+                "raw_value": "1774985204.0000000"
+            },
+            {
+                "title": "Job Runtime (Wall Clock)",
+                "value": "20 minutes",
+                "plugin": "core",
+                "name": "runtime_seconds",
+                "raw_value": "1258.0000000"
+            }
+        ]
+    },
+    "status": "ok",
+    "server": "http://34.11.12.196",
+    "ref_data_size": [],
+    "input_data_size": [
+        943609340,
+        1289376399
+    ]
+}

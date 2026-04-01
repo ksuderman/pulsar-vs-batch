@@ -1,0 +1,119 @@
+{
+    "run": "1",
+    "cloud": "single",
+    "job_conf": "Default",
+    "workflow_id": "e833cd00c13b3e94",
+    "history_id": "fd44bed98c8ec03c",
+    "inputs": "chipseq-2g chipseq-5g",
+    "metrics": {
+        "model_class": "Job",
+        "id": "dfc964c1ff488325",
+        "history_id": "fd44bed98c8ec03c",
+        "tool_id": "wig_to_bigWig",
+        "state": "ok",
+        "exit_code": 0,
+        "create_time": "2026-03-30T01:59:11.707159",
+        "update_time": "2026-03-30T03:59:23.926335",
+        "galaxy_version": "26.1",
+        "external_id": "galaxy-single-1774842962-ee0dc160",
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": "grep -v \"^track\" '/galaxy/server/database/objects/5/b/c/dataset_5bce1b9d-7eeb-4bda-b28b-6a9c465ed4ec.dat' | wigToBigWig stdin '/cvmfs/data.galaxyproject.org/managed/len/ucsc/hg38.len' '/galaxy/server/database/jobs_directory/000/165/outputs/dataset_4d845ec3-7e93-45af-986c-ceae7294663c.dat' -clip 2>&1 || echo \"Error running wigToBigWig.\" >&2",
+        "user_email": "suderman@jhu.edu",
+        "user_id": "447c77e97866a6c5",
+        "command_version": "",
+        "params": {
+            "settings": "{\"__current_case__\": 0, \"settingsType\": \"preset\"}",
+            "__workflow_invocation_uuid__": "\"0b15bdc22bdc11f196c3066664bb3ded\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/hg38.len\"",
+            "dbkey": "\"hg38\"",
+            "__input_ext": "\"bedgraph\""
+        },
+        "inputs": {
+            "input1": {
+                "id": "eb7d5ba94b786ef5",
+                "src": "hda",
+                "uuid": "5bce1b9d-7eeb-4bda-b28b-6a9c465ed4ec"
+            }
+        },
+        "outputs": {
+            "out_file1": {
+                "id": "cb9ba426cc0bd841",
+                "src": "hda",
+                "uuid": "4d845ec3-7e93-45af-986c-ceae7294663c"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {
+            "out_file1": {
+                "src": "hdca",
+                "id": "193964820a3b9ea4"
+            }
+        },
+        "tool_stdout": "",
+        "tool_stderr": "",
+        "job_stdout": "",
+        "job_stderr": "",
+        "stdout": "",
+        "stderr": "",
+        "job_messages": [],
+        "dependencies": [],
+        "job_metrics": [
+            {
+                "title": "Container ID",
+                "value": "quay.io/biocontainers/ucsc-wigtobigwig:357--h446ed27_4",
+                "plugin": "core",
+                "name": "container_id",
+                "raw_value": "quay.io/biocontainers/ucsc-wigtobigwig:357--h446ed27_4"
+            },
+            {
+                "title": "Container Type",
+                "value": "docker",
+                "plugin": "core",
+                "name": "container_type",
+                "raw_value": "docker"
+            },
+            {
+                "title": "Cores Allocated",
+                "value": "1",
+                "plugin": "core",
+                "name": "galaxy_slots",
+                "raw_value": "1.0000000"
+            },
+            {
+                "title": "Memory Allocated (MB)",
+                "value": "28672",
+                "plugin": "core",
+                "name": "galaxy_memory_mb",
+                "raw_value": "28672.0000000"
+            },
+            {
+                "title": "Job Start Time",
+                "value": "2026-03-30 03:57:45",
+                "plugin": "core",
+                "name": "start_epoch",
+                "raw_value": "1774843065.0000000"
+            },
+            {
+                "title": "Job End Time",
+                "value": "2026-03-30 03:59:23",
+                "plugin": "core",
+                "name": "end_epoch",
+                "raw_value": "1774843163.0000000"
+            },
+            {
+                "title": "Job Runtime (Wall Clock)",
+                "value": "1 minute",
+                "plugin": "core",
+                "name": "runtime_seconds",
+                "raw_value": "98.0000000"
+            }
+        ]
+    },
+    "status": "ok",
+    "server": "http://35.194.88.166",
+    "ref_data_size": [],
+    "input_data_size": [
+        0
+    ]
+}

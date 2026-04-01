@@ -1,0 +1,138 @@
+{
+    "run": "1",
+    "cloud": "batch",
+    "job_conf": "Default",
+    "workflow_id": "5a74a44058fe6c0a",
+    "history_id": "6b81d9e22cb78f7f",
+    "inputs": "chipseq-2g chipseq-5g",
+    "metrics": {
+        "model_class": "Job",
+        "id": "29e134bf078d4e48",
+        "history_id": "6b81d9e22cb78f7f",
+        "tool_id": "toolshed.g2.bx.psu.edu/repos/devteam/bowtie2/bowtie2/2.5.4+galaxy0",
+        "state": "ok",
+        "exit_code": 0,
+        "create_time": "2026-03-30T01:59:51.080080",
+        "update_time": "2026-03-30T03:35:31.771072",
+        "galaxy_version": "26.1",
+        "external_id": "galaxy-job-1774836403-e748ca3a",
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": "set -o | grep -q pipefail && set -o pipefail;   ln -f -s '/galaxy/server/database/objects/b/8/3/dataset_b834f214-2b64-4675-859f-24929f4cf698.dat' input_f.fastq.gz &&  ln -f -s '/galaxy/server/database/objects/1/0/8/dataset_108a7e46-70a8-4cb0-a78c-13affa2f27de.dat' input_r.fastq.gz &&   THREADS=${GALAXY_SLOTS:-4} && if [ \"$THREADS\" -gt 1 ]; then (( THREADS-- )); fi &&   bowtie2  -p \"$THREADS\"  -x '/cvmfs/data.galaxyproject.org/byhand/hg38/hg38full/bowtie2_index/hg38full'   -1 'input_f.fastq.gz' -2 'input_r.fastq.gz'                2> >(tee '/galaxy/server/database/jobs_directory/000/327/outputs/dataset_4816b496-f88c-4e4d-9930-7bde4c2d8be0.dat' >&2)  | samtools sort -l 0 -T \"${TMPDIR:-.}\" -O bam | samtools view --no-PG -O bam -@ ${GALAXY_SLOTS:-1} -o '/galaxy/server/database/jobs_directory/000/327/outputs/dataset_6c4a2554-ed6b-4736-9ace-ec57f4112ee8.dat'",
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "b9eec48891b366cf",
+        "command_version": "/usr/local/bin/bowtie2-align-s version 2.5.4\n64-bit\nBuilt on pkrvm1036rseh6a\nTue Jun  3 22:26:18 UTC 2025\nCompiler: gcc version 13.3.0 (conda-forge gcc 13.3.0-2) \nOptions: -O3 -msse2 -funroll-loops -g3 -fvisibility-inlines-hidden -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -pipe -isystem /usr/local/include -fdebug-prefix-map=/opt/conda/conda-bld/bowtie2_1748989393299/work=/usr/local/src/conda/bowtie2-2.5.4 -fdebug-prefix-map=/usr/local=/usr/local/src/conda-prefix -O3\nSizeof {int, long, long long, void*, size_t, off_t}: {4, 8, 8, 8, 8, 8}",
+        "params": {
+            "analysis_type": "{\"__current_case__\": 0, \"analysis_type_selector\": \"simple\", \"presets\": \"no_presets\"}",
+            "library": "{\"__current_case__\": 1, \"aligned_file\": false, \"input_1\": {\"values\": [{\"id\": 492, \"src\": \"dce\"}]}, \"paired_options\": {\"__current_case__\": 1, \"paired_options_selector\": \"no\"}, \"type\": \"paired_collection\", \"unaligned_file\": false}",
+            "reference_genome": "{\"__current_case__\": 0, \"index\": \"hg38\", \"source\": \"indexed\"}",
+            "rg": "{\"__current_case__\": 3, \"rg_selector\": \"do_not_set\"}",
+            "sam_options": "{\"__current_case__\": 1, \"sam_options_selector\": \"no\"}",
+            "save_mapping_stats": "true",
+            "__workflow_invocation_uuid__": "\"22824c0a2bdc11f1a65a82839cb514a4\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/?.len\"",
+            "dbkey": "\"?\"",
+            "__input_ext": "\"input\""
+        },
+        "inputs": {
+            "library|input_11": {
+                "id": "972454bf90d80041",
+                "src": "hda",
+                "uuid": "b834f214-2b64-4675-859f-24929f4cf698"
+            },
+            "library|input_12": {
+                "id": "9925ab50b3db21f6",
+                "src": "hda",
+                "uuid": "108a7e46-70a8-4cb0-a78c-13affa2f27de"
+            }
+        },
+        "outputs": {
+            "output": {
+                "id": "d99edf4fcb90d20d",
+                "src": "hda",
+                "uuid": "6c4a2554-ed6b-4736-9ace-ec57f4112ee8"
+            },
+            "mapping_stats": {
+                "id": "659598810e322228",
+                "src": "hda",
+                "uuid": "4816b496-f88c-4e4d-9930-7bde4c2d8be0"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {
+            "output": {
+                "src": "hdca",
+                "id": "5543de6665c5b382"
+            },
+            "mapping_stats": {
+                "src": "hdca",
+                "id": "47314695ac1f5bdc"
+            }
+        },
+        "tool_stdout": "",
+        "tool_stderr": "41892493 reads; of these:\n  41892493 (100.00%) were paired; of these:\n    677826 (1.62%) aligned concordantly 0 times\n    35981142 (85.89%) aligned concordantly exactly 1 time\n    5233525 (12.49%) aligned concordantly >1 times\n    ----\n    677826 pairs aligned concordantly 0 times; of these:\n      13189 (1.95%) aligned discordantly 1 time\n    ----\n    664637 pairs aligned 0 times concordantly or discordantly; of these:\n      1329274 mates make up the pairs; of these:\n        930157 (69.97%) aligned 0 times\n        275215 (20.70%) aligned exactly 1 time\n        123902 (9.32%) aligned >1 times\n98.89% overall alignment rate\n[bam_sort_core] merging from 1 files and 1 in-memory blocks...\n",
+        "job_stdout": "",
+        "job_stderr": "",
+        "stdout": "",
+        "stderr": "41892493 reads; of these:\n  41892493 (100.00%) were paired; of these:\n    677826 (1.62%) aligned concordantly 0 times\n    35981142 (85.89%) aligned concordantly exactly 1 time\n    5233525 (12.49%) aligned concordantly >1 times\n    ----\n    677826 pairs aligned concordantly 0 times; of these:\n      13189 (1.95%) aligned discordantly 1 time\n    ----\n    664637 pairs aligned 0 times concordantly or discordantly; of these:\n      1329274 mates make up the pairs; of these:\n        930157 (69.97%) aligned 0 times\n        275215 (20.70%) aligned exactly 1 time\n        123902 (9.32%) aligned >1 times\n98.89% overall alignment rate\n[bam_sort_core] merging from 1 files and 1 in-memory blocks...\n",
+        "job_messages": [],
+        "dependencies": [],
+        "job_metrics": [
+            {
+                "title": "Container ID",
+                "value": "quay.io/biocontainers/mulled-v2-c742dccc9d8fabfcff2af0d8d6799dbc711366cf:3ce44c9e658f3086fb31ddf84fb7a4525cb61e2d-0",
+                "plugin": "core",
+                "name": "container_id",
+                "raw_value": "quay.io/biocontainers/mulled-v2-c742dccc9d8fabfcff2af0d8d6799dbc711366cf:3ce44c9e658f3086fb31ddf84fb7a4525cb61e2d-0"
+            },
+            {
+                "title": "Container Type",
+                "value": "docker",
+                "plugin": "core",
+                "name": "container_type",
+                "raw_value": "docker"
+            },
+            {
+                "title": "Cores Allocated",
+                "value": "8",
+                "plugin": "core",
+                "name": "galaxy_slots",
+                "raw_value": "8.0000000"
+            },
+            {
+                "title": "Memory Allocated (MB)",
+                "value": "20480",
+                "plugin": "core",
+                "name": "galaxy_memory_mb",
+                "raw_value": "20480.0000000"
+            },
+            {
+                "title": "Job Start Time",
+                "value": "2026-03-30 02:08:38",
+                "plugin": "core",
+                "name": "start_epoch",
+                "raw_value": "1774836518.0000000"
+            },
+            {
+                "title": "Job End Time",
+                "value": "2026-03-30 03:33:25",
+                "plugin": "core",
+                "name": "end_epoch",
+                "raw_value": "1774841605.0000000"
+            },
+            {
+                "title": "Job Runtime (Wall Clock)",
+                "value": "1 hour and 24 minutes",
+                "plugin": "core",
+                "name": "runtime_seconds",
+                "raw_value": "5087.0000000"
+            }
+        ]
+    },
+    "status": "ok",
+    "server": "http://34.11.12.196",
+    "ref_data_size": [],
+    "input_data_size": [
+        0
+    ]
+}

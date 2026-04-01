@@ -1,0 +1,100 @@
+{
+    "run": "1",
+    "cloud": "single",
+    "job_conf": "Default",
+    "workflow_id": "447c77e97866a6c5",
+    "history_id": "58e5e4a236edad53",
+    "inputs": "SRR24043307-80 ucsc.hg38.knownGene.gtf SRR24043307-50 ucsc.hg38.knownGene.gtf SRR24043307-full ucsc.hg38.knownGene.gtf",
+    "metrics": {
+        "model_class": "Job",
+        "id": "15c0fde420117990",
+        "history_id": "58e5e4a236edad53",
+        "tool_id": "param_value_from_file",
+        "state": "ok",
+        "exit_code": 0,
+        "create_time": "2026-03-31T05:08:55.159534",
+        "update_time": "2026-03-31T06:37:42.180087",
+        "galaxy_version": "26.1",
+        "external_id": "488846",
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": "cd ../; python _evaluate_expression_.py",
+        "user_email": "suderman@jhu.edu",
+        "user_id": "447c77e97866a6c5",
+        "command_version": "",
+        "params": {
+            "param_type": "\"float\"",
+            "remove_newlines": "true",
+            "__workflow_invocation_uuid__": "\"b61d76d62cbf11f188cc066664bb3ded\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/hg38.len\"",
+            "dbkey": "\"hg38\"",
+            "__input_ext": "\"input\""
+        },
+        "inputs": {
+            "input1": {
+                "id": "ebfe852101cf6244",
+                "src": "hda",
+                "uuid": "10523985-5f65-4f73-b7bb-c27e457fd2b0"
+            }
+        },
+        "outputs": {
+            "float_param": {
+                "id": "cbebb4487dd3a7c4",
+                "src": "hda",
+                "uuid": "3e51d019-3164-461a-9ad2-fc0f607e4f45"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {
+            "float_param": {
+                "src": "hdca",
+                "id": "766b64537bd54df6"
+            }
+        },
+        "tool_stdout": "",
+        "tool_stderr": "",
+        "job_stdout": "",
+        "job_stderr": "",
+        "stdout": "",
+        "stderr": "",
+        "job_messages": [],
+        "dependencies": [],
+        "job_metrics": [
+            {
+                "title": "Cores Allocated",
+                "value": "1",
+                "plugin": "core",
+                "name": "galaxy_slots",
+                "raw_value": "1.0000000"
+            },
+            {
+                "title": "Job Start Time",
+                "value": "2026-03-31 06:37:16",
+                "plugin": "core",
+                "name": "start_epoch",
+                "raw_value": "1774939036.0000000"
+            },
+            {
+                "title": "Job End Time",
+                "value": "2026-03-31 06:37:42",
+                "plugin": "core",
+                "name": "end_epoch",
+                "raw_value": "1774939062.0000000"
+            },
+            {
+                "title": "Job Runtime (Wall Clock)",
+                "value": "26 seconds",
+                "plugin": "core",
+                "name": "runtime_seconds",
+                "raw_value": "26.0000000"
+            }
+        ]
+    },
+    "status": "ok",
+    "server": "http://35.194.88.166",
+    "ref_data_size": [],
+    "input_data_size": [
+        2824478,
+        503642961
+    ]
+}

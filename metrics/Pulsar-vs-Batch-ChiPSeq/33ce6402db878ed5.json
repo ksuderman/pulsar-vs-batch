@@ -1,0 +1,111 @@
+{
+    "run": "1",
+    "cloud": "pulsar",
+    "job_conf": "Default",
+    "workflow_id": "c1c9b96fba7a9aa3",
+    "history_id": "7eb5d46bd48c07da",
+    "inputs": "chipseq-2g",
+    "metrics": {
+        "model_class": "Job",
+        "id": "33ce6402db878ed5",
+        "history_id": "7eb5d46bd48c07da",
+        "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_grep_tool/9.5+galaxy2",
+        "state": "ok",
+        "exit_code": 0,
+        "create_time": "2026-03-30T01:02:53.153681",
+        "update_time": "2026-03-30T02:15:19.583058",
+        "galaxy_version": "26.1",
+        "external_id": "271",
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": "grep -P -A 0 -B 0 --no-group-separator  -i -- '^#' '/mnt/disks/pulsar_staging/271/inputs/dataset_b968df18-e3fc-4b66-ab3c-6e62a59afa90.dat' > '/mnt/disks/pulsar_staging/271/working/dataset_ebcaef44-8b27-4df7-9a87-95255453a699.dat'",
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "a965afe3a7a615f9",
+        "command_version": "grep (GNU grep) 3.11",
+        "params": {
+            "case_sensitive": "\"-i\"",
+            "color": "\"NOCOLOR\"",
+            "invert": "\"\"",
+            "lines_after": "\"0\"",
+            "lines_before": "\"0\"",
+            "regex_type": "\"-P\"",
+            "url_paste": "\"^#\"",
+            "__workflow_invocation_uuid__": "\"2cf253c22bd411f1becebebd58c486e9\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/hg38.len\"",
+            "dbkey": "\"hg38\"",
+            "__input_ext": "\"input\""
+        },
+        "inputs": {
+            "infile": {
+                "id": "c2d58bbbcd5cf45a",
+                "src": "hda",
+                "uuid": "b968df18-e3fc-4b66-ab3c-6e62a59afa90"
+            }
+        },
+        "outputs": {
+            "output": {
+                "id": "691b2a4c007c43c4",
+                "src": "hda",
+                "uuid": "ebcaef44-8b27-4df7-9a87-95255453a699"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {
+            "output": {
+                "src": "hdca",
+                "id": "e98e1522d5f718f2"
+            }
+        },
+        "tool_stdout": "",
+        "tool_stderr": "",
+        "job_stdout": "",
+        "job_stderr": "",
+        "stdout": "",
+        "stderr": "",
+        "job_messages": [],
+        "dependencies": [],
+        "job_metrics": [
+            {
+                "title": "Cores Allocated",
+                "value": "1",
+                "plugin": "core",
+                "name": "galaxy_slots",
+                "raw_value": "1.0000000"
+            },
+            {
+                "title": "Memory Allocated (MB)",
+                "value": "3891",
+                "plugin": "core",
+                "name": "galaxy_memory_mb",
+                "raw_value": "3891.0000000"
+            },
+            {
+                "title": "Job Start Time",
+                "value": "2026-03-30 02:14:57",
+                "plugin": "core",
+                "name": "start_epoch",
+                "raw_value": "1774836897.0000000"
+            },
+            {
+                "title": "Job End Time",
+                "value": "2026-03-30 02:14:57",
+                "plugin": "core",
+                "name": "end_epoch",
+                "raw_value": "1774836897.0000000"
+            },
+            {
+                "title": "Job Runtime (Wall Clock)",
+                "value": "0 seconds",
+                "plugin": "core",
+                "name": "runtime_seconds",
+                "raw_value": "0E-7"
+            }
+        ]
+    },
+    "status": "ok",
+    "server": "http://35.188.245.115",
+    "ref_data_size": [],
+    "input_data_size": [
+        146
+    ]
+}

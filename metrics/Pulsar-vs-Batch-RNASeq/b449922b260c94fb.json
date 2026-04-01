@@ -1,0 +1,120 @@
+{
+    "run": "1",
+    "cloud": "batch",
+    "job_conf": "Default",
+    "workflow_id": "b9eec48891b366cf",
+    "history_id": "82875ad61f5a473a",
+    "inputs": "SRR24043307-80 ucsc.hg38.knownGene.gtf",
+    "metrics": {
+        "model_class": "Job",
+        "id": "b449922b260c94fb",
+        "history_id": "82875ad61f5a473a",
+        "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.2",
+        "state": "ok",
+        "exit_code": 0,
+        "create_time": "2026-03-31T01:06:22.046797",
+        "update_time": "2026-03-31T01:56:30.161010",
+        "galaxy_version": "26.1",
+        "external_id": "galaxy-job-1774922065-bcbc1f0b",
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": "env -i $(which awk) --sandbox -v FS='\t' -v OFS='\t' --re-interval -f \"/galaxy/server/database/jobs_directory/000/408/configs/tmp9iaw8oaf\" \"/galaxy/server/database/objects/9/9/3/dataset_99355866-2c4a-406c-aeb5-7d661dded217.dat\" > \"/galaxy/server/database/jobs_directory/000/408/outputs/dataset_57cb947c-ea75-4c71-8fba-ec1c534a1f66.dat\"",
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "b9eec48891b366cf",
+        "command_version": "GNU Awk 4.2.0, API: 2.0",
+        "params": {
+            "code": "\"NR>4{print $1\\\"\\\\t\\\"$3}\"",
+            "__workflow_invocation_uuid__": "\"622618522c9d11f1bf5e82839cb514a4\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/hg38.len\"",
+            "dbkey": "\"hg38\"",
+            "__input_ext": "\"tabular\""
+        },
+        "inputs": {
+            "infile": {
+                "id": "c3919b66beb57076",
+                "src": "hda",
+                "uuid": "99355866-2c4a-406c-aeb5-7d661dded217"
+            }
+        },
+        "outputs": {
+            "outfile": {
+                "id": "dabb9f058005ccc4",
+                "src": "hda",
+                "uuid": "57cb947c-ea75-4c71-8fba-ec1c534a1f66"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {
+            "outfile": {
+                "src": "hdca",
+                "id": "c68ed541b7b908e4"
+            }
+        },
+        "tool_stdout": "",
+        "tool_stderr": "",
+        "job_stdout": "",
+        "job_stderr": "",
+        "stdout": "",
+        "stderr": "",
+        "job_messages": [],
+        "dependencies": [],
+        "job_metrics": [
+            {
+                "title": "Container ID",
+                "value": "quay.io/biocontainers/gawk:4.2.0",
+                "plugin": "core",
+                "name": "container_id",
+                "raw_value": "quay.io/biocontainers/gawk:4.2.0"
+            },
+            {
+                "title": "Container Type",
+                "value": "docker",
+                "plugin": "core",
+                "name": "container_type",
+                "raw_value": "docker"
+            },
+            {
+                "title": "Cores Allocated",
+                "value": "1",
+                "plugin": "core",
+                "name": "galaxy_slots",
+                "raw_value": "1.0000000"
+            },
+            {
+                "title": "Memory Allocated (MB)",
+                "value": "3891",
+                "plugin": "core",
+                "name": "galaxy_memory_mb",
+                "raw_value": "3891.0000000"
+            },
+            {
+                "title": "Job Start Time",
+                "value": "2026-03-31 01:56:18",
+                "plugin": "core",
+                "name": "start_epoch",
+                "raw_value": "1774922178.0000000"
+            },
+            {
+                "title": "Job End Time",
+                "value": "2026-03-31 01:56:19",
+                "plugin": "core",
+                "name": "end_epoch",
+                "raw_value": "1774922179.0000000"
+            },
+            {
+                "title": "Job Runtime (Wall Clock)",
+                "value": "1 second",
+                "plugin": "core",
+                "name": "runtime_seconds",
+                "raw_value": "1.0000000"
+            }
+        ]
+    },
+    "status": "ok",
+    "server": "http://34.11.12.196",
+    "ref_data_size": [],
+    "input_data_size": [
+        2842083,
+        503642961
+    ]
+}

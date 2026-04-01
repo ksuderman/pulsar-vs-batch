@@ -1,0 +1,110 @@
+{
+    "run": "1",
+    "cloud": "pulsar",
+    "job_conf": "Default",
+    "workflow_id": "dccc38fb94409c1f",
+    "history_id": "1e8240e0096bf53f",
+    "inputs": "SRR24043307-2GB GRCh38.p14.gbff.gz SRR24043307-5GB GRCh38.p14.gbff.gz",
+    "metrics": {
+        "model_class": "Job",
+        "id": "a1def3cc79f942ff",
+        "history_id": "1e8240e0096bf53f",
+        "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/lofreq_filter/lofreq_filter/2.1.5+galaxy0",
+        "state": "ok",
+        "exit_code": 0,
+        "create_time": "2026-03-31T17:13:55.034091",
+        "update_time": "2026-03-31T23:25:22.194113",
+        "galaxy_version": "26.1",
+        "external_id": "361",
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": "lofreq filter -i /mnt/disks/pulsar_staging/361/inputs/dataset_3686445a-dd9a-4542-b13f-db5590c69d39.dat --no-defaults --verbose --print-all  -v 0 -V 0 -a 0.0 -A 0.0 -b fdr -c 0.001   -o filtered.vcf",
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "a965afe3a7a615f9",
+        "command_version": "2.1.5",
+        "params": {
+            "af": "{\"af_max\": \"0.0\", \"af_min\": \"0.0\"}",
+            "coverage": "{\"cov_max\": \"0\", \"cov_min\": \"0\"}",
+            "filter_by_type": "{\"__current_case__\": 0, \"keep_only\": \"\", \"qual\": {\"indelqual_filter\": {\"__current_case__\": 0, \"indelqual\": \"no\"}, \"snvqual_filter\": {\"__current_case__\": 0, \"snvqual\": \"no\"}}}",
+            "flag_or_drop": "\"--print-all\"",
+            "sb": "{\"sb_filter\": {\"__current_case__\": 2, \"sb_alpha\": \"0.001\", \"sb_compound\": true, \"sb_indels\": false, \"sb_mtc\": \"fdr\", \"strand_bias\": \"mtc\"}}",
+            "__workflow_invocation_uuid__": "\"fdff9ae62d2411f19d49bebd58c486e9\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/?.len\"",
+            "dbkey": "\"?\"",
+            "__input_ext": "\"input\""
+        },
+        "inputs": {
+            "invcf": {
+                "id": "aed4944ff9d5fb4e",
+                "src": "hda",
+                "uuid": "3686445a-dd9a-4542-b13f-db5590c69d39"
+            }
+        },
+        "outputs": {
+            "outvcf": {
+                "id": "f12d64071b92044a",
+                "src": "hda",
+                "uuid": "ffeb1cdd-1265-4505-a5db-2cdfce5f3915"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {
+            "outvcf": {
+                "src": "hdca",
+                "id": "ac70acc10e67da29"
+            }
+        },
+        "tool_stdout": "",
+        "tool_stderr": "Skipping default settings\nAt least one type of multiple testing correction requested. Doing first pass of vcf\nMTC application completed\nSuccessful exit.\n",
+        "job_stdout": "",
+        "job_stderr": "",
+        "stdout": "",
+        "stderr": "Skipping default settings\nAt least one type of multiple testing correction requested. Doing first pass of vcf\nMTC application completed\nSuccessful exit.\n",
+        "job_messages": [],
+        "dependencies": [],
+        "job_metrics": [
+            {
+                "title": "Cores Allocated",
+                "value": "1",
+                "plugin": "core",
+                "name": "galaxy_slots",
+                "raw_value": "1.0000000"
+            },
+            {
+                "title": "Memory Allocated (MB)",
+                "value": "15564",
+                "plugin": "core",
+                "name": "galaxy_memory_mb",
+                "raw_value": "15564.0000000"
+            },
+            {
+                "title": "Job Start Time",
+                "value": "2026-03-31 23:25:00",
+                "plugin": "core",
+                "name": "start_epoch",
+                "raw_value": "1774999500.0000000"
+            },
+            {
+                "title": "Job End Time",
+                "value": "2026-03-31 23:25:00",
+                "plugin": "core",
+                "name": "end_epoch",
+                "raw_value": "1774999500.0000000"
+            },
+            {
+                "title": "Job Runtime (Wall Clock)",
+                "value": "0 seconds",
+                "plugin": "core",
+                "name": "runtime_seconds",
+                "raw_value": "0E-7"
+            }
+        ]
+    },
+    "status": "ok",
+    "server": "http://35.188.245.115",
+    "ref_data_size": [],
+    "input_data_size": [
+        943609340,
+        1289376399
+    ]
+}

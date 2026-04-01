@@ -1,0 +1,99 @@
+{
+    "run": "1",
+    "cloud": "batch",
+    "job_conf": "Default",
+    "workflow_id": "bddcdd049e475662",
+    "history_id": "c02d13a567d32d77",
+    "inputs": "SRR24043307-2GB GRCh38.p14.gbff.gz",
+    "metrics": {
+        "model_class": "Job",
+        "id": "59b99b82b380f334",
+        "history_id": "c02d13a567d32d77",
+        "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/snpeff/snpEff/4.3+T.galaxy1",
+        "state": "ok",
+        "exit_code": null,
+        "create_time": "2026-03-31T13:17:33.345259",
+        "update_time": "2026-03-31T16:43:08.211047",
+        "galaxy_version": "26.1",
+        "external_id": "galaxy-job-1774975234-5121f19c",
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": "snpEff -Xmx${GALAXY_MEMORY_MB:-8192}m eff -i vcf -o vcf -upDownStreamLen 0 -formatEff -classic -no-downstream -no-intergenic -no-intron -no-upstream -no-utr                  -stats '/galaxy/server/database/jobs_directory/000/463/outputs/dataset_30b52ea8-b78d-465b-a645-e10627c781f4.dat' -noLog -dataDir '/galaxy/server/database/objects/f/3/4/dataset_f3412c70-2471-40b5-8ee1-831847f42bbb_files' -configOption 'h38'.genome='h38' -configOption 'h38'.codonTable='Standard' 'h38' '/galaxy/server/database/objects/d/8/8/dataset_d88bbcfa-7e46-4360-83e0-8e147de3af4f.dat' > '/galaxy/server/database/jobs_directory/000/463/outputs/dataset_36b9c671-7b39-42d5-9294-93ef5ecfd63a.dat' && mkdir '/galaxy/server/database/jobs_directory/000/463/outputs/dataset_30b52ea8-b78d-465b-a645-e10627c781f4_files' && mv '/galaxy/server/database/jobs_directory/000/463/outputs/dataset_30b52ea8-b78d-465b-a645-e10627c781f4.dat.genes.txt' '/galaxy/server/database/jobs_directory/000/463/outputs/dataset_30b52ea8-b78d-465b-a645-e10627c781f4_files/dataset_30b52ea8-b78d-465b-a645-e10627c781f4.dat.genes.txt'",
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "b9eec48891b366cf",
+        "command_version": null,
+        "params": {
+            "annotations": "[\"-formatEff\", \"-classic\"]",
+            "chr": "\"\"",
+            "csvStats": "false",
+            "filter": "{\"__current_case__\": 0, \"specificEffects\": \"no\"}",
+            "filterOut": "[\"-no-downstream\", \"-no-intergenic\", \"-no-intron\", \"-no-upstream\", \"-no-utr\"]",
+            "generate_stats": "true",
+            "inputFormat": "\"vcf\"",
+            "intervals": null,
+            "noLog": "true",
+            "offset": "\"default\"",
+            "outputConditional": "{\"__current_case__\": 0, \"outputFormat\": \"vcf\"}",
+            "snpDb": "{\"__current_case__\": 3, \"codon_table\": \"Standard\", \"genomeSrc\": \"custom\", \"snpeff_db\": {\"values\": [{\"id\": 902, \"src\": \"hda\"}]}}",
+            "spliceRegion": "{\"__current_case__\": 0, \"setSpliceRegions\": \"no\"}",
+            "spliceSiteSize": null,
+            "transcripts": null,
+            "udLength": "\"0\"",
+            "__workflow_invocation_uuid__": "\"f8bb92042d0311f1acc282839cb514a4\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/?.len\"",
+            "dbkey": "\"?\"",
+            "__input_ext": "\"vcf\""
+        },
+        "inputs": {
+            "input": {
+                "id": "680422cc795d7a21",
+                "src": "hda",
+                "uuid": "d88bbcfa-7e46-4360-83e0-8e147de3af4f"
+            },
+            "snpDb|snpeff_db": {
+                "id": "21609cf9cfb9d9bf",
+                "src": "hda",
+                "uuid": "f3412c70-2471-40b5-8ee1-831847f42bbb"
+            }
+        },
+        "outputs": {
+            "snpeff_output": {
+                "id": "ff8f2f7f7b2d53d5",
+                "src": "hda",
+                "uuid": "36b9c671-7b39-42d5-9294-93ef5ecfd63a"
+            },
+            "statsFile": {
+                "id": "ab16e202cca44abf",
+                "src": "hda",
+                "uuid": "30b52ea8-b78d-465b-a645-e10627c781f4"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {
+            "snpeff_output": {
+                "src": "hdca",
+                "id": "d3e46bf64003788a"
+            },
+            "statsFile": {
+                "src": "hdca",
+                "id": "5abd56cd324c4183"
+            }
+        },
+        "tool_stdout": "",
+        "tool_stderr": "",
+        "job_stdout": "",
+        "job_stderr": "",
+        "stdout": "",
+        "stderr": "",
+        "job_messages": [],
+        "dependencies": [],
+        "job_metrics": []
+    },
+    "status": "ok",
+    "server": "http://34.11.12.196",
+    "ref_data_size": [],
+    "input_data_size": [
+        503642961,
+        1289376399
+    ]
+}

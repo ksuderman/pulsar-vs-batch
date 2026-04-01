@@ -1,0 +1,151 @@
+{
+    "run": "1",
+    "cloud": "batch",
+    "job_conf": "Default",
+    "workflow_id": "5a74a44058fe6c0a",
+    "history_id": "d0cf03a67b3e26d7",
+    "inputs": "chipseq-2g chipseq-5g chipseq-10g",
+    "metrics": {
+        "model_class": "Job",
+        "id": "199e19cfdebbd5f3",
+        "history_id": "d0cf03a67b3e26d7",
+        "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/fastp/fastp/1.0.1+galaxy2",
+        "state": "ok",
+        "exit_code": 0,
+        "create_time": "2026-03-30T04:00:57.037960",
+        "update_time": "2026-03-30T04:08:10.031073",
+        "galaxy_version": "26.1",
+        "external_id": "galaxy-job-1774843258-4dde755b",
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": "ln -sf '/galaxy/server/database/objects/a/7/d/dataset_a7da6429-6da3-4bdf-a184-6c6b1f21d33b.dat' 'forward_and_reverse.fastqsanger.gz' && ln -sf '/galaxy/server/database/objects/c/9/a/dataset_c9ad3490-4d26-40af-a850-76448bb8b87c.dat' 'forward_and_reverse_R2.fastqsanger.gz' &&   fastp  --thread ${GALAXY_SLOTS:-1} --report_title 'fastp report for forward_and_reverse.fastqsanger.gz'  -i 'forward_and_reverse.fastqsanger.gz'   -I 'forward_and_reverse_R2.fastqsanger.gz' -o first.fastqsanger.gz -O second.fastqsanger.gz                       -q 30 -u 70                            && mv first.fastqsanger.gz '/galaxy/server/database/jobs_directory/000/333/outputs/dataset_d6fdb56d-8932-48e1-933f-fb32b0556492.dat' && mv second.fastqsanger.gz '/galaxy/server/database/jobs_directory/000/333/outputs/dataset_2aa119c6-30e0-416b-ad93-a9091587232c.dat'",
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "b9eec48891b366cf",
+        "command_version": "fastp 1.0.1",
+        "params": {
+            "filter_options": "{\"length_filtering_options\": {\"disable_length_filtering\": false, \"length_limit\": null, \"length_required\": null}, \"low_complexity_filter\": {\"complexity_threshold\": null, \"enable_low_complexity_filter\": false}, \"quality_filtering_options\": {\"disable_quality_filtering\": false, \"n_base_limit\": null, \"qualified_quality_phred\": \"30\", \"unqualified_percent_limit\": \"70\"}}",
+            "output_options": "{\"report_html\": true, \"report_json\": true}",
+            "overrepresented_sequence_analysis": "{\"overrepresentation_analysis\": false, \"overrepresentation_sampling\": null}",
+            "read_mod_options": "{\"base_correction_options\": {\"correction\": false}, \"cutting_by_quality_options\": {\"cut_front_select\": {\"__current_case__\": 1, \"cut_front\": \"\"}, \"cut_right_select\": {\"__current_case__\": 1, \"cut_right\": \"\"}, \"cut_tail_select\": {\"__current_case__\": 1, \"cut_tail\": \"\"}}, \"polyg_tail_trimming\": {\"__current_case__\": 1, \"poly_g_min_len\": null, \"trimming_select\": \"\"}, \"polyx_tail_trimming\": {\"__current_case__\": 1, \"polyx_trimming_select\": \"\"}, \"umi_processing\": {\"umi\": false, \"umi_len\": null, \"umi_loc\": null, \"umi_prefix\": null}}",
+            "single_paired": "{\"__current_case__\": 1, \"adapter_trimming_options\": {\"adapter_sequence1\": null, \"adapter_sequence2\": null, \"detect_adapter_for_pe\": false, \"disable_adapter_trimming\": false}, \"global_trimming_options\": {\"trim_front1\": null, \"trim_front2\": null, \"trim_tail1\": null, \"trim_tail2\": null}, \"merge_reads\": {\"__current_case__\": 1, \"merge\": \"\"}, \"paired_input\": {\"values\": [{\"id\": 455, \"src\": \"dce\"}]}, \"single_paired_selector\": \"paired_collection\"}",
+            "__workflow_invocation_uuid__": "\"0dd117762bed11f1ae8182839cb514a4\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/?.len\"",
+            "dbkey": "\"?\"",
+            "__input_ext": "\"input\""
+        },
+        "inputs": {
+            "single_paired|paired_input1": {
+                "id": "e049ff339b6d85ea",
+                "src": "hda",
+                "uuid": "a7da6429-6da3-4bdf-a184-6c6b1f21d33b"
+            },
+            "single_paired|paired_input2": {
+                "id": "ad5ad89b7cab1ff1",
+                "src": "hda",
+                "uuid": "c9ad3490-4d26-40af-a850-76448bb8b87c"
+            }
+        },
+        "outputs": {
+            "output_paired_coll|__part__|forward": {
+                "id": "6e73d4ad62310cd8",
+                "src": "hda",
+                "uuid": "d6fdb56d-8932-48e1-933f-fb32b0556492"
+            },
+            "output_paired_coll|__part__|reverse": {
+                "id": "a1009afcc1474db3",
+                "src": "hda",
+                "uuid": "2aa119c6-30e0-416b-ad93-a9091587232c"
+            },
+            "report_html": {
+                "id": "f179197a387f4c95",
+                "src": "hda",
+                "uuid": "83109c35-726e-41e5-9aa0-94a58bd9b79f"
+            },
+            "report_json": {
+                "id": "2a01e2e8ea711b60",
+                "src": "hda",
+                "uuid": "24d1e6c9-6a5b-4fd1-8402-62dc4eb1b3d8"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {
+            "output_paired_coll": {
+                "src": "hdca",
+                "id": "1087d4059aa93cad"
+            },
+            "report_html": {
+                "src": "hdca",
+                "id": "cc78290c86a299f3"
+            },
+            "report_json": {
+                "src": "hdca",
+                "id": "130043f67f6e2d5c"
+            }
+        },
+        "tool_stdout": "",
+        "tool_stderr": "Read1 before filtering:\ntotal reads: 85094123\ntotal bases: 8594506423\nQ20 bases: 8480922920(98.6784%)\nQ30 bases: 8275356897(96.2866%)\nQ40 bases: 7061076699(82.158%)\n\nRead2 before filtering:\ntotal reads: 85094123\ntotal bases: 8594506423\nQ20 bases: 8198739532(95.3951%)\nQ30 bases: 7721849038(89.8463%)\nQ40 bases: 5942039781(69.1377%)\n\nRead1 after filtering:\ntotal reads: 83689715\ntotal bases: 8442323343\nQ20 bases: 8345360599(98.8515%)\nQ30 bases: 8160791797(96.6652%)\nQ40 bases: 6994595268(82.8515%)\n\nRead2 after filtering:\ntotal reads: 83689715\ntotal bases: 8442323343\nQ20 bases: 8119419805(96.1752%)\nQ30 bases: 7681988954(90.9938%)\nQ40 bases: 5929495136(70.2353%)\n\nFiltering result:\nreads passed filter: 167379430\nreads failed due to low quality: 2691382\nreads failed due to too many N: 117434\nreads failed due to too short: 0\nreads with adapter trimmed: 609732\nbases trimmed due to adapters: 20721372\n\nDuplication rate: 15.7596%\n\nInsert size peak (evaluated by paired-end reads): 171\n\nJSON report: fastp.json\nHTML report: fastp.html\n\nfastp --thread 4 --report_title fastp report for forward_and_reverse.fastqsanger.gz -i forward_and_reverse.fastqsanger.gz -I forward_and_reverse_R2.fastqsanger.gz -o first.fastqsanger.gz -O second.fastqsanger.gz -q 30 -u 70 \nfastp v1.0.1, time used: 342 seconds\n",
+        "job_stdout": "",
+        "job_stderr": "",
+        "stdout": "",
+        "stderr": "Read1 before filtering:\ntotal reads: 85094123\ntotal bases: 8594506423\nQ20 bases: 8480922920(98.6784%)\nQ30 bases: 8275356897(96.2866%)\nQ40 bases: 7061076699(82.158%)\n\nRead2 before filtering:\ntotal reads: 85094123\ntotal bases: 8594506423\nQ20 bases: 8198739532(95.3951%)\nQ30 bases: 7721849038(89.8463%)\nQ40 bases: 5942039781(69.1377%)\n\nRead1 after filtering:\ntotal reads: 83689715\ntotal bases: 8442323343\nQ20 bases: 8345360599(98.8515%)\nQ30 bases: 8160791797(96.6652%)\nQ40 bases: 6994595268(82.8515%)\n\nRead2 after filtering:\ntotal reads: 83689715\ntotal bases: 8442323343\nQ20 bases: 8119419805(96.1752%)\nQ30 bases: 7681988954(90.9938%)\nQ40 bases: 5929495136(70.2353%)\n\nFiltering result:\nreads passed filter: 167379430\nreads failed due to low quality: 2691382\nreads failed due to too many N: 117434\nreads failed due to too short: 0\nreads with adapter trimmed: 609732\nbases trimmed due to adapters: 20721372\n\nDuplication rate: 15.7596%\n\nInsert size peak (evaluated by paired-end reads): 171\n\nJSON report: fastp.json\nHTML report: fastp.html\n\nfastp --thread 4 --report_title fastp report for forward_and_reverse.fastqsanger.gz -i forward_and_reverse.fastqsanger.gz -I forward_and_reverse_R2.fastqsanger.gz -o first.fastqsanger.gz -O second.fastqsanger.gz -q 30 -u 70 \nfastp v1.0.1, time used: 342 seconds\n",
+        "job_messages": [],
+        "dependencies": [],
+        "job_metrics": [
+            {
+                "title": "Container ID",
+                "value": "quay.io/biocontainers/fastp:1.0.1--heae3180_0",
+                "plugin": "core",
+                "name": "container_id",
+                "raw_value": "quay.io/biocontainers/fastp:1.0.1--heae3180_0"
+            },
+            {
+                "title": "Container Type",
+                "value": "docker",
+                "plugin": "core",
+                "name": "container_type",
+                "raw_value": "docker"
+            },
+            {
+                "title": "Cores Allocated",
+                "value": "4",
+                "plugin": "core",
+                "name": "galaxy_slots",
+                "raw_value": "4.0000000"
+            },
+            {
+                "title": "Memory Allocated (MB)",
+                "value": "56320",
+                "plugin": "core",
+                "name": "galaxy_memory_mb",
+                "raw_value": "56320.0000000"
+            },
+            {
+                "title": "Job Start Time",
+                "value": "2026-03-30 04:02:26",
+                "plugin": "core",
+                "name": "start_epoch",
+                "raw_value": "1774843346.0000000"
+            },
+            {
+                "title": "Job End Time",
+                "value": "2026-03-30 04:08:09",
+                "plugin": "core",
+                "name": "end_epoch",
+                "raw_value": "1774843689.0000000"
+            },
+            {
+                "title": "Job Runtime (Wall Clock)",
+                "value": "5 minutes",
+                "plugin": "core",
+                "name": "runtime_seconds",
+                "raw_value": "343.0000000"
+            }
+        ]
+    },
+    "status": "ok",
+    "server": "http://34.11.12.196",
+    "ref_data_size": [],
+    "input_data_size": [
+        0
+    ]
+}

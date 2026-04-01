@@ -1,0 +1,115 @@
+{
+    "run": "1",
+    "cloud": "pulsar",
+    "job_conf": "Default",
+    "workflow_id": "dccc38fb94409c1f",
+    "history_id": "4ed7e0d910c63830",
+    "inputs": "SRR24043307-2GB GRCh38.p14.gbff.gz SRR24043307-5GB GRCh38.p14.gbff.gz SRR24043307-10GB GRCh38.p14.gbff.gz",
+    "metrics": {
+        "model_class": "Job",
+        "id": "7746f62534ff8a0f",
+        "history_id": "4ed7e0d910c63830",
+        "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/lofreq_call/lofreq_call/2.1.5+galaxy1",
+        "state": "ok",
+        "exit_code": 0,
+        "create_time": "2026-03-31T23:28:50.024354",
+        "update_time": "2026-04-01T09:01:18.402861",
+        "galaxy_version": "26.1",
+        "external_id": "372",
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": "ln -s '/mnt/disks/pulsar_staging/372/inputs/dataset_e8f36f48-64b5-4fbf-a530-c23ae1c203d2.dat' reference.fa && lofreq faidx reference.fa 2>&1 || echo \"Error running samtools faidx for indexing fasta reference for lofreq\" >&2 &&  ln -s '/mnt/disks/pulsar_staging/372/inputs/dataset_f11d4690-befd-4552-a62f-abfe64ee8698.dat' reads.bam && ln -s -f '/mnt/disks/pulsar_staging/372/inputs/metadata_metadata_6ae3f98c-db82-40c2-b8c6-9b9f6030e23b.dat' reads.bam.bai &&   lofreq call-parallel --pp-threads ${GALAXY_SLOTS:-1} --verbose  --ref 'reference.fa' --out variants.vcf --call-indels   --min-cov 5 --max-depth 1000000  --min-bq 30 --min-alt-bq 30    --min-mq 0 --max-mq 255 --min-jq 0 --min-alt-jq 0 --def-alt-jq 0  --sig 0.0005 --bonf dynamic --no-default-filter  reads.bam 2>&1  || (tool_exit_code=$? && cat \"$TMPDIR/lofreq2_call_parallel*/*.log\" 1>&2 && exit $tool_exit_code)",
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "a965afe3a7a615f9",
+        "command_version": "2.1.5",
+        "params": {
+            "call_control": "{\"__current_case__\": 1, \"align_quals\": {\"alnqual\": {\"__current_case__\": 0, \"alnqual_choice\": {\"__current_case__\": 1, \"alnquals_to_use\": \"\", \"extended_baq\": true}, \"use_alnqual\": \"\"}}, \"bc_quals\": {\"alt_bq\": {\"__current_case__\": 0, \"modify\": \"\"}, \"min_alt_bq\": \"30\", \"min_bq\": \"30\"}, \"coverage\": {\"max_depth\": \"1000000\", \"min_cov\": \"5\"}, \"joint_qual\": {\"def_alt_jq\": \"0\", \"min_alt_jq\": \"0\", \"min_jq\": \"0\"}, \"map_quals\": {\"min_mq\": \"0\", \"use_mq\": {\"__current_case__\": 0, \"max_mq\": \"255\", \"no_mq\": \"\"}}, \"pe\": {\"use_orphan\": false}, \"set_call_options\": \"yes\", \"source_qual\": {\"use_src_qual\": {\"__current_case__\": 0, \"src_qual\": \"\"}}}",
+            "filter_control": "{\"__current_case__\": 3, \"bonf\": \"0\", \"filter_type\": \"set_custom\", \"others\": false, \"sig\": \"0.0005\"}",
+            "reference_source": "{\"__current_case__\": 1, \"ref\": {\"values\": [{\"id\": 746, \"src\": \"hda\"}]}, \"ref_selector\": \"history\"}",
+            "regions": "{\"__current_case__\": 0, \"restrict_to_region\": \"genome\"}",
+            "variant_types": "\"--call-indels\"",
+            "__workflow_invocation_uuid__": "\"5c5e90042d5911f19f3dbebd58c486e9\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/?.len\"",
+            "dbkey": "\"?\"",
+            "__input_ext": "\"input\""
+        },
+        "inputs": {
+            "reads": {
+                "id": "5bd41a9c0f60d220",
+                "src": "hda",
+                "uuid": "f11d4690-befd-4552-a62f-abfe64ee8698"
+            },
+            "reference_source|ref": {
+                "id": "22198df81a0c4dac",
+                "src": "hda",
+                "uuid": "e8f36f48-64b5-4fbf-a530-c23ae1c203d2"
+            }
+        },
+        "outputs": {
+            "variants": {
+                "id": "374c4897c37a058b",
+                "src": "hda",
+                "uuid": "9e8c6e40-c6a6-408c-b77a-8f5c45bcfd6a"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {
+            "variants": {
+                "src": "hdca",
+                "id": "d61453a7d1fcbcd9"
+            }
+        },
+        "tool_stdout": "INFO [2026-04-01 05:01:06,130]: Using 2 threads with following basic args: lofreq call --verbose --ref reference.fa --call-indels --min-cov 5 --max-depth 1000000 --min-bq 30 --min-alt-bq 30 --min-mq 0 --max-mq 255 --min-jq 0 --min-alt-jq 0 --def-alt-jq 0 --sig 0.0005 --bonf dynamic --no-default-filter reads.bam\n\nINFO [2026-04-01 05:01:06,193]: Adding 560 commands to mp-pool\nChecking the headers and starting positions of 560 files\nNumber of substitution tests performed: 11243271\nNumber of indel tests performed: 419755\nINFO [2026-04-01 09:00:45,034]: Executing lofreq filter -i /tmp/lofreq2_call_parallelh5cc393f/concat.vcf.gz -o variants.vcf --no-defaults --snvqual-thresh 104 --indelqual-thresh 89\n\n",
+        "tool_stderr": "",
+        "job_stdout": "",
+        "job_stderr": "",
+        "stdout": "INFO [2026-04-01 05:01:06,130]: Using 2 threads with following basic args: lofreq call --verbose --ref reference.fa --call-indels --min-cov 5 --max-depth 1000000 --min-bq 30 --min-alt-bq 30 --min-mq 0 --max-mq 255 --min-jq 0 --min-alt-jq 0 --def-alt-jq 0 --sig 0.0005 --bonf dynamic --no-default-filter reads.bam\n\nINFO [2026-04-01 05:01:06,193]: Adding 560 commands to mp-pool\nChecking the headers and starting positions of 560 files\nNumber of substitution tests performed: 11243271\nNumber of indel tests performed: 419755\nINFO [2026-04-01 09:00:45,034]: Executing lofreq filter -i /tmp/lofreq2_call_parallelh5cc393f/concat.vcf.gz -o variants.vcf --no-defaults --snvqual-thresh 104 --indelqual-thresh 89\n\n",
+        "stderr": "",
+        "job_messages": [],
+        "dependencies": [],
+        "job_metrics": [
+            {
+                "title": "Cores Allocated",
+                "value": "2",
+                "plugin": "core",
+                "name": "galaxy_slots",
+                "raw_value": "2.0000000"
+            },
+            {
+                "title": "Memory Allocated (MB)",
+                "value": "8192",
+                "plugin": "core",
+                "name": "galaxy_memory_mb",
+                "raw_value": "8192.0000000"
+            },
+            {
+                "title": "Job Start Time",
+                "value": "2026-04-01 05:00:58",
+                "plugin": "core",
+                "name": "start_epoch",
+                "raw_value": "1775019658.0000000"
+            },
+            {
+                "title": "Job End Time",
+                "value": "2026-04-01 09:00:45",
+                "plugin": "core",
+                "name": "end_epoch",
+                "raw_value": "1775034045.0000000"
+            },
+            {
+                "title": "Job Runtime (Wall Clock)",
+                "value": "3 hours and 59 minutes",
+                "plugin": "core",
+                "name": "runtime_seconds",
+                "raw_value": "14387.0000000"
+            }
+        ]
+    },
+    "status": "ok",
+    "server": "http://35.188.245.115",
+    "ref_data_size": [],
+    "input_data_size": [
+        957932045,
+        1289376399
+    ]
+}

@@ -1,0 +1,170 @@
+{
+    "run": "1",
+    "cloud": "batch",
+    "job_conf": "Default",
+    "workflow_id": "b9eec48891b366cf",
+    "history_id": "82875ad61f5a473a",
+    "inputs": "SRR24043307-80 ucsc.hg38.knownGene.gtf",
+    "metrics": {
+        "model_class": "Job",
+        "id": "043df9340e097ee6",
+        "history_id": "82875ad61f5a473a",
+        "tool_id": "toolshed.g2.bx.psu.edu/repos/devteam/cufflinks/cufflinks/2.2.1.3",
+        "state": "ok",
+        "exit_code": 0,
+        "create_time": "2026-03-31T01:06:20.507510",
+        "update_time": "2026-03-31T02:38:02.074767",
+        "galaxy_version": "26.1",
+        "external_id": "galaxy-job-1774922065-37aa6c14",
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": "cufflinks -q --no-update-check '/galaxy/server/database/objects/8/a/8/dataset_8a8d4dc7-15a7-4eee-bf85-820a46e43aec.dat' --num-threads \"${GALAXY_SLOTS:-4}\" -I 300000 -F 0.1 -j 0.15 --no-effective-length-correction  -G '/galaxy/server/database/objects/d/d/2/dataset_dd28c005-a1ad-4eca-b58e-5232e138fec8.dat'   -b '/cvmfs/data.galaxyproject.org/byhand/hg38/sam_index/hg38.fa'  -u  --library-type fr-secondstrand --frag-len-mean 200 --frag-len-std-dev 80 --max-mle-iterations 5000 --junc-alpha 0.001 --small-anchor-fraction 0.09 --overhang-tolerance 8 --max-bundle-length 10000000 --max-bundle-frags 1000000 --min-intron-length 50 --trim-3-avgcov-thresh 10 --trim-3-dropoff-frac 0.1 2> stderr  && python '/galaxy/server/database/shed_tools/toolshed.g2.bx.psu.edu/repos/devteam/cufflinks/d080005cffe1/cufflinks/mass.py' stderr 'None' \"transcripts.gtf\"",
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "b9eec48891b366cf",
+        "command_version": "cufflinks v2.2.1",
+        "params": {
+            "__job_resource": "{\"__current_case__\": 0, \"__job_resource__select\": \"no\"}",
+            "advanced_settings": "{\"__current_case__\": 1, \"inner_dist_std_dev\": \"80\", \"inner_mean_dist\": \"200\", \"junc_alpha\": \"0.001\", \"library_type\": \"fr-secondstrand\", \"mask_file\": null, \"max_bundle_frags\": \"1000000\", \"max_bundle_length\": \"10000000\", \"max_mle_iterations\": \"5000\", \"min_intron_length\": \"50\", \"overhang_tolerance\": \"8\", \"small_anchor_fraction\": \"0.09\", \"trim_three_avgcov_thresh\": \"10\", \"trim_three_dropoff_frac\": \"0.1\", \"use_advanced_settings\": \"Yes\"}",
+            "bias_correction": "{\"__current_case__\": 0, \"do_bias_correction\": \"Yes\", \"seq_source\": {\"__current_case__\": 0, \"index\": \"hg38\", \"index_source\": \"cached\"}}",
+            "global_model": null,
+            "length_correction": "\"--no-effective-length-correction\"",
+            "max_intron_len": "\"300000\"",
+            "min_isoform_fraction": "\"0.1\"",
+            "multiread_correct": "true",
+            "pre_mrna_fraction": "\"0.15\"",
+            "reference_annotation": "{\"__current_case__\": 1, \"compatible_hits_norm\": \"\", \"reference_annotation_file\": {\"values\": [{\"id\": 11, \"src\": \"hda\"}]}, \"use_ref\": \"Use reference annotation\"}",
+            "__workflow_invocation_uuid__": "\"622618522c9d11f1bf5e82839cb514a4\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/hg38.len\"",
+            "dbkey": "\"hg38\"",
+            "__input_ext": "\"bam\""
+        },
+        "inputs": {
+            "input": {
+                "id": "56b5c414bfe03df2",
+                "src": "hda",
+                "uuid": "8a8d4dc7-15a7-4eee-bf85-820a46e43aec"
+            },
+            "reference_annotation|reference_annotation_file": {
+                "id": "74703382d226c79f",
+                "src": "hda",
+                "uuid": "dd28c005-a1ad-4eca-b58e-5232e138fec8"
+            }
+        },
+        "outputs": {
+            "genes_expression": {
+                "id": "ceb261790c495432",
+                "src": "hda",
+                "uuid": "9052a332-77a7-4e08-9c78-c72d165ac28b"
+            },
+            "transcripts_expression": {
+                "id": "9b59012fe68b2178",
+                "src": "hda",
+                "uuid": "81916132-3052-473b-9521-b6dfcf84f297"
+            },
+            "assembled_isoforms": {
+                "id": "5165c2ce6d42f374",
+                "src": "hda",
+                "uuid": "843f5af5-b2b8-4107-b7c7-fb45ae292452"
+            },
+            "total_map_mass": {
+                "id": "66acd7e638090bfe",
+                "src": "hda",
+                "uuid": "e3eea8f4-486d-43cd-b06a-3eeadc16bb71"
+            },
+            "skipped": {
+                "id": "70828d5b0e056bf9",
+                "src": "hda",
+                "uuid": "12b46e62-8bb6-4759-8547-be699d43d918"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {
+            "genes_expression": {
+                "src": "hdca",
+                "id": "8f7deb74beec36db"
+            },
+            "transcripts_expression": {
+                "src": "hdca",
+                "id": "59b99b82b380f334"
+            },
+            "assembled_isoforms": {
+                "src": "hdca",
+                "id": "e1a952733018eefe"
+            },
+            "total_map_mass": {
+                "src": "hdca",
+                "id": "7bd39160d6b7b630"
+            },
+            "skipped": {
+                "src": "hdca",
+                "id": "28479512546a0047"
+            }
+        },
+        "tool_stdout": "",
+        "tool_stderr": "",
+        "job_stdout": "",
+        "job_stderr": "",
+        "stdout": "",
+        "stderr": "",
+        "job_messages": [],
+        "dependencies": [],
+        "job_metrics": [
+            {
+                "title": "Container ID",
+                "value": "quay.io/biocontainers/mulled-v2-bb748d88d8879d6348f6371e79c99ee26652c849:2f0cd190adf8562df84214d633f0a0cffc191866-2",
+                "plugin": "core",
+                "name": "container_id",
+                "raw_value": "quay.io/biocontainers/mulled-v2-bb748d88d8879d6348f6371e79c99ee26652c849:2f0cd190adf8562df84214d633f0a0cffc191866-2"
+            },
+            {
+                "title": "Container Type",
+                "value": "docker",
+                "plugin": "core",
+                "name": "container_type",
+                "raw_value": "docker"
+            },
+            {
+                "title": "Cores Allocated",
+                "value": "6",
+                "plugin": "core",
+                "name": "galaxy_slots",
+                "raw_value": "6.0000000"
+            },
+            {
+                "title": "Memory Allocated (MB)",
+                "value": "30720",
+                "plugin": "core",
+                "name": "galaxy_memory_mb",
+                "raw_value": "30720.0000000"
+            },
+            {
+                "title": "Job Start Time",
+                "value": "2026-03-31 01:56:08",
+                "plugin": "core",
+                "name": "start_epoch",
+                "raw_value": "1774922168.0000000"
+            },
+            {
+                "title": "Job End Time",
+                "value": "2026-03-31 02:37:49",
+                "plugin": "core",
+                "name": "end_epoch",
+                "raw_value": "1774924669.0000000"
+            },
+            {
+                "title": "Job Runtime (Wall Clock)",
+                "value": "41 minutes",
+                "plugin": "core",
+                "name": "runtime_seconds",
+                "raw_value": "2501.0000000"
+            }
+        ]
+    },
+    "status": "ok",
+    "server": "http://34.11.12.196",
+    "ref_data_size": [],
+    "input_data_size": [
+        2842083,
+        503642961
+    ]
+}

@@ -1,0 +1,121 @@
+{
+    "run": "1",
+    "cloud": "batch",
+    "job_conf": "Default",
+    "workflow_id": "b9eec48891b366cf",
+    "history_id": "93220dff68f229b4",
+    "inputs": "SRR24043307-80 ucsc.hg38.knownGene.gtf SRR24043307-50 ucsc.hg38.knownGene.gtf",
+    "metrics": {
+        "model_class": "Job",
+        "id": "af0a2517a6258a24",
+        "history_id": "93220dff68f229b4",
+        "tool_id": "param_value_from_file",
+        "state": "ok",
+        "exit_code": 0,
+        "create_time": "2026-03-31T02:38:35.567614",
+        "update_time": "2026-03-31T04:01:22.096846",
+        "galaxy_version": "26.1",
+        "external_id": "galaxy-job-1774929517-9d298a38",
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": "cd ../; python _evaluate_expression_.py",
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "b9eec48891b366cf",
+        "command_version": "",
+        "params": {
+            "param_type": "\"float\"",
+            "remove_newlines": "true",
+            "__workflow_invocation_uuid__": "\"b61767d82caa11f1bf5e82839cb514a4\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/hg38.len\"",
+            "dbkey": "\"hg38\"",
+            "__input_ext": "\"input\""
+        },
+        "inputs": {
+            "input1": {
+                "id": "e10ea9d7bcb886ad",
+                "src": "hda",
+                "uuid": "714b741e-7df5-4fb3-a3d1-2ce68c3c5d62"
+            }
+        },
+        "outputs": {
+            "float_param": {
+                "id": "4d2c39f67fb30d47",
+                "src": "hda",
+                "uuid": "4e68ec78-041d-4c45-9335-95052bc05e90"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {
+            "float_param": {
+                "src": "hdca",
+                "id": "febf4f20f6c77368"
+            }
+        },
+        "tool_stdout": "",
+        "tool_stderr": "",
+        "job_stdout": "",
+        "job_stderr": "",
+        "stdout": "",
+        "stderr": "",
+        "job_messages": [],
+        "dependencies": [],
+        "job_metrics": [
+            {
+                "title": "Container ID",
+                "value": "ksuderman/galaxy-min:26.1.dev1",
+                "plugin": "core",
+                "name": "container_id",
+                "raw_value": "ksuderman/galaxy-min:26.1.dev1"
+            },
+            {
+                "title": "Container Type",
+                "value": "docker",
+                "plugin": "core",
+                "name": "container_type",
+                "raw_value": "docker"
+            },
+            {
+                "title": "Cores Allocated",
+                "value": "1",
+                "plugin": "core",
+                "name": "galaxy_slots",
+                "raw_value": "1.0000000"
+            },
+            {
+                "title": "Memory Allocated (MB)",
+                "value": "3891",
+                "plugin": "core",
+                "name": "galaxy_memory_mb",
+                "raw_value": "3891.0000000"
+            },
+            {
+                "title": "Job Start Time",
+                "value": "2026-03-31 04:01:05",
+                "plugin": "core",
+                "name": "start_epoch",
+                "raw_value": "1774929665.0000000"
+            },
+            {
+                "title": "Job End Time",
+                "value": "2026-03-31 04:01:14",
+                "plugin": "core",
+                "name": "end_epoch",
+                "raw_value": "1774929674.0000000"
+            },
+            {
+                "title": "Job Runtime (Wall Clock)",
+                "value": "9 seconds",
+                "plugin": "core",
+                "name": "runtime_seconds",
+                "raw_value": "9.0000000"
+            }
+        ]
+    },
+    "status": "ok",
+    "server": "http://34.11.12.196",
+    "ref_data_size": [],
+    "input_data_size": [
+        5099543128,
+        503642961
+    ]
+}

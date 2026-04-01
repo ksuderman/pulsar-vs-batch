@@ -1,0 +1,156 @@
+{
+    "run": "1",
+    "cloud": "pulsar",
+    "job_conf": "Default",
+    "workflow_id": "a965afe3a7a615f9",
+    "history_id": "2b8b190385e5a85e",
+    "inputs": "SRR24043307-80 ucsc.hg38.knownGene.gtf",
+    "metrics": {
+        "model_class": "Job",
+        "id": "65dfd4d0e338f7a5",
+        "history_id": "2b8b190385e5a85e",
+        "tool_id": "toolshed.g2.bx.psu.edu/repos/devteam/cufflinks/cufflinks/2.2.1.3",
+        "state": "ok",
+        "exit_code": 0,
+        "create_time": "2026-03-31T01:04:39.744977",
+        "update_time": "2026-03-31T02:38:15.286702",
+        "galaxy_version": "26.1",
+        "external_id": "315",
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": "cufflinks -q --no-update-check '/mnt/disks/pulsar_staging/315/inputs/dataset_744753f0-f2dc-467b-be9b-7bac5e496d42.dat' --num-threads \"${GALAXY_SLOTS:-4}\" -I 300000 -F 0.1 -j 0.15 --no-effective-length-correction  -G '/mnt/disks/pulsar_staging/315/inputs/dataset_93c9297d-15fe-477f-983a-aa8cb111e581.dat'   -b '/cvmfs/data.galaxyproject.org/byhand/hg38/sam_index/hg38.fa'  -u  --library-type fr-secondstrand --frag-len-mean 200 --frag-len-std-dev 80 --max-mle-iterations 5000 --junc-alpha 0.001 --small-anchor-fraction 0.09 --overhang-tolerance 8 --max-bundle-length 10000000 --max-bundle-frags 1000000 --min-intron-length 50 --trim-3-avgcov-thresh 10 --trim-3-dropoff-frac 0.1 2> stderr  && python '/mnt/disks/pulsar_staging/315/tool_files/mass.py' stderr 'None' \"transcripts.gtf\"",
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "a965afe3a7a615f9",
+        "command_version": "cufflinks v2.2.1",
+        "params": {
+            "__job_resource": "{\"__current_case__\": 0, \"__job_resource__select\": \"no\"}",
+            "advanced_settings": "{\"__current_case__\": 1, \"inner_dist_std_dev\": \"80\", \"inner_mean_dist\": \"200\", \"junc_alpha\": \"0.001\", \"library_type\": \"fr-secondstrand\", \"mask_file\": null, \"max_bundle_frags\": \"1000000\", \"max_bundle_length\": \"10000000\", \"max_mle_iterations\": \"5000\", \"min_intron_length\": \"50\", \"overhang_tolerance\": \"8\", \"small_anchor_fraction\": \"0.09\", \"trim_three_avgcov_thresh\": \"10\", \"trim_three_dropoff_frac\": \"0.1\", \"use_advanced_settings\": \"Yes\"}",
+            "bias_correction": "{\"__current_case__\": 0, \"do_bias_correction\": \"Yes\", \"seq_source\": {\"__current_case__\": 0, \"index\": \"hg38\", \"index_source\": \"cached\"}}",
+            "global_model": null,
+            "length_correction": "\"--no-effective-length-correction\"",
+            "max_intron_len": "\"300000\"",
+            "min_isoform_fraction": "\"0.1\"",
+            "multiread_correct": "true",
+            "pre_mrna_fraction": "\"0.15\"",
+            "reference_annotation": "{\"__current_case__\": 1, \"compatible_hits_norm\": \"\", \"reference_annotation_file\": {\"values\": [{\"id\": 11, \"src\": \"hda\"}]}, \"use_ref\": \"Use reference annotation\"}",
+            "__workflow_invocation_uuid__": "\"6165e8de2c9d11f1a3bebebd58c486e9\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/hg38.len\"",
+            "dbkey": "\"hg38\"",
+            "__input_ext": "\"bam\""
+        },
+        "inputs": {
+            "input": {
+                "id": "736542096e66bcaf",
+                "src": "hda",
+                "uuid": "744753f0-f2dc-467b-be9b-7bac5e496d42"
+            },
+            "reference_annotation|reference_annotation_file": {
+                "id": "017b3ef3bf1b80ae",
+                "src": "hda",
+                "uuid": "93c9297d-15fe-477f-983a-aa8cb111e581"
+            }
+        },
+        "outputs": {
+            "genes_expression": {
+                "id": "eb9c2ed10b84aa2e",
+                "src": "hda",
+                "uuid": "f5a18811-d3ad-40df-893a-f2898331c978"
+            },
+            "transcripts_expression": {
+                "id": "bf02a36441aa8d0e",
+                "src": "hda",
+                "uuid": "d0918925-6466-41aa-8b37-3ca9e5c470e4"
+            },
+            "assembled_isoforms": {
+                "id": "a9290a8b19348a3f",
+                "src": "hda",
+                "uuid": "0341d36d-210b-4940-a1ae-70f6ac820161"
+            },
+            "total_map_mass": {
+                "id": "508651ba6803edf2",
+                "src": "hda",
+                "uuid": "c9cbd7c6-8f33-4861-bce6-e7725ee2f04e"
+            },
+            "skipped": {
+                "id": "3c7898f1680d6cec",
+                "src": "hda",
+                "uuid": "c7be1346-3618-403f-9861-9ec520388bc9"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {
+            "genes_expression": {
+                "src": "hdca",
+                "id": "d6c6c66298525298"
+            },
+            "transcripts_expression": {
+                "src": "hdca",
+                "id": "2ade6cbb291438b6"
+            },
+            "assembled_isoforms": {
+                "src": "hdca",
+                "id": "521a0cbccec2c15b"
+            },
+            "total_map_mass": {
+                "src": "hdca",
+                "id": "2651e95e16fbdd59"
+            },
+            "skipped": {
+                "src": "hdca",
+                "id": "f7852496543449ee"
+            }
+        },
+        "tool_stdout": "",
+        "tool_stderr": "",
+        "job_stdout": "",
+        "job_stderr": "",
+        "stdout": "",
+        "stderr": "",
+        "job_messages": [],
+        "dependencies": [],
+        "job_metrics": [
+            {
+                "title": "Cores Allocated",
+                "value": "6",
+                "plugin": "core",
+                "name": "galaxy_slots",
+                "raw_value": "6.0000000"
+            },
+            {
+                "title": "Memory Allocated (MB)",
+                "value": "30720",
+                "plugin": "core",
+                "name": "galaxy_memory_mb",
+                "raw_value": "30720.0000000"
+            },
+            {
+                "title": "Job Start Time",
+                "value": "2026-03-31 02:01:59",
+                "plugin": "core",
+                "name": "start_epoch",
+                "raw_value": "1774922519.0000000"
+            },
+            {
+                "title": "Job End Time",
+                "value": "2026-03-31 02:37:29",
+                "plugin": "core",
+                "name": "end_epoch",
+                "raw_value": "1774924649.0000000"
+            },
+            {
+                "title": "Job Runtime (Wall Clock)",
+                "value": "35 minutes",
+                "plugin": "core",
+                "name": "runtime_seconds",
+                "raw_value": "2130.0000000"
+            }
+        ]
+    },
+    "status": "ok",
+    "server": "http://35.188.245.115",
+    "ref_data_size": [],
+    "input_data_size": [
+        2842083,
+        503642961
+    ]
+}

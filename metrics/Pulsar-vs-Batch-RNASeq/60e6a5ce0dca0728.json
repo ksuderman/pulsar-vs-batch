@@ -1,0 +1,116 @@
+{
+    "run": "1",
+    "cloud": "pulsar",
+    "job_conf": "Default",
+    "workflow_id": "a965afe3a7a615f9",
+    "history_id": "2b8b190385e5a85e",
+    "inputs": "SRR24043307-80 ucsc.hg38.knownGene.gtf",
+    "metrics": {
+        "model_class": "Job",
+        "id": "60e6a5ce0dca0728",
+        "history_id": "2b8b190385e5a85e",
+        "tool_id": "toolshed.g2.bx.psu.edu/repos/devteam/bamtools_filter/bamFilter/2.5.2+galaxy1",
+        "state": "ok",
+        "exit_code": 0,
+        "create_time": "2026-03-31T01:03:09.982368",
+        "update_time": "2026-03-31T02:08:32.426493",
+        "galaxy_version": "26.1",
+        "external_id": "310",
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": "cp '/mnt/disks/pulsar_staging/310/configs/tmpaasa2ncd' '/mnt/disks/pulsar_staging/310/working/dataset_2edf691c-c028-4af9-a8f9-9f6ae08a0007.dat' && ln -s '/mnt/disks/pulsar_staging/310/inputs/dataset_744753f0-f2dc-467b-be9b-7bac5e496d42.dat' localbam.bam && ln -s '/mnt/disks/pulsar_staging/310/inputs/metadata_metadata_2428cab0-8b56-4687-b694-85cef458ca4f.dat' localbam.bam.bai && cat '/mnt/disks/pulsar_staging/310/configs/tmpaasa2ncd' && bamtools filter -script '/mnt/disks/pulsar_staging/310/configs/tmpaasa2ncd' -in localbam.bam -out '/mnt/disks/pulsar_staging/310/working/dataset_515f524c-614e-4068-bc66-cb383d245603.dat'",
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "a965afe3a7a615f9",
+        "command_version": "",
+        "params": {
+            "conditions": "[{\"__index__\": 0, \"filters\": [{\"__index__\": 0, \"bam_property\": {\"__current_case__\": 21, \"bam_property_selector\": \"tag\", \"bam_property_value\": \"NH=1\"}}]}]",
+            "rule_configuration": "{\"__current_case__\": 0, \"rules_selector\": false}",
+            "__workflow_invocation_uuid__": "\"6165e8de2c9d11f1a3bebebd58c486e9\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/hg38.len\"",
+            "dbkey": "\"hg38\"",
+            "__input_ext": "\"bam\""
+        },
+        "inputs": {
+            "input_bam": {
+                "id": "736542096e66bcaf",
+                "src": "hda",
+                "uuid": "744753f0-f2dc-467b-be9b-7bac5e496d42"
+            }
+        },
+        "outputs": {
+            "out_file2": {
+                "id": "437483078271c21c",
+                "src": "hda",
+                "uuid": "2edf691c-c028-4af9-a8f9-9f6ae08a0007"
+            },
+            "out_file1": {
+                "id": "28744a5dd5aae815",
+                "src": "hda",
+                "uuid": "515f524c-614e-4068-bc66-cb383d245603"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {
+            "out_file2": {
+                "src": "hdca",
+                "id": "feb807d98899d41c"
+            },
+            "out_file1": {
+                "src": "hdca",
+                "id": "e895ef2d142d1ce0"
+            }
+        },
+        "tool_stdout": "\n\n\n        \n{\n    \"filters\": [\n        {\n            \"id\": \"1\",\n            \"tag\": \"NH=1\"\n        }\n    ]\n}\n\n        ",
+        "tool_stderr": "",
+        "job_stdout": "",
+        "job_stderr": "",
+        "stdout": "\n\n\n        \n{\n    \"filters\": [\n        {\n            \"id\": \"1\",\n            \"tag\": \"NH=1\"\n        }\n    ]\n}\n\n        ",
+        "stderr": "",
+        "job_messages": [],
+        "dependencies": [],
+        "job_metrics": [
+            {
+                "title": "Cores Allocated",
+                "value": "1",
+                "plugin": "core",
+                "name": "galaxy_slots",
+                "raw_value": "1.0000000"
+            },
+            {
+                "title": "Memory Allocated (MB)",
+                "value": "7782",
+                "plugin": "core",
+                "name": "galaxy_memory_mb",
+                "raw_value": "7782.0000000"
+            },
+            {
+                "title": "Job Start Time",
+                "value": "2026-03-31 02:00:41",
+                "plugin": "core",
+                "name": "start_epoch",
+                "raw_value": "1774922441.0000000"
+            },
+            {
+                "title": "Job End Time",
+                "value": "2026-03-31 02:06:47",
+                "plugin": "core",
+                "name": "end_epoch",
+                "raw_value": "1774922807.0000000"
+            },
+            {
+                "title": "Job Runtime (Wall Clock)",
+                "value": "6 minutes",
+                "plugin": "core",
+                "name": "runtime_seconds",
+                "raw_value": "366.0000000"
+            }
+        ]
+    },
+    "status": "ok",
+    "server": "http://35.188.245.115",
+    "ref_data_size": [],
+    "input_data_size": [
+        2842083,
+        503642961
+    ]
+}

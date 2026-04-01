@@ -1,0 +1,111 @@
+{
+    "run": "1",
+    "cloud": "pulsar",
+    "job_conf": "Default",
+    "workflow_id": "dccc38fb94409c1f",
+    "history_id": "4ed7e0d910c63830",
+    "inputs": "SRR24043307-2GB GRCh38.p14.gbff.gz SRR24043307-5GB GRCh38.p14.gbff.gz SRR24043307-10GB GRCh38.p14.gbff.gz",
+    "metrics": {
+        "model_class": "Job",
+        "id": "05af3154c515859a",
+        "history_id": "4ed7e0d910c63830",
+        "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/lofreq_indelqual/lofreq_indelqual/2.1.5+galaxy0",
+        "state": "ok",
+        "exit_code": 0,
+        "create_time": "2026-03-31T23:28:49.065946",
+        "update_time": "2026-04-01T04:46:25.123434",
+        "galaxy_version": "26.1",
+        "external_id": "371",
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": "ln -s '/mnt/disks/pulsar_staging/371/inputs/dataset_e8f36f48-64b5-4fbf-a530-c23ae1c203d2.dat' reference.fa && lofreq faidx reference.fa 2>&1 || echo \"Error running samtools faidx for indexing fasta reference for lofreq\" >&2 &&  lofreq indelqual --dindel --ref reference.fa -o output.bam /mnt/disks/pulsar_staging/371/inputs/dataset_036c5f50-15ed-4562-90b7-482ddcda7810.dat",
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "a965afe3a7a615f9",
+        "command_version": "2.1.5",
+        "params": {
+            "strategy": "{\"__current_case__\": 1, \"reference_source\": {\"__current_case__\": 1, \"ref\": {\"values\": [{\"id\": 746, \"src\": \"hda\"}]}, \"ref_selector\": \"history\"}, \"selector\": \"dindel\"}",
+            "__workflow_invocation_uuid__": "\"5c5e90042d5911f19f3dbebd58c486e9\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/?.len\"",
+            "dbkey": "\"?\"",
+            "__input_ext": "\"input\""
+        },
+        "inputs": {
+            "reads": {
+                "id": "294d9122c0cd99e2",
+                "src": "hda",
+                "uuid": "036c5f50-15ed-4562-90b7-482ddcda7810"
+            },
+            "strategy|reference_source|ref": {
+                "id": "22198df81a0c4dac",
+                "src": "hda",
+                "uuid": "e8f36f48-64b5-4fbf-a530-c23ae1c203d2"
+            }
+        },
+        "outputs": {
+            "output": {
+                "id": "5bd41a9c0f60d220",
+                "src": "hda",
+                "uuid": "f11d4690-befd-4552-a62f-abfe64ee8698"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {
+            "output": {
+                "src": "hdca",
+                "id": "de778b9341d85371"
+            }
+        },
+        "tool_stdout": "",
+        "tool_stderr": "",
+        "job_stdout": "",
+        "job_stderr": "",
+        "stdout": "",
+        "stderr": "",
+        "job_messages": [],
+        "dependencies": [],
+        "job_metrics": [
+            {
+                "title": "Cores Allocated",
+                "value": "1",
+                "plugin": "core",
+                "name": "galaxy_slots",
+                "raw_value": "1.0000000"
+            },
+            {
+                "title": "Memory Allocated (MB)",
+                "value": "11673",
+                "plugin": "core",
+                "name": "galaxy_memory_mb",
+                "raw_value": "11673.0000000"
+            },
+            {
+                "title": "Job Start Time",
+                "value": "2026-04-01 04:34:06",
+                "plugin": "core",
+                "name": "start_epoch",
+                "raw_value": "1775018046.0000000"
+            },
+            {
+                "title": "Job End Time",
+                "value": "2026-04-01 04:42:17",
+                "plugin": "core",
+                "name": "end_epoch",
+                "raw_value": "1775018537.0000000"
+            },
+            {
+                "title": "Job Runtime (Wall Clock)",
+                "value": "8 minutes",
+                "plugin": "core",
+                "name": "runtime_seconds",
+                "raw_value": "491.0000000"
+            }
+        ]
+    },
+    "status": "ok",
+    "server": "http://35.188.245.115",
+    "ref_data_size": [],
+    "input_data_size": [
+        957932045,
+        1289376399
+    ]
+}

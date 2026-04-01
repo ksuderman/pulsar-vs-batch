@@ -1,0 +1,83 @@
+{
+    "run": "1",
+    "cloud": "batch",
+    "job_conf": "Default",
+    "workflow_id": "bddcdd049e475662",
+    "history_id": "d1d010ed6bae1d2a",
+    "inputs": "SRR24043307-2GB GRCh38.p14.gbff.gz SRR24043307-5GB GRCh38.p14.gbff.gz SRR24043307-10GB GRCh38.p14.gbff.gz",
+    "metrics": {
+        "model_class": "Job",
+        "id": "58bd9b51e233391c",
+        "history_id": "d1d010ed6bae1d2a",
+        "tool_id": "toolshed.g2.bx.psu.edu/repos/devteam/bwa/bwa_mem/0.7.17.2",
+        "state": "new",
+        "exit_code": null,
+        "create_time": "2026-04-01T00:13:12.620815",
+        "update_time": "2026-04-01T00:13:12.775730",
+        "galaxy_version": "26.1",
+        "external_id": null,
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": null,
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "b9eec48891b366cf",
+        "command_version": null,
+        "params": {
+            "reference_source": "{\"__current_case__\": 1, \"index_a\": \"auto\", \"ref_file\": {\"values\": [{\"id\": 949, \"src\": \"hda\"}]}, \"reference_source_selector\": \"history\"}",
+            "fastq_input": "{\"__current_case__\": 2, \"fastq_input1\": {\"values\": [{\"id\": 786, \"src\": \"dce\"}]}, \"fastq_input_selector\": \"paired_collection\", \"iset_stats\": \"\"}",
+            "rg": "{\"__current_case__\": 3, \"rg_selector\": \"do_not_set\"}",
+            "analysis_type": "{\"__current_case__\": 4, \"algorithmic_options\": {\"__current_case__\": 1, \"algorithmic_options_selector\": \"do_not_set\"}, \"analysis_type_selector\": \"full\", \"io_options\": {\"C\": false, \"M\": false, \"T\": \"30\", \"V\": false, \"Y\": true, \"__current_case__\": 0, \"a\": false, \"five\": false, \"h\": \"5\", \"io_options_selector\": \"set\", \"q\": true}, \"scoring_options\": {\"__current_case__\": 1, \"scoring_options_selector\": \"do_not_set\"}}",
+            "output_sort": "\"coordinate\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/?.len\"",
+            "dbkey": "\"?\"",
+            "__input_ext": "\"fasta\""
+        },
+        "inputs": {
+            "reference_source|ref_file": {
+                "id": "ffe6bf8c3c3475e4",
+                "src": "hda",
+                "uuid": "6d02ded5-16c8-491f-b12c-3358e8bcb554"
+            },
+            "fastq_input|fastq_input11": {
+                "id": "586d1f4867e03b18",
+                "src": "hda",
+                "uuid": "9cecba7f-6f4b-4042-87b8-24d8a74a2873"
+            },
+            "fastq_input|fastq_input12": {
+                "id": "8fbfa872425329a0",
+                "src": "hda",
+                "uuid": "daad5bc3-5724-48af-90bb-ca194ea02008"
+            }
+        },
+        "outputs": {
+            "bam_output": {
+                "id": "ad80a462be09fc67",
+                "src": "hda",
+                "uuid": "b9d221cc-be6b-49b7-b418-95947d3c86e0"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {
+            "bam_output": {
+                "src": "hdca",
+                "id": "223de6b37f4ed6d9"
+            }
+        },
+        "tool_stdout": null,
+        "tool_stderr": null,
+        "job_stdout": null,
+        "job_stderr": null,
+        "stdout": "",
+        "stderr": "",
+        "job_messages": null,
+        "dependencies": [],
+        "job_metrics": []
+    },
+    "status": "new",
+    "server": "http://34.11.12.196",
+    "ref_data_size": [],
+    "input_data_size": [
+        957932045,
+        1289376399
+    ]
+}

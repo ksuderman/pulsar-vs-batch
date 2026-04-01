@@ -1,0 +1,144 @@
+{
+    "run": "1",
+    "cloud": "batch",
+    "job_conf": "Default",
+    "workflow_id": "b9eec48891b366cf",
+    "history_id": "82875ad61f5a473a",
+    "inputs": "SRR24043307-80 ucsc.hg38.knownGene.gtf",
+    "metrics": {
+        "model_class": "Job",
+        "id": "071191d48985e681",
+        "history_id": "82875ad61f5a473a",
+        "tool_id": "toolshed.g2.bx.psu.edu/repos/lparsons/cutadapt/cutadapt/4.0+galaxy1",
+        "state": "ok",
+        "exit_code": 0,
+        "create_time": "2026-03-31T01:03:10.406157",
+        "update_time": "2026-03-31T01:08:17.151683",
+        "galaxy_version": "26.1",
+        "external_id": "galaxy-job-1774919011-453111e3",
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": "ln -f -s '/galaxy/server/database/objects/c/e/8/dataset_ce8bbee3-eed3-4bab-a7da-df491dbe24bb.dat' 'downsampled-SRR24043307_fastq_gz_1.fq.gz' &&  ln -f -s '/galaxy/server/database/objects/2/7/4/dataset_27482b3b-bb86-425f-a2ca-e3e3b73741f0.dat' 'downsampled-SRR24043307_fastq_gz_2.fq.gz' &&    cutadapt  -j=${GALAXY_SLOTS:-4}      -a 'Please use: For R1: - For Nextera: CTGTCTCTTATACACATCTCCGAGCCCACGAGAC - For TrueSeq: GATCGGAAGAGCACACGTCTGAACTCCAGTCAC or AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'='AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'         -A 'Please use: For R2: - For Nextera: CTGTCTCTTATACACATCTGACGCTGCCGACGA - For TruSeq: GATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT or AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT'='AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT'      --output='out1.fq.gz' --paired-output='out2.fq.gz'  --error-rate=0.1 --times=1 --overlap=3   --action=trim      --minimum-length=15 --pair-filter=any   --quality-cutoff=30     'downsampled-SRR24043307_fastq_gz_1.fq.gz' 'downsampled-SRR24043307_fastq_gz_2.fq.gz'  > report.txt",
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "b9eec48891b366cf",
+        "command_version": "4.0",
+        "params": {
+            "__job_resource": "{\"__current_case__\": 0, \"__job_resource__select\": \"no\"}",
+            "adapter_options": "{\"action\": \"trim\", \"error_rate\": \"0.1\", \"internal\": \"\", \"match_read_wildcards\": \" \", \"no_indels\": false, \"overlap\": \"3\", \"revcomp\": false, \"times\": \"1\"}",
+            "filter_options": "{\"discard_cassava\": false, \"discard_trimmed\": false, \"discard_untrimmed\": false, \"length_R2_options\": {\"__current_case__\": 1, \"length_R2_status\": \"False\"}, \"max_expected_errors\": null, \"max_n\": null, \"maximum_length\": null, \"minimum_length\": \"15\", \"pair_filter\": \"any\"}",
+            "library": "{\"__current_case__\": 2, \"input_1\": {\"values\": [{\"id\": 6, \"src\": \"dce\"}]}, \"r1\": {\"adapters\": [{\"__index__\": 0, \"adapter_source\": {\"__current_case__\": 0, \"adapter\": \"AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC\", \"adapter_name\": \"Please use: For R1: - For Nextera: CTGTCTCTTATACACATCTCCGAGCCCACGAGAC - For TrueSeq: GATCGGAAGAGCACACGTCTGAACTCCAGTCAC or AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC\", \"adapter_source_list\": \"user\"}, \"single_noindels\": false}], \"anywhere_adapters\": [], \"cut\": \"0\", \"front_adapters\": []}, \"r2\": {\"adapters2\": [{\"__index__\": 0, \"adapter_source2\": {\"__current_case__\": 0, \"adapter2\": \"AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT\", \"adapter_name2\": \"Please use: For R2: - For Nextera: CTGTCTCTTATACACATCTGACGCTGCCGACGA - For TruSeq: GATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT or AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT\", \"adapter_source_list2\": \"user\"}, \"single_noindels\": false}], \"anywhere_adapters2\": [], \"cut2\": \"0\", \"front_adapters2\": [], \"quality_cutoff2\": \"\"}, \"type\": \"paired_collection\"}",
+            "output_selector": "[\"report\"]",
+            "read_mod_options": "{\"length_tag\": \"\", \"nextseq_trim\": \"0\", \"quality_cutoff\": \"30\", \"rename\": \"\", \"shorten_options\": {\"__current_case__\": 1, \"shorten_values\": \"False\"}, \"strip_suffix\": \"\", \"trim_n\": false, \"zero_cap\": false}",
+            "__workflow_invocation_uuid__": "\"622618522c9d11f1bf5e82839cb514a4\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/?.len\"",
+            "dbkey": "\"?\"",
+            "__input_ext": "\"input\""
+        },
+        "inputs": {
+            "library|input_11": {
+                "id": "d3e5bdb86adadfb6",
+                "src": "hda",
+                "uuid": "ce8bbee3-eed3-4bab-a7da-df491dbe24bb"
+            },
+            "library|input_12": {
+                "id": "28afe7ade70db3c8",
+                "src": "hda",
+                "uuid": "27482b3b-bb86-425f-a2ca-e3e3b73741f0"
+            }
+        },
+        "outputs": {
+            "out_pairs|__part__|forward": {
+                "id": "b6d32f66c570a826",
+                "src": "hda",
+                "uuid": "d9bf2d8b-a6fd-470c-bcf1-b0468d763fe7"
+            },
+            "out_pairs|__part__|reverse": {
+                "id": "ae04a98df3bc0080",
+                "src": "hda",
+                "uuid": "780b436c-6013-416a-83a1-b72f363771cb"
+            },
+            "report": {
+                "id": "7bafc70cbc58d873",
+                "src": "hda",
+                "uuid": "ae32b4e1-8be5-49cd-91a6-5d6db247d76d"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {
+            "out_pairs": {
+                "src": "hdca",
+                "id": "52df2326f1e07362"
+            },
+            "report": {
+                "src": "hdca",
+                "id": "30f6bec60b0248e0"
+            }
+        },
+        "tool_stdout": "",
+        "tool_stderr": "",
+        "job_stdout": "",
+        "job_stderr": "",
+        "stdout": "",
+        "stderr": "",
+        "job_messages": [],
+        "dependencies": [],
+        "job_metrics": [
+            {
+                "title": "Container ID",
+                "value": "quay.io/biocontainers/cutadapt:4.0--py39hbf8eff0_0",
+                "plugin": "core",
+                "name": "container_id",
+                "raw_value": "quay.io/biocontainers/cutadapt:4.0--py39hbf8eff0_0"
+            },
+            {
+                "title": "Container Type",
+                "value": "docker",
+                "plugin": "core",
+                "name": "container_type",
+                "raw_value": "docker"
+            },
+            {
+                "title": "Cores Allocated",
+                "value": "8",
+                "plugin": "core",
+                "name": "galaxy_slots",
+                "raw_value": "8.0000000"
+            },
+            {
+                "title": "Memory Allocated (MB)",
+                "value": "28672",
+                "plugin": "core",
+                "name": "galaxy_memory_mb",
+                "raw_value": "28672.0000000"
+            },
+            {
+                "title": "Job Start Time",
+                "value": "2026-03-31 01:05:12",
+                "plugin": "core",
+                "name": "start_epoch",
+                "raw_value": "1774919112.0000000"
+            },
+            {
+                "title": "Job End Time",
+                "value": "2026-03-31 01:08:03",
+                "plugin": "core",
+                "name": "end_epoch",
+                "raw_value": "1774919283.0000000"
+            },
+            {
+                "title": "Job Runtime (Wall Clock)",
+                "value": "2 minutes",
+                "plugin": "core",
+                "name": "runtime_seconds",
+                "raw_value": "171.0000000"
+            }
+        ]
+    },
+    "status": "ok",
+    "server": "http://34.11.12.196",
+    "ref_data_size": [],
+    "input_data_size": [
+        2842083,
+        503642961
+    ]
+}

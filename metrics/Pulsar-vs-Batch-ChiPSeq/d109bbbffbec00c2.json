@@ -1,0 +1,157 @@
+{
+    "run": "1",
+    "cloud": "pulsar",
+    "job_conf": "Default",
+    "workflow_id": "c1c9b96fba7a9aa3",
+    "history_id": "7eb5d46bd48c07da",
+    "inputs": "chipseq-2g",
+    "metrics": {
+        "model_class": "Job",
+        "id": "d109bbbffbec00c2",
+        "history_id": "7eb5d46bd48c07da",
+        "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/macs2/macs2_callpeak/2.2.9.1+galaxy0",
+        "state": "ok",
+        "exit_code": 0,
+        "create_time": "2026-03-30T01:02:52.975266",
+        "update_time": "2026-03-30T02:12:18.129722",
+        "galaxy_version": "26.1",
+        "external_id": "270",
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": "export PYTHON_EGG_CACHE=`pwd` &&   (macs2 callpeak   -t '/mnt/disks/pulsar_staging/270/inputs/dataset_63049be9-076d-4f46-83ac-20793f09ed92.dat'  --name forward_and_reverse    --format BAMPE   --gsize '2913022398'      --SPMR     --call-summits  --keep-dup '1'  --d-min 20 --buffer-size 100000  --bdg  --qvalue '0.05'  --mfold '5' '50'  --bw '300'  2>&1 > macs2_stderr) && cp forward_and_reverse_peaks.xls '/mnt/disks/pulsar_staging/270/working/dataset_b968df18-e3fc-4b66-ab3c-6e62a59afa90.dat'   && ( count=`ls -1 forward_and_reverse* 2>/dev/null | wc -l`; if [ $count != 0 ]; then mkdir '/mnt/disks/pulsar_staging/270/working/dataset_29aa1e9d-5846-43d6-ac03-38d1551ca2dd_files' && cp -r forward_and_reverse* '/mnt/disks/pulsar_staging/270/working/dataset_29aa1e9d-5846-43d6-ac03-38d1551ca2dd_files' && python '/mnt/disks/pulsar_staging/270/tool_files/dir2html.py' '/mnt/disks/pulsar_staging/270/working/dataset_29aa1e9d-5846-43d6-ac03-38d1551ca2dd_files' macs2_stderr > '/mnt/disks/pulsar_staging/270/working/dataset_29aa1e9d-5846-43d6-ac03-38d1551ca2dd.dat'; fi; ) && exit_code_for_galaxy=$? && cat macs2_stderr 2>&1 && (exit $exit_code_for_galaxy)",
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "a965afe3a7a615f9",
+        "command_version": "macs2 2.2.9.1",
+        "params": {
+            "advanced_options": "{\"broad_options\": {\"__current_case__\": 1, \"broad_options_selector\": \"nobroad\", \"call_summits\": true}, \"buffer_size\": \"100000\", \"d_min\": \"20\", \"keep_dup_options\": {\"__current_case__\": 1, \"keep_dup_options_selector\": \"1\"}, \"llocal\": null, \"nolambda\": false, \"ratio\": null, \"slocal\": null, \"spmr\": true, \"to_large\": false}",
+            "control": "{\"__current_case__\": 1, \"c_select\": \"No\"}",
+            "cutoff_options": "{\"__current_case__\": 1, \"cutoff_options_selector\": \"qvalue\", \"qvalue\": \"0.05\"}",
+            "effective_genome_size_options": "{\"__current_case__\": 4, \"effective_genome_size_options_selector\": \"user_defined\", \"gsize\": \"2913022398\"}",
+            "format": "\"BAMPE\"",
+            "nomodel_type": "{\"__current_case__\": 0, \"band_width\": \"300\", \"mfold_lower\": \"5\", \"mfold_upper\": \"50\", \"nomodel_type_selector\": \"create_model\"}",
+            "outputs": "[\"peaks_tabular\", \"summits\", \"bdg\", \"html\"]",
+            "treatment": "{\"__current_case__\": 0, \"input_treatment_file\": {\"values\": [{\"id\": 437, \"src\": \"dce\"}]}, \"t_multi_select\": \"No\"}",
+            "__workflow_invocation_uuid__": "\"2cf253c22bd411f1becebebd58c486e9\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/hg38.len\"",
+            "dbkey": "\"hg38\"",
+            "__input_ext": "\"input\""
+        },
+        "inputs": {
+            "treatment|input_treatment_file": {
+                "id": "36dd71af63c8a2ee",
+                "src": "hda",
+                "uuid": "63049be9-076d-4f46-83ac-20793f09ed92"
+            }
+        },
+        "outputs": {
+            "output_tabular": {
+                "id": "c2d58bbbcd5cf45a",
+                "src": "hda",
+                "uuid": "b968df18-e3fc-4b66-ab3c-6e62a59afa90"
+            },
+            "output_narrowpeaks": {
+                "id": "1cc62b19d362a6a2",
+                "src": "hda",
+                "uuid": "0f1b17a0-9c8f-4830-9719-b86d7295787d"
+            },
+            "output_summits": {
+                "id": "b0f85ef37710326e",
+                "src": "hda",
+                "uuid": "2f19997e-a160-4e59-9222-8a5bd5b7af40"
+            },
+            "output_treat_pileup": {
+                "id": "0d88da900d2ef95c",
+                "src": "hda",
+                "uuid": "a3ebcd7c-dabe-4fc6-96bc-dc0620907f15"
+            },
+            "output_control_lambda": {
+                "id": "cff4dc9f18120bd8",
+                "src": "hda",
+                "uuid": "2f2f5eb2-6391-4e64-9201-70820ff8b3fe"
+            },
+            "output_extra_files": {
+                "id": "3d381043171bfe34",
+                "src": "hda",
+                "uuid": "29aa1e9d-5846-43d6-ac03-38d1551ca2dd"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {
+            "output_tabular": {
+                "src": "hdca",
+                "id": "5f3d6b4da5f9c6c0"
+            },
+            "output_narrowpeaks": {
+                "src": "hdca",
+                "id": "d48ae1fe85d96ec2"
+            },
+            "output_summits": {
+                "src": "hdca",
+                "id": "3ee3719b44763975"
+            },
+            "output_treat_pileup": {
+                "src": "hdca",
+                "id": "ad9716e72ad8a688"
+            },
+            "output_control_lambda": {
+                "src": "hdca",
+                "id": "a330290566a953c3"
+            },
+            "output_extra_files": {
+                "src": "hdca",
+                "id": "ca853e084a416a29"
+            }
+        },
+        "tool_stdout": "INFO  @ Mon, 30 Mar 2026 02:05:06: \n# Command line: callpeak -t /mnt/disks/pulsar_staging/270/inputs/dataset_63049be9-076d-4f46-83ac-20793f09ed92.dat --name forward_and_reverse --format BAMPE --gsize 2913022398 --SPMR --call-summits --keep-dup 1 --d-min 20 --buffer-size 100000 --bdg --qvalue 0.05 --mfold 5 50 --bw 300\n# ARGUMENTS LIST:\n# name = forward_and_reverse\n# format = BAMPE\n# ChIP-seq file = ['/mnt/disks/pulsar_staging/270/inputs/dataset_63049be9-076d-4f46-83ac-20793f09ed92.dat']\n# control file = None\n# effective genome size = 2.91e+09\n# band width = 300\n# model fold = [5, 50]\n# qvalue cutoff = 5.00e-02\n# The maximum gap between significant sites is assigned as the read length/tag size.\n# The minimum length of peaks is assigned as the predicted fragment length \"d\".\n# Larger dataset will be scaled towards smaller dataset.\n# Range for calculating regional lambda is: 10000 bps\n# Broad region calling is off\n# Paired-End mode is on\n# Searching for subpeak summits is on\n# MACS will save fragment pileup signal per million reads\n \nINFO  @ Mon, 30 Mar 2026 02:05:06: #1 read fragment files... \nINFO  @ Mon, 30 Mar 2026 02:05:06: #1 read treatment fragments... \nINFO  @ Mon, 30 Mar 2026 02:05:10:  1000000 \nINFO  @ Mon, 30 Mar 2026 02:05:13:  2000000 \nINFO  @ Mon, 30 Mar 2026 02:05:17:  3000000 \nINFO  @ Mon, 30 Mar 2026 02:05:21:  4000000 \nINFO  @ Mon, 30 Mar 2026 02:05:25:  5000000 \nINFO  @ Mon, 30 Mar 2026 02:05:28:  6000000 \nINFO  @ Mon, 30 Mar 2026 02:05:32:  7000000 \nINFO  @ Mon, 30 Mar 2026 02:05:36:  8000000 \nINFO  @ Mon, 30 Mar 2026 02:05:39:  9000000 \nINFO  @ Mon, 30 Mar 2026 02:05:43:  10000000 \nINFO  @ Mon, 30 Mar 2026 02:05:47:  11000000 \nINFO  @ Mon, 30 Mar 2026 02:05:50:  12000000 \nINFO  @ Mon, 30 Mar 2026 02:05:54:  13000000 \nINFO  @ Mon, 30 Mar 2026 02:05:58:  14000000 \nINFO  @ Mon, 30 Mar 2026 02:06:00: 14632932 fragments have been read. \nINFO  @ Mon, 30 Mar 2026 02:06:09: #1 mean fragment size is determined as 203.3 bp from treatment \nINFO  @ Mon, 30 Mar 2026 02:06:09: #1 fragment size = 203.3 \nINFO  @ Mon, 30 Mar 2026 02:06:09: #1  total fragments in treatment: 14632932 \nINFO  @ Mon, 30 Mar 2026 02:06:09: #1 user defined the maximum fragments... \nINFO  @ Mon, 30 Mar 2026 02:06:09: #1 filter out redundant fragments by allowing at most 1 identical fragment(s) \nINFO  @ Mon, 30 Mar 2026 02:06:32: #1  fragments after filtering in treatment: 13552619 \nINFO  @ Mon, 30 Mar 2026 02:06:32: #1  Redundant rate of treatment: 0.07 \nINFO  @ Mon, 30 Mar 2026 02:06:32: #1 finished! \nINFO  @ Mon, 30 Mar 2026 02:06:32: #2 Build Peak Model... \nINFO  @ Mon, 30 Mar 2026 02:06:32: #2 Skipped... \nINFO  @ Mon, 30 Mar 2026 02:06:32: #3 Call peaks... \nINFO  @ Mon, 30 Mar 2026 02:06:32: #3 Going to call summits inside each peak ... \nINFO  @ Mon, 30 Mar 2026 02:06:32: #3 Pre-compute pvalue-qvalue table... \nINFO  @ Mon, 30 Mar 2026 02:07:15: #3 In the peak calling step, the following will be performed simultaneously: \nINFO  @ Mon, 30 Mar 2026 02:07:15: #3   Write bedGraph files for treatment pileup (after scaling if necessary)... forward_and_reverse_treat_pileup.bdg \nINFO  @ Mon, 30 Mar 2026 02:07:15: #3   Write bedGraph files for control lambda (after scaling if necessary)... forward_and_reverse_control_lambda.bdg \nINFO  @ Mon, 30 Mar 2026 02:07:15: #3   --SPMR is requested, so pileup will be normalized by sequencing depth in million reads. \nINFO  @ Mon, 30 Mar 2026 02:07:15: #3 Call peaks for each chromosome... \nINFO  @ Mon, 30 Mar 2026 02:08:14: #4 Write output xls file... forward_and_reverse_peaks.xls \nINFO  @ Mon, 30 Mar 2026 02:08:14: #4 Write peak in narrowPeak format file... forward_and_reverse_peaks.narrowPeak \nINFO  @ Mon, 30 Mar 2026 02:08:15: #4 Write summits bed file... forward_and_reverse_summits.bed \nINFO  @ Mon, 30 Mar 2026 02:08:15: Done! \n",
+        "tool_stderr": "",
+        "job_stdout": "",
+        "job_stderr": "",
+        "stdout": "INFO  @ Mon, 30 Mar 2026 02:05:06: \n# Command line: callpeak -t /mnt/disks/pulsar_staging/270/inputs/dataset_63049be9-076d-4f46-83ac-20793f09ed92.dat --name forward_and_reverse --format BAMPE --gsize 2913022398 --SPMR --call-summits --keep-dup 1 --d-min 20 --buffer-size 100000 --bdg --qvalue 0.05 --mfold 5 50 --bw 300\n# ARGUMENTS LIST:\n# name = forward_and_reverse\n# format = BAMPE\n# ChIP-seq file = ['/mnt/disks/pulsar_staging/270/inputs/dataset_63049be9-076d-4f46-83ac-20793f09ed92.dat']\n# control file = None\n# effective genome size = 2.91e+09\n# band width = 300\n# model fold = [5, 50]\n# qvalue cutoff = 5.00e-02\n# The maximum gap between significant sites is assigned as the read length/tag size.\n# The minimum length of peaks is assigned as the predicted fragment length \"d\".\n# Larger dataset will be scaled towards smaller dataset.\n# Range for calculating regional lambda is: 10000 bps\n# Broad region calling is off\n# Paired-End mode is on\n# Searching for subpeak summits is on\n# MACS will save fragment pileup signal per million reads\n \nINFO  @ Mon, 30 Mar 2026 02:05:06: #1 read fragment files... \nINFO  @ Mon, 30 Mar 2026 02:05:06: #1 read treatment fragments... \nINFO  @ Mon, 30 Mar 2026 02:05:10:  1000000 \nINFO  @ Mon, 30 Mar 2026 02:05:13:  2000000 \nINFO  @ Mon, 30 Mar 2026 02:05:17:  3000000 \nINFO  @ Mon, 30 Mar 2026 02:05:21:  4000000 \nINFO  @ Mon, 30 Mar 2026 02:05:25:  5000000 \nINFO  @ Mon, 30 Mar 2026 02:05:28:  6000000 \nINFO  @ Mon, 30 Mar 2026 02:05:32:  7000000 \nINFO  @ Mon, 30 Mar 2026 02:05:36:  8000000 \nINFO  @ Mon, 30 Mar 2026 02:05:39:  9000000 \nINFO  @ Mon, 30 Mar 2026 02:05:43:  10000000 \nINFO  @ Mon, 30 Mar 2026 02:05:47:  11000000 \nINFO  @ Mon, 30 Mar 2026 02:05:50:  12000000 \nINFO  @ Mon, 30 Mar 2026 02:05:54:  13000000 \nINFO  @ Mon, 30 Mar 2026 02:05:58:  14000000 \nINFO  @ Mon, 30 Mar 2026 02:06:00: 14632932 fragments have been read. \nINFO  @ Mon, 30 Mar 2026 02:06:09: #1 mean fragment size is determined as 203.3 bp from treatment \nINFO  @ Mon, 30 Mar 2026 02:06:09: #1 fragment size = 203.3 \nINFO  @ Mon, 30 Mar 2026 02:06:09: #1  total fragments in treatment: 14632932 \nINFO  @ Mon, 30 Mar 2026 02:06:09: #1 user defined the maximum fragments... \nINFO  @ Mon, 30 Mar 2026 02:06:09: #1 filter out redundant fragments by allowing at most 1 identical fragment(s) \nINFO  @ Mon, 30 Mar 2026 02:06:32: #1  fragments after filtering in treatment: 13552619 \nINFO  @ Mon, 30 Mar 2026 02:06:32: #1  Redundant rate of treatment: 0.07 \nINFO  @ Mon, 30 Mar 2026 02:06:32: #1 finished! \nINFO  @ Mon, 30 Mar 2026 02:06:32: #2 Build Peak Model... \nINFO  @ Mon, 30 Mar 2026 02:06:32: #2 Skipped... \nINFO  @ Mon, 30 Mar 2026 02:06:32: #3 Call peaks... \nINFO  @ Mon, 30 Mar 2026 02:06:32: #3 Going to call summits inside each peak ... \nINFO  @ Mon, 30 Mar 2026 02:06:32: #3 Pre-compute pvalue-qvalue table... \nINFO  @ Mon, 30 Mar 2026 02:07:15: #3 In the peak calling step, the following will be performed simultaneously: \nINFO  @ Mon, 30 Mar 2026 02:07:15: #3   Write bedGraph files for treatment pileup (after scaling if necessary)... forward_and_reverse_treat_pileup.bdg \nINFO  @ Mon, 30 Mar 2026 02:07:15: #3   Write bedGraph files for control lambda (after scaling if necessary)... forward_and_reverse_control_lambda.bdg \nINFO  @ Mon, 30 Mar 2026 02:07:15: #3   --SPMR is requested, so pileup will be normalized by sequencing depth in million reads. \nINFO  @ Mon, 30 Mar 2026 02:07:15: #3 Call peaks for each chromosome... \nINFO  @ Mon, 30 Mar 2026 02:08:14: #4 Write output xls file... forward_and_reverse_peaks.xls \nINFO  @ Mon, 30 Mar 2026 02:08:14: #4 Write peak in narrowPeak format file... forward_and_reverse_peaks.narrowPeak \nINFO  @ Mon, 30 Mar 2026 02:08:15: #4 Write summits bed file... forward_and_reverse_summits.bed \nINFO  @ Mon, 30 Mar 2026 02:08:15: Done! \n",
+        "stderr": "",
+        "job_messages": [],
+        "dependencies": [],
+        "job_metrics": [
+            {
+                "title": "Cores Allocated",
+                "value": "1",
+                "plugin": "core",
+                "name": "galaxy_slots",
+                "raw_value": "1.0000000"
+            },
+            {
+                "title": "Memory Allocated (MB)",
+                "value": "15360",
+                "plugin": "core",
+                "name": "galaxy_memory_mb",
+                "raw_value": "15360.0000000"
+            },
+            {
+                "title": "Job Start Time",
+                "value": "2026-03-30 02:05:06",
+                "plugin": "core",
+                "name": "start_epoch",
+                "raw_value": "1774836306.0000000"
+            },
+            {
+                "title": "Job End Time",
+                "value": "2026-03-30 02:08:16",
+                "plugin": "core",
+                "name": "end_epoch",
+                "raw_value": "1774836496.0000000"
+            },
+            {
+                "title": "Job Runtime (Wall Clock)",
+                "value": "3 minutes",
+                "plugin": "core",
+                "name": "runtime_seconds",
+                "raw_value": "190.0000000"
+            }
+        ]
+    },
+    "status": "ok",
+    "server": "http://35.188.245.115",
+    "ref_data_size": [],
+    "input_data_size": [
+        146
+    ]
+}
