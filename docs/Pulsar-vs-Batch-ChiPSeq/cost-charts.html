@@ -47,7 +47,7 @@ h1 { font-size: 1.8rem; margin-bottom: 0.3rem; }
   <div class="summary-cards">
     <div class="card"><div class="label" style="color:#3b82f6">Batch</div><div class="value" style="color:#3b82f6">$6.15</div><div class="detail">21 jobs &middot; compute: $2.01</div></div>
     <div class="card"><div class="label" style="color:#f59e0b">Pulsar</div><div class="value" style="color:#f59e0b">$8.77</div><div class="detail">21 jobs &middot; compute: $2.02</div></div>
-    <div class="card"><div class="label" style="color:#22c55e">Single</div><div class="value" style="color:#22c55e">$6.19</div><div class="detail">21 jobs &middot; compute: $2.02</div></div>
+    <div class="card"><div class="label" style="color:#22c55e">Single</div><div class="value" style="color:#22c55e">$5.55</div><div class="detail">21 jobs &middot; compute: $2.02</div></div>
   </div>
   <div class="chart-container">
     <h2>Wallclock vs Compute Cost</h2>
@@ -81,7 +81,7 @@ h1 { font-size: 1.8rem; margin-bottom: 0.3rem; }
     <p class="chart-desc">Per-job compute cost vs Rainstone historical averages. Log scale.</p>
     <canvas id="rainstoneChart" height="120"></canvas></div>
 </div>
-<div class="footer">Galaxy 26.1 &middot; us-east4 &middot; 63 jobs &middot; Generated 2026-04-01 15:11</div>
+<div class="footer">Galaxy 26.1 &middot; us-east4 &middot; 63 jobs &middot; Generated 2026-04-02 10:20</div>
 <script>
 Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
 Chart.defaults.font.size = 12;
@@ -99,16 +99,16 @@ const w_pulsar_pj = [0.8375, 0.4402, 0.4354, 0.4246, 0.3685, 0.3393, 0.0786];
 const w_pulsar_hrs = [6.09, 8.5, 8.4, 8.2, 7.11, 8.37, 0.86];
 const c_pulsar_cost = [1.84, 0.01, 0.0, 0.06, 0.05, 0.0, 0.06];
 const c_pulsar_pj = [0.6129, 0.0038, 0.0006, 0.0194, 0.0163, 0.0, 0.019];
-const w_single_cost = [2.05, 0.88, 0.88, 0.86, 0.79, 0.65, 0.08];
-const w_single_pj = [0.6848, 0.2941, 0.2931, 0.2878, 0.2618, 0.2158, 0.0271];
-const w_single_hrs = [5.23, 6.53, 6.51, 6.39, 5.81, 6.39, 0.32];
-const c_single_cost = [1.84, 0.01, 0.0, 0.06, 0.05, 0.0, 0.05];
+const w_single_cost = [2.05, 0.88, 0.88, 0.86, 0.79, 0, 0.08];
+const w_single_pj = [0.6848, 0.2941, 0.2931, 0.2878, 0.2618, 0.0, 0.0271];
+const w_single_hrs = [5.23, 6.53, 6.51, 6.39, 5.81, 0, 0.32];
+const c_single_cost = [1.84, 0.01, 0.0, 0.06, 0.05, 0, 0.05];
 const c_single_pj = [0.6146, 0.0035, 0.001, 0.02, 0.0171, 0.0, 0.0182];
 const rainstoneAvg = [0.1872, 0, 0.0013, 0.0165, 0.0034, 0.0006, 0.008];
 
 new Chart(document.getElementById("wallVsCompute"), { type: "bar", data: { labels: ["Batch", "Pulsar", "Single"], datasets: [
   { label: "Compute", data: [2.01, 2.02, 2.02], backgroundColor: ["#93bbfd", "#fcd679", "#86efac"], borderRadius: 4 },
-  { label: "Wallclock", data: [6.15, 8.77, 6.19], backgroundColor: ["#3b82f6", "#f59e0b", "#22c55e"], borderRadius: 4 }
+  { label: "Wallclock", data: [6.15, 8.77, 5.55], backgroundColor: ["#3b82f6", "#f59e0b", "#22c55e"], borderRadius: 4 }
 ] }, options: { responsive: true, plugins: { tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: $${ctx.raw.toFixed(2)}` } } }, scales: { y: { title: { display: true, text: "USD" }, beginAtZero: true } } } });
 
 new Chart(document.getElementById("vmHoursChart"), { type: "bar", data: { labels: toolsShort, datasets: [

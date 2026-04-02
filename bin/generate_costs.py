@@ -81,6 +81,22 @@ def load_metrics(metrics_dir):
         ct = datetime.fromisoformat(d["metrics"]["create_time"])
         ut = datetime.fromisoformat(d["metrics"]["update_time"])
         wallclock = max(0, (ut - ct).total_seconds())
+        # Classify job runner from external_id
+        ext_id = str(d["metrics"].get("external_id") or "")
+        if ext_id.startswith("galaxy-job-") or ext_id.startswith("galaxy-single-"):
+            job_runner = "gcp_batch"
+        elif ext_id.startswith("galaxy-pulsar-") or ext_id.startswith("pulsar-"):
+            job_runner = "gcp_batch"
+        elif d["cloud"] == "pulsar" and ext_id.isdigit():
+            # Pulsar uses numeric internal job IDs for GCP Batch jobs
+            job_runner = "gcp_batch"
+        elif ext_id.startswith("gxy-galaxy-"):
+            job_runner = "k8s"
+        elif ext_id.isdigit():
+            job_runner = "local"
+        else:
+            job_runner = "local"
+
         jobs.append({
             "cloud": d["cloud"], "workflow_id": d.get("workflow_id", ""),
             "history_id": d.get("history_id", ""),
@@ -90,6 +106,7 @@ def load_metrics(metrics_dir):
             "inputs": d.get("inputs", ""),
             "create_time": d["metrics"]["create_time"],
             "update_time": d["metrics"]["update_time"],
+            "job_runner": job_runner,
         })
     return jobs
 
@@ -140,8 +157,17 @@ def _cost_for_duration(hours, vcpus, mem_gb, cloud):
     }
 
 
+def _zero_cost(vcpus=0, mem_gb=0):
+    return {"vcpu_cost": 0, "mem_cost": 0, "ssd_cost": 0, "boot_cost": 0,
+            "total_cost": 0, "hours": 0, "vcpus": vcpus, "mem_gb": mem_gb}
+
+
 def compute_job_cost(job):
     vcpus, mem_gb = compute_machine_type(job["slots"], job["mem_mb"])
+    # Jobs on k8s or local runners cost $0 — covered by the cluster
+    if job.get("job_runner") in ("k8s", "local"):
+        return {"compute": _zero_cost(vcpus, mem_gb),
+                "wallclock": _zero_cost(vcpus, mem_gb)}
     compute = _cost_for_duration(job["runtime"] / 3600, vcpus, mem_gb, job["cloud"])
     wallclock = _cost_for_duration(job["wallclock"] / 3600, vcpus, mem_gb, job["cloud"])
     compute["vcpus"] = vcpus; compute["mem_gb"] = mem_gb

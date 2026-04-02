@@ -18,8 +18,8 @@ Cost based on total VM lifetime per job (Galaxy create_time to update_time), inc
 |--------|------|----------|-----------|-------------|----------|-----------|------------|
 | **Batch** | 26 | 60.6h | $5.21 | $3.69 | $0.00 | $0.25 | **$9.16** |
 | **Pulsar** | 36 | 123.0h | $10.45 | $7.73 | $2.49 | $0.51 | **$21.18** |
-| **Single** | 36 | 106.0h | $8.97 | $6.60 | $0.00 | $0.44 | **$16.01** |
-| **Total** | 98 | 289.6h | $24.63 | $18.02 | $2.49 | $1.21 | **$46.35** |
+| **Single** | 36 | 99.3h | $8.55 | $6.37 | $0.00 | $0.41 | **$15.33** |
+| **Total** | 98 | 282.9h | $24.21 | $17.79 | $2.49 | $1.18 | **$45.67** |
 
 ### Galaxy Host VM Cost
 
@@ -37,7 +37,7 @@ Each runner requires a Galaxy host VM (e2-standard-4, 4 vCPU, 16 GB). Duration i
 |--------|----------|----------------|-----------|
 | **Batch** | $9.16 | $1.29 | **$10.45** |
 | **Pulsar** | $21.18 | $2.73 | **$23.90** |
-| **Single** | $16.01 | $2.35 | **$18.36** |
+| **Single** | $15.33 | $2.35 | **$17.68** |
 
 ## Compute-Only Cost (cgroups)
 
@@ -47,8 +47,8 @@ Cost based on cgroups `runtime_seconds` — actual CPU time inside the container
 |--------|------|----------|-----------|-------------|----------|-----------|------------|
 | **Batch** | 26 | 8.9h | $1.21 | $0.70 | $0.00 | $0.04 | **$1.94** |
 | **Pulsar** | 36 | 14.7h | $1.99 | $1.10 | $0.30 | $0.06 | **$3.44** |
-| **Single** | 36 | 16.3h | $2.16 | $1.21 | $0.00 | $0.07 | **$3.43** |
-| **Total** | 98 | 39.9h | $5.35 | $3.01 | $0.30 | $0.17 | **$8.82** |
+| **Single** | 36 | 16.0h | $2.14 | $1.20 | $0.00 | $0.07 | **$3.40** |
+| **Total** | 98 | 39.6h | $5.33 | $2.99 | $0.30 | $0.16 | **$8.79** |
 
 ### Wallclock vs Compute Overhead
 
@@ -56,7 +56,7 @@ Cost based on cgroups `runtime_seconds` — actual CPU time inside the container
 |--------|-------------|----------------|----------------|
 | **Batch** | $1.94 | $9.16 | 4.7x |
 | **Pulsar** | $3.44 | $21.18 | 6.2x |
-| **Single** | $3.43 | $16.01 | 4.7x |
+| **Single** | $3.40 | $15.33 | 4.5x |
 
 ## Per-Tool Cost Comparison (Wallclock)
 
@@ -71,7 +71,7 @@ Cost based on cgroups `runtime_seconds` — actual CPU time inside the container
 | lofreq_indelqual | 2 | 2 | $0.73 | $0.3634 | 3 | $1.78 | $0.5924 | 3 | $1.25 | $0.4156 | $0.0008 |
 | multiqc | 2 | 2 | $0.65 | $0.3229 | 3 | $1.46 | $0.4879 | 3 | $1.09 | $0.3636 | $0.0013 |
 | samtools_stats | 2 | 2 | $0.43 | $0.2140 | 3 | $1.03 | $0.3420 | 3 | $0.70 | $0.2336 | $0.0009 |
-| samtools_view | 2 | 2 | $0.42 | $0.2089 | 3 | $0.76 | $0.2538 | 3 | $0.68 | $0.2267 | $0.0020 |
+| samtools_view | 2 | 2 | $0.42 | $0.2089 | 3 | $0.76 | $0.2538 | 3 | $0.00 | $0.0000 | $0.0020 |
 | fastp | 4 | 3 | $0.10 | $0.0333 | 3 | $0.29 | $0.0959 | 3 | $0.10 | $0.0330 | $0.0080 |
 | snpEff_build_gb | 2 | 3 | $0.15 | $0.0487 | 3 | $0.09 | $0.0316 | 3 | $0.11 | $0.0373 | -- |
 
@@ -90,7 +90,7 @@ Per-job compute cost comparison against [Rainstone](https://rainstone.anvilproje
 | lofreq_indelqual | $0.0119 | $0.0137 | $0.0155 | $0.0008 | $0.0003 | $0.0018 | 46,590 |
 | multiqc | $0.0003 | $0.0001 | $0.0003 | $0.0013 | $0.0005 | $0.0036 | 75,021 |
 | samtools_stats | $0.0022 | $0.0040 | $0.0038 | $0.0009 | $0.0003 | $0.0033 | 88,828 |
-| samtools_view | $0.0065 | $0.0089 | $0.0115 | $0.0020 | $0.0004 | $0.0051 | 83,527 |
+| samtools_view | $0.0065 | $0.0089 | $0.0000 | $0.0020 | $0.0004 | $0.0051 | 83,527 |
 | fastp | $0.0254 | $0.0266 | $0.0249 | $0.0080 | $0.0020 | $0.0350 | 212,086 |
 | snpEff_build_gb | $0.0424 | $0.0076 | $0.0313 | -- | -- | -- | -- |
 
@@ -104,12 +104,12 @@ GCP Batch approach (Galaxy + per-job VMs) vs traditional deployment (single n2-s
 | **Local VM** | Batch | 9.4h | -- | $9.10 | **$9.10** |
 | **GCP Batch** | Pulsar | 19.8h | $21.18 | $2.73 | **$23.90** |
 | **Local VM** | Pulsar | 19.8h | -- | $19.26 | **$19.26** |
-| **GCP Batch** | Single | 17.1h | $16.01 | $2.35 | **$18.36** |
+| **GCP Batch** | Single | 17.1h | $15.33 | $2.35 | **$17.68** |
 | **Local VM** | Single | 17.1h | -- | $16.61 | **$16.61** |
 
 **Batch**: GCP Batch is **15% more expensive** than a local n2-standard-20 ($10.45 vs $9.10).
 **Pulsar**: GCP Batch is **24% more expensive** than a local n2-standard-20 ($23.90 vs $19.26).
-**Single**: GCP Batch is **11% more expensive** than a local n2-standard-20 ($18.36 vs $16.61).
+**Single**: GCP Batch is **6% more expensive** than a local n2-standard-20 ($17.68 vs $16.61).
 
 ## Pricing Assumptions
 

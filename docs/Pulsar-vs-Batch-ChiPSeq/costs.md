@@ -18,8 +18,8 @@ Cost based on total VM lifetime per job (Galaxy create_time to update_time), inc
 |--------|------|----------|-----------|-------------|----------|-----------|------------|
 | **Batch** | 21 | 37.0h | $3.34 | $2.66 | $0.00 | $0.15 | **$6.15** |
 | **Pulsar** | 21 | 47.5h | $4.21 | $3.40 | $0.96 | $0.20 | **$8.77** |
-| **Single** | 21 | 37.2h | $3.36 | $2.68 | $0.00 | $0.15 | **$6.19** |
-| **Total** | 63 | 121.7h | $10.92 | $8.73 | $0.96 | $0.51 | **$21.12** |
+| **Single** | 21 | 30.8h | $2.96 | $2.46 | $0.00 | $0.13 | **$5.55** |
+| **Total** | 63 | 115.3h | $10.51 | $8.51 | $0.96 | $0.48 | **$20.47** |
 
 ### Galaxy Host VM Cost
 
@@ -37,7 +37,7 @@ Each runner requires a Galaxy host VM (e2-standard-4, 4 vCPU, 16 GB). Duration i
 |--------|----------|----------------|-----------|
 | **Batch** | $6.15 | $0.89 | **$7.05** |
 | **Pulsar** | $8.77 | $1.17 | **$9.94** |
-| **Single** | $6.19 | $0.90 | **$7.09** |
+| **Single** | $5.55 | $0.90 | **$6.44** |
 
 ## Compute-Only Cost (cgroups)
 
@@ -56,7 +56,7 @@ Cost based on cgroups `runtime_seconds` — actual CPU time inside the container
 |--------|-------------|----------------|----------------|
 | **Batch** | $2.01 | $6.15 | 3.1x |
 | **Pulsar** | $2.02 | $8.77 | 4.4x |
-| **Single** | $2.02 | $6.19 | 3.1x |
+| **Single** | $2.02 | $5.55 | 2.7x |
 
 ## Per-Tool Cost Comparison (Wallclock)
 
@@ -67,7 +67,7 @@ Cost based on cgroups `runtime_seconds` — actual CPU time inside the container
 | multiqc | 2 | 3 | $0.88 | $0.2917 | 3 | $1.31 | $0.4354 | 3 | $0.88 | $0.2931 | $0.0013 |
 | macs2_callpeak | 2 | 3 | $0.86 | $0.2861 | 3 | $1.27 | $0.4246 | 3 | $0.86 | $0.2878 | $0.0165 |
 | samtool_filter2 | 2 | 3 | $0.78 | $0.2601 | 3 | $1.11 | $0.3685 | 3 | $0.79 | $0.2618 | $0.0034 |
-| tp_grep_tool | 2 | 3 | $0.65 | $0.2167 | 3 | $1.02 | $0.3393 | 3 | $0.65 | $0.2158 | $0.0006 |
+| tp_grep_tool | 2 | 3 | $0.65 | $0.2167 | 3 | $1.02 | $0.3393 | 3 | $0.00 | $0.0000 | $0.0006 |
 | fastp | 4 | 3 | $0.08 | $0.0252 | 3 | $0.24 | $0.0786 | 3 | $0.08 | $0.0271 | $0.0080 |
 
 ## Rainstone Comparison
@@ -94,12 +94,12 @@ GCP Batch approach (Galaxy + per-job VMs) vs traditional deployment (single n2-s
 | **Local VM** | Batch | 6.5h | -- | $6.31 | **$6.31** |
 | **GCP Batch** | Pulsar | 8.5h | $8.77 | $1.17 | **$9.94** |
 | **Local VM** | Pulsar | 8.5h | -- | $8.25 | **$8.25** |
-| **GCP Batch** | Single | 6.5h | $6.19 | $0.90 | **$7.09** |
+| **GCP Batch** | Single | 6.5h | $5.55 | $0.90 | **$6.44** |
 | **Local VM** | Single | 6.5h | -- | $6.34 | **$6.34** |
 
 **Batch**: GCP Batch is **12% more expensive** than a local n2-standard-20 ($7.05 vs $6.31).
 **Pulsar**: GCP Batch is **20% more expensive** than a local n2-standard-20 ($9.94 vs $8.25).
-**Single**: GCP Batch is **12% more expensive** than a local n2-standard-20 ($7.09 vs $6.34).
+**Single**: GCP Batch is **2% more expensive** than a local n2-standard-20 ($6.44 vs $6.34).
 
 ## Pricing Assumptions
 

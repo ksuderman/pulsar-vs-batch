@@ -25,8 +25,8 @@ All runners use Galaxy 26.1 on GCE VMs with RKE2 Kubernetes in us-east4. Batch a
 | | Batch | Pulsar | Single |
 |---|---|---|---|
 | Jobs | 26 ok | 36 ok | 36 ok |
-| Wallclock cost | $9.16 | $21.18 | $16.01 |
-| Compute cost | $1.94 | $3.44 | $3.43 |
+| Wallclock cost | $9.16 | $21.18 | $15.33 |
+| Compute cost | $1.94 | $3.44 | $3.40 |
 
 [Performance Report](Pulsar-vs-Batch-Variant/index.html) | [Charts](Pulsar-vs-Batch-Variant/charts.html) | [Cost Analysis](Pulsar-vs-Batch-Variant/costs.html) | [Cost Charts](Pulsar-vs-Batch-Variant/cost-charts.html)
 
@@ -37,8 +37,8 @@ All runners use Galaxy 26.1 on GCE VMs with RKE2 Kubernetes in us-east4. Batch a
 | | Batch | Pulsar | Single |
 |---|---|---|---|
 | Jobs | 46 ok | 20 ok | 60 ok |
-| Wallclock cost | $5.61 | $2.53 | $9.35 |
-| Compute cost | $2.41 | $0.82 | $3.45 |
+| Wallclock cost | $5.61 | $2.53 | $6.94 |
+| Compute cost | $2.41 | $0.82 | $3.28 |
 
 [Performance Report](Pulsar-vs-Batch-RNASeq/index.html) | [Charts](Pulsar-vs-Batch-RNASeq/charts.html) | [Cost Analysis](Pulsar-vs-Batch-RNASeq/costs.html) | [Cost Charts](Pulsar-vs-Batch-RNASeq/cost-charts.html)
 
@@ -49,7 +49,7 @@ All runners use Galaxy 26.1 on GCE VMs with RKE2 Kubernetes in us-east4. Batch a
 | | Batch | Pulsar | Single |
 |---|---|---|---|
 | Jobs | 21 ok | 21 ok | 21 ok |
-| Wallclock cost | $6.15 | $8.77 | $6.19 |
+| Wallclock cost | $6.15 | $8.77 | $5.55 |
 | Compute cost | $2.01 | $2.02 | $2.02 |
 
 [Performance Report](Pulsar-vs-Batch-ChiPSeq/index.html) | [Charts](Pulsar-vs-Batch-ChiPSeq/charts.html) | [Cost Analysis](Pulsar-vs-Batch-ChiPSeq/costs.html) | [Cost Charts](Pulsar-vs-Batch-ChiPSeq/cost-charts.html)
@@ -64,7 +64,9 @@ All runners use Galaxy 26.1 on GCE VMs with RKE2 Kubernetes in us-east4. Batch a
 
 4. **Pulsar is cheapest for RNASeq** ($2.53 wallclock) — but only has data at the 2GB size. Local SSD staging benefits I/O-bound tools.
 
-5. **ChIP-seq shows minimal runner difference** ($6.15-$8.77) — the 7-step pipeline has less scheduling overhead to amortize.
+5. **Single is cheapest for ChIP-seq** ($5.55 wallclock) — lightweight k8s/local tools run at zero additional cost on the Galaxy host.
+
+Note: Jobs dispatched to the k8s runner or local runner (parameter tools, lightweight tools) are costed at $0 — their compute is covered by the Galaxy host VM.
 
 ## Infrastructure
 

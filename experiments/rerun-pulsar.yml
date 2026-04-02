@@ -1,0 +1,7 @@
+# Re-run failed 10GB variant calling on the pulsar server
+name: Pulsar-vs-Batch-Rerun
+runs: 1
+benchmark_confs:
+  - benchmarks/variant-10g.yml
+cloud:
+  - pulsar
