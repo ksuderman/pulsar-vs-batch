@@ -1,0 +1,112 @@
+{
+    "run": "1",
+    "cloud": "pulsar",
+    "job_conf": "Default",
+    "workflow_id": "dccc38fb94409c1f",
+    "history_id": "e05931c4988f65dd",
+    "inputs": "SRR24043307-10GB GRCh38.p14.gbff.gz",
+    "metrics": {
+        "model_class": "Job",
+        "id": "1c43c4c1a2cf232d",
+        "history_id": "e05931c4988f65dd",
+        "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/lofreq_viterbi/lofreq_viterbi/2.1.5+galaxy0",
+        "state": "ok",
+        "exit_code": 0,
+        "create_time": "2026-04-03T15:21:56.405999",
+        "update_time": "2026-04-03T20:28:48.539885",
+        "galaxy_version": "26.1",
+        "external_id": "394",
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": "ln -s '/mnt/disks/pulsar_staging/394/inputs/dataset_a1d70c91-8a24-47cc-8ef0-f0c94f0e7217.dat' reference.fa && lofreq faidx reference.fa 2>&1 || echo \"Error running samtools faidx for indexing fasta reference for lofreq\" >&2 &&  lofreq viterbi --ref 'reference.fa'  --defqual 2 --out tmp.bam '/mnt/disks/pulsar_staging/394/inputs/dataset_e23e79e4-c4c8-4c77-a725-34305dbd8315.dat' &&  samtools sort --no-PG -T \"${TMPDIR:-.}\" -@ ${GALAXY_SLOTS:-1} -O BAM -o '/mnt/disks/pulsar_staging/394/working/dataset_f238fcb4-a204-4dad-b5ca-26face2d5f24.dat' tmp.bam",
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "a965afe3a7a615f9",
+        "command_version": "2.1.5",
+        "params": {
+            "adv_options": "{\"bq2_handling\": {\"__current_case__\": 0, \"defqual\": \"2\", \"replace_bq2\": \"keep\"}, \"keepflags\": false}",
+            "reference_source": "{\"__current_case__\": 1, \"ref\": {\"values\": [{\"id\": 791, \"src\": \"hda\"}]}, \"ref_selector\": \"history\"}",
+            "__workflow_invocation_uuid__": "\"d90d3a602f7011f1a012bebd58c486e9\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/?.len\"",
+            "dbkey": "\"?\"",
+            "__input_ext": "\"input\""
+        },
+        "inputs": {
+            "reads": {
+                "id": "8dd25f99f31bbb0d",
+                "src": "hda",
+                "uuid": "e23e79e4-c4c8-4c77-a725-34305dbd8315"
+            },
+            "reference_source|ref": {
+                "id": "c80b51272c836c7f",
+                "src": "hda",
+                "uuid": "a1d70c91-8a24-47cc-8ef0-f0c94f0e7217"
+            }
+        },
+        "outputs": {
+            "realigned": {
+                "id": "80df08e1b7ea93bd",
+                "src": "hda",
+                "uuid": "f238fcb4-a204-4dad-b5ca-26face2d5f24"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {
+            "realigned": {
+                "src": "hdca",
+                "id": "5ffdb58e7825709b"
+            }
+        },
+        "tool_stdout": "",
+        "tool_stderr": "[bam_sort_core] merging from 9 files and 4 in-memory blocks...\n",
+        "job_stdout": "",
+        "job_stderr": "",
+        "stdout": "",
+        "stderr": "[bam_sort_core] merging from 9 files and 4 in-memory blocks...\n",
+        "job_messages": [],
+        "dependencies": [],
+        "job_metrics": [
+            {
+                "title": "Cores Allocated",
+                "value": "4",
+                "plugin": "core",
+                "name": "galaxy_slots",
+                "raw_value": "4.0000000"
+            },
+            {
+                "title": "Memory Allocated (MB)",
+                "value": "16384",
+                "plugin": "core",
+                "name": "galaxy_memory_mb",
+                "raw_value": "16384.0000000"
+            },
+            {
+                "title": "Job Start Time",
+                "value": "2026-04-03 20:06:25",
+                "plugin": "core",
+                "name": "start_epoch",
+                "raw_value": "1775246785.0000000"
+            },
+            {
+                "title": "Job End Time",
+                "value": "2026-04-03 20:23:54",
+                "plugin": "core",
+                "name": "end_epoch",
+                "raw_value": "1775247834.0000000"
+            },
+            {
+                "title": "Job Runtime (Wall Clock)",
+                "value": "17 minutes",
+                "plugin": "core",
+                "name": "runtime_seconds",
+                "raw_value": "1049.0000000"
+            }
+        ]
+    },
+    "status": "ok",
+    "server": "http://35.188.245.115",
+    "ref_data_size": [],
+    "input_data_size": [
+        957932045,
+        1289376399
+    ]
+}

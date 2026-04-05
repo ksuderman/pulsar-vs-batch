@@ -1,0 +1,135 @@
+{
+    "run": "1",
+    "cloud": "pulsar",
+    "job_conf": "Default",
+    "workflow_id": "dccc38fb94409c1f",
+    "history_id": "e05931c4988f65dd",
+    "inputs": "SRR24043307-10GB GRCh38.p14.gbff.gz",
+    "metrics": {
+        "model_class": "Job",
+        "id": "75b5a49e604643c5",
+        "history_id": "e05931c4988f65dd",
+        "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/snpeff/snpEff/4.3+T.galaxy1",
+        "state": "ok",
+        "exit_code": 0,
+        "create_time": "2026-04-03T15:21:57.098762",
+        "update_time": "2026-04-04T01:20:50.905661",
+        "galaxy_version": "26.1",
+        "external_id": "399",
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": "snpEff -Xmx${GALAXY_MEMORY_MB:-8192}m eff -i vcf -o vcf -upDownStreamLen 0 -formatEff -classic -no-downstream -no-intergenic -no-intron -no-upstream -no-utr                  -stats '/mnt/disks/pulsar_staging/399/working/dataset_5281630c-73d6-4441-8002-5c78028acb1f.dat' -noLog -dataDir '/mnt/disks/pulsar_staging/399/inputs/dataset_55bfde4f-279b-4d5c-b5e5-dbe670201a7b_files' -configOption 'h38'.genome='h38' -configOption 'h38'.codonTable='Standard' 'h38' '/mnt/disks/pulsar_staging/399/inputs/dataset_123567db-c0ae-4802-b376-2634b681eab5.dat' > '/mnt/disks/pulsar_staging/399/working/dataset_c01561f5-debd-423d-889e-92987eb39d9b.dat' && mkdir '/mnt/disks/pulsar_staging/399/working/dataset_5281630c-73d6-4441-8002-5c78028acb1f_files' && mv '/mnt/disks/pulsar_staging/399/working/dataset_5281630c-73d6-4441-8002-5c78028acb1f.dat.genes.txt' '/mnt/disks/pulsar_staging/399/working/dataset_5281630c-73d6-4441-8002-5c78028acb1f_files/dataset_5281630c-73d6-4441-8002-5c78028acb1f.dat.genes.txt'",
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "a965afe3a7a615f9",
+        "command_version": "SnpEff\t4.3t\t2017-11-24",
+        "params": {
+            "inputFormat": "\"vcf\"",
+            "intervals": null,
+            "noLog": "true",
+            "offset": "\"default\"",
+            "outputConditional": "{\"__current_case__\": 0, \"outputFormat\": \"vcf\"}",
+            "snpDb": "{\"__current_case__\": 3, \"codon_table\": \"Standard\", \"genomeSrc\": \"custom\", \"snpeff_db\": {\"values\": [{\"id\": 790, \"src\": \"hda\"}]}}",
+            "spliceRegion": "{\"__current_case__\": 0, \"setSpliceRegions\": \"no\"}",
+            "spliceSiteSize": null,
+            "annotations": "[\"-formatEff\", \"-classic\"]",
+            "chr": "\"\"",
+            "csvStats": "false",
+            "filter": "{\"__current_case__\": 0, \"specificEffects\": \"no\"}",
+            "filterOut": "[\"-no-downstream\", \"-no-intergenic\", \"-no-intron\", \"-no-upstream\", \"-no-utr\"]",
+            "generate_stats": "true",
+            "transcripts": null,
+            "udLength": "\"0\"",
+            "__workflow_invocation_uuid__": "\"d90d3a602f7011f1a012bebd58c486e9\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/?.len\"",
+            "dbkey": "\"?\"",
+            "__input_ext": "\"vcf\""
+        },
+        "inputs": {
+            "input": {
+                "id": "ccadcd5a52bf5452",
+                "src": "hda",
+                "uuid": "123567db-c0ae-4802-b376-2634b681eab5"
+            },
+            "snpDb|snpeff_db": {
+                "id": "f9f81e1aeca67a25",
+                "src": "hda",
+                "uuid": "55bfde4f-279b-4d5c-b5e5-dbe670201a7b"
+            }
+        },
+        "outputs": {
+            "snpeff_output": {
+                "id": "b982cee37ee761f3",
+                "src": "hda",
+                "uuid": "c01561f5-debd-423d-889e-92987eb39d9b"
+            },
+            "statsFile": {
+                "id": "e3447e2584d7dd3e",
+                "src": "hda",
+                "uuid": "5281630c-73d6-4441-8002-5c78028acb1f"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {
+            "snpeff_output": {
+                "src": "hdca",
+                "id": "58b9b18d756445b6"
+            },
+            "statsFile": {
+                "src": "hdca",
+                "id": "42654ad2b796f8e2"
+            }
+        },
+        "tool_stdout": "",
+        "tool_stderr": "",
+        "job_stdout": "",
+        "job_stderr": "",
+        "stdout": "",
+        "stderr": "",
+        "job_messages": [],
+        "dependencies": [],
+        "job_metrics": [
+            {
+                "title": "Cores Allocated",
+                "value": "1",
+                "plugin": "core",
+                "name": "galaxy_slots",
+                "raw_value": "1.0000000"
+            },
+            {
+                "title": "Memory Allocated (MB)",
+                "value": "12288",
+                "plugin": "core",
+                "name": "galaxy_memory_mb",
+                "raw_value": "12288.0000000"
+            },
+            {
+                "title": "Job Start Time",
+                "value": "2026-04-04 01:20:25",
+                "plugin": "core",
+                "name": "start_epoch",
+                "raw_value": "1775265625.0000000"
+            },
+            {
+                "title": "Job End Time",
+                "value": "2026-04-04 01:20:31",
+                "plugin": "core",
+                "name": "end_epoch",
+                "raw_value": "1775265631.0000000"
+            },
+            {
+                "title": "Job Runtime (Wall Clock)",
+                "value": "6 seconds",
+                "plugin": "core",
+                "name": "runtime_seconds",
+                "raw_value": "6.0000000"
+            }
+        ]
+    },
+    "status": "ok",
+    "server": "http://35.188.245.115",
+    "ref_data_size": [],
+    "input_data_size": [
+        957932045,
+        1289376399
+    ]
+}

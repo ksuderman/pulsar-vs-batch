@@ -1,0 +1,136 @@
+{
+    "run": "1",
+    "cloud": "batch",
+    "job_conf": "Default",
+    "workflow_id": "bddcdd049e475662",
+    "history_id": "b91f6e72175029f2",
+    "inputs": "SRR24043307-10GB GRCh38.p14.gbff.gz",
+    "metrics": {
+        "model_class": "Job",
+        "id": "497edea83992a30a",
+        "history_id": "b91f6e72175029f2",
+        "tool_id": "toolshed.g2.bx.psu.edu/repos/devteam/picard/picard_MarkDuplicates/2.18.2.2",
+        "state": "ok",
+        "exit_code": 0,
+        "create_time": "2026-04-02T19:54:07.579328",
+        "update_time": "2026-04-02T23:48:16.742539",
+        "galaxy_version": "26.1",
+        "external_id": "galaxy-job-1775171082-1516b6b9",
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": "_JAVA_OPTIONS=${_JAVA_OPTIONS:-'-Xmx2048m -Xms256m'} && export _JAVA_OPTIONS &&   ln -f -s '/galaxy/server/database/objects/e/1/b/dataset_e1b022ef-320d-4b10-8f00-59e374f95499.dat' 'SRR24043307_fastq' &&  picard MarkDuplicates  INPUT='SRR24043307_fastq' OUTPUT='/galaxy/server/database/jobs_directory/000/520/outputs/dataset_2388b25f-8d9b-4825-b987-bae34eea1148.dat'  METRICS_FILE='/galaxy/server/database/jobs_directory/000/520/outputs/dataset_bd6d37de-95ee-4a2a-84c1-d5dfe13d9b9f.dat'  REMOVE_DUPLICATES='true' ASSUME_SORTED='true'  DUPLICATE_SCORING_STRATEGY='SUM_OF_BASE_QUALITIES'  OPTICAL_DUPLICATE_PIXEL_DISTANCE='100'   VALIDATION_STRINGENCY='LENIENT' QUIET=true VERBOSITY=ERROR  `if [ -n \"$TMPDIR\" ] ; then echo 'TMP_DIR=$TMPDIR' ; else if [ -n \"$TEMP\" ] ; then echo 'TMP_DIR=$TEMP' ; fi ; fi`",
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "b9eec48891b366cf",
+        "command_version": "",
+        "params": {
+            "assume_sorted": "true",
+            "barcode_tag": "\"\"",
+            "comments": "[]",
+            "duplicate_scoring_strategy": "\"SUM_OF_BASE_QUALITIES\"",
+            "optical_duplicate_pixel_distance": "\"100\"",
+            "read_name_regex": "\"\"",
+            "remove_duplicates": "true",
+            "validation_stringency": "\"LENIENT\"",
+            "__workflow_invocation_uuid__": "\"b488155a2ecd11f19b8a82839cb514a4\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/?.len\"",
+            "dbkey": "\"?\"",
+            "__input_ext": "\"bam\""
+        },
+        "inputs": {
+            "inputFile": {
+                "id": "31f3cb8b199bdaa1",
+                "src": "hda",
+                "uuid": "e1b022ef-320d-4b10-8f00-59e374f95499"
+            }
+        },
+        "outputs": {
+            "metrics_file": {
+                "id": "ba7d1b90beb65f29",
+                "src": "hda",
+                "uuid": "bd6d37de-95ee-4a2a-84c1-d5dfe13d9b9f"
+            },
+            "outFile": {
+                "id": "8b31ba05cc8d1936",
+                "src": "hda",
+                "uuid": "2388b25f-8d9b-4825-b987-bae34eea1148"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {
+            "metrics_file": {
+                "src": "hdca",
+                "id": "c1e8b8259dab10e5"
+            },
+            "outFile": {
+                "src": "hdca",
+                "id": "de32cb86e7a47b40"
+            }
+        },
+        "tool_stdout": "",
+        "tool_stderr": "/usr/local/bin/picard: line 5: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8): No such file or directory\nPicked up _JAVA_OPTIONS: -Xmx12G -Xms1G\n23:06:44.644 INFO  NativeLibraryLoader - Loading libgkl_compression.so from jar:file:/usr/local/share/picard-2.18.2-0/picard.jar!/com/intel/gkl/native/libgkl_compression.so\n",
+        "job_stdout": "",
+        "job_stderr": "",
+        "stdout": "",
+        "stderr": "/usr/local/bin/picard: line 5: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8): No such file or directory\nPicked up _JAVA_OPTIONS: -Xmx12G -Xms1G\n23:06:44.644 INFO  NativeLibraryLoader - Loading libgkl_compression.so from jar:file:/usr/local/share/picard-2.18.2-0/picard.jar!/com/intel/gkl/native/libgkl_compression.so\n",
+        "job_messages": [],
+        "dependencies": [],
+        "job_metrics": [
+            {
+                "title": "Container ID",
+                "value": "quay.io/biocontainers/picard:2.18.2--py36_0",
+                "plugin": "core",
+                "name": "container_id",
+                "raw_value": "quay.io/biocontainers/picard:2.18.2--py36_0"
+            },
+            {
+                "title": "Container Type",
+                "value": "docker",
+                "plugin": "core",
+                "name": "container_type",
+                "raw_value": "docker"
+            },
+            {
+                "title": "Cores Allocated",
+                "value": "3",
+                "plugin": "core",
+                "name": "galaxy_slots",
+                "raw_value": "3.0000000"
+            },
+            {
+                "title": "Memory Allocated (MB)",
+                "value": "12288",
+                "plugin": "core",
+                "name": "galaxy_memory_mb",
+                "raw_value": "12288.0000000"
+            },
+            {
+                "title": "Job Start Time",
+                "value": "2026-04-02 23:06:44",
+                "plugin": "core",
+                "name": "start_epoch",
+                "raw_value": "1775171204.0000000"
+            },
+            {
+                "title": "Job End Time",
+                "value": "2026-04-02 23:46:19",
+                "plugin": "core",
+                "name": "end_epoch",
+                "raw_value": "1775173579.0000000"
+            },
+            {
+                "title": "Job Runtime (Wall Clock)",
+                "value": "39 minutes",
+                "plugin": "core",
+                "name": "runtime_seconds",
+                "raw_value": "2375.0000000"
+            }
+        ]
+    },
+    "status": "ok",
+    "server": "http://34.11.12.196",
+    "ref_data_size": [],
+    "input_data_size": [
+        957932045,
+        1289376399
+    ]
+}

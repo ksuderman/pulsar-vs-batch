@@ -1,0 +1,300 @@
+{
+    "model_class": "WorkflowInvocation",
+    "id": "8bcb7fe547876687",
+    "create_time": "2026-03-30T01:02:47.623596",
+    "update_time": "2026-03-30T01:02:49.188361",
+    "workflow_id": "e833cd00c13b3e94",
+    "history_id": "a83e03345d3cc22b",
+    "uuid": "2ac88620-2bd4-11f1-96c3-066664bb3ded",
+    "state": "scheduled",
+    "landing_uuid": null,
+    "on_complete": null,
+    "steps": [
+        {
+            "model_class": "WorkflowInvocationStep",
+            "id": "202879497af7f107",
+            "update_time": "2026-03-30T01:02:47.995518",
+            "job_id": null,
+            "workflow_step_id": "205ebb40fc73aa4c",
+            "subworkflow_invocation_id": null,
+            "state": "scheduled",
+            "action": null,
+            "order_index": 0,
+            "workflow_step_label": "PE fastq input",
+            "workflow_step_uuid": "e09c0852-1db3-4a68-b88c-1b94c205cb6c",
+            "outputs": {},
+            "output_collections": {},
+            "jobs": [],
+            "implicit_collection_jobs_id": null
+        },
+        {
+            "model_class": "WorkflowInvocationStep",
+            "id": "8b9cc81a36e70cb1",
+            "update_time": "2026-03-30T01:02:47.995532",
+            "job_id": null,
+            "workflow_step_id": "9bf672101b929832",
+            "subworkflow_invocation_id": null,
+            "state": "scheduled",
+            "action": null,
+            "order_index": 1,
+            "workflow_step_label": "Percentage of bad quality bases per read",
+            "workflow_step_uuid": "74849b37-7580-4254-a3fe-294844686dc5",
+            "outputs": {},
+            "output_collections": {},
+            "jobs": [],
+            "implicit_collection_jobs_id": null
+        },
+        {
+            "model_class": "WorkflowInvocationStep",
+            "id": "78cbec28c5d0b7d6",
+            "update_time": "2026-03-30T01:02:47.995541",
+            "job_id": null,
+            "workflow_step_id": "03e187f4cbdceaef",
+            "subworkflow_invocation_id": null,
+            "state": "scheduled",
+            "action": null,
+            "order_index": 2,
+            "workflow_step_label": "Reference genome",
+            "workflow_step_uuid": "0119d669-7ce9-46fd-ba6f-3efd92dfb7f2",
+            "outputs": {},
+            "output_collections": {},
+            "jobs": [],
+            "implicit_collection_jobs_id": null
+        },
+        {
+            "model_class": "WorkflowInvocationStep",
+            "id": "c829569c5c11fc12",
+            "update_time": "2026-03-30T01:02:47.995550",
+            "job_id": null,
+            "workflow_step_id": "c78a97347001366b",
+            "subworkflow_invocation_id": null,
+            "state": "scheduled",
+            "action": null,
+            "order_index": 3,
+            "workflow_step_label": "Effective genome size",
+            "workflow_step_uuid": "5bb3b3df-60ab-4ec7-88e4-476be547ffbf",
+            "outputs": {},
+            "output_collections": {},
+            "jobs": [],
+            "implicit_collection_jobs_id": null
+        },
+        {
+            "model_class": "WorkflowInvocationStep",
+            "id": "c8cd79ec686cbe1d",
+            "update_time": "2026-03-30T01:02:47.995559",
+            "job_id": null,
+            "workflow_step_id": "7cd8e35c30807f99",
+            "subworkflow_invocation_id": null,
+            "state": "scheduled",
+            "action": null,
+            "order_index": 4,
+            "workflow_step_label": "Normalize profile",
+            "workflow_step_uuid": "8180a47b-2fa4-404e-b644-1f3ec3bea980",
+            "outputs": {},
+            "output_collections": {},
+            "jobs": [],
+            "implicit_collection_jobs_id": null
+        },
+        {
+            "model_class": "WorkflowInvocationStep",
+            "id": "c99707a4a11c5e70",
+            "update_time": "2026-03-30T01:02:48.250438",
+            "job_id": null,
+            "workflow_step_id": "c2c395b7be740dfc",
+            "subworkflow_invocation_id": null,
+            "state": "scheduled",
+            "action": null,
+            "order_index": 5,
+            "workflow_step_label": "Fastp (remove adapter and bad quality reads)",
+            "workflow_step_uuid": "64753d4e-a0c5-45e7-9329-ef7fca3ec893",
+            "outputs": {},
+            "output_collections": {},
+            "jobs": [],
+            "implicit_collection_jobs_id": "072750e84f3139ee"
+        },
+        {
+            "model_class": "WorkflowInvocationStep",
+            "id": "90a1ad0bf34e9fc2",
+            "update_time": "2026-03-30T01:02:48.415733",
+            "job_id": null,
+            "workflow_step_id": "b3b32eed160ec9df",
+            "subworkflow_invocation_id": null,
+            "state": "scheduled",
+            "action": null,
+            "order_index": 6,
+            "workflow_step_label": "Bowtie2 map on reference",
+            "workflow_step_uuid": "6fd8444b-f305-4daa-a33a-5cb44e063f39",
+            "outputs": {},
+            "output_collections": {},
+            "jobs": [],
+            "implicit_collection_jobs_id": "119172e05885b539"
+        },
+        {
+            "model_class": "WorkflowInvocationStep",
+            "id": "4920f2a086c6b17c",
+            "update_time": "2026-03-30T01:02:48.601146",
+            "job_id": null,
+            "workflow_step_id": "fdcaca4e3c7cf3ee",
+            "subworkflow_invocation_id": null,
+            "state": "scheduled",
+            "action": null,
+            "order_index": 7,
+            "workflow_step_label": "filter MAPQ30 concordent pairs",
+            "workflow_step_uuid": "bb6e3ac5-cdb0-493c-b534-264ba530a711",
+            "outputs": {},
+            "output_collections": {},
+            "jobs": [],
+            "implicit_collection_jobs_id": "e230c0908c654f83"
+        },
+        {
+            "model_class": "WorkflowInvocationStep",
+            "id": "34969d46a56111cd",
+            "update_time": "2026-03-30T01:02:48.787240",
+            "job_id": null,
+            "workflow_step_id": "33e2fa3542332381",
+            "subworkflow_invocation_id": null,
+            "state": "scheduled",
+            "action": null,
+            "order_index": 8,
+            "workflow_step_label": "Call Peaks with MACS2",
+            "workflow_step_uuid": "06ca906e-c512-4376-9ffc-8eb2b5774af1",
+            "outputs": {},
+            "output_collections": {},
+            "jobs": [],
+            "implicit_collection_jobs_id": "5f90cbe170bb69d8"
+        },
+        {
+            "model_class": "WorkflowInvocationStep",
+            "id": "6bfe280701bd7981",
+            "update_time": "2026-03-30T01:02:48.914478",
+            "job_id": null,
+            "workflow_step_id": "27209d48455bcc0b",
+            "subworkflow_invocation_id": null,
+            "state": "scheduled",
+            "action": null,
+            "order_index": 9,
+            "workflow_step_label": "summary of MACS2",
+            "workflow_step_uuid": "95832fa1-e96e-4867-8162-d1e39cb1dc46",
+            "outputs": {},
+            "output_collections": {},
+            "jobs": [],
+            "implicit_collection_jobs_id": "a5a6aaae33f8e849"
+        },
+        {
+            "model_class": "WorkflowInvocationStep",
+            "id": "d8f1f714904faf8f",
+            "update_time": "2026-03-30T01:02:49.114057",
+            "job_id": null,
+            "workflow_step_id": "076df6169b6053ea",
+            "subworkflow_invocation_id": null,
+            "state": "scheduled",
+            "action": null,
+            "order_index": 10,
+            "workflow_step_label": "Bigwig from MACS2",
+            "workflow_step_uuid": "0fe57c5d-00a0-4cb6-9bac-97e6d03c6b76",
+            "outputs": {},
+            "output_collections": {},
+            "jobs": [],
+            "implicit_collection_jobs_id": "9c8ba20d90ec8589"
+        },
+        {
+            "model_class": "WorkflowInvocationStep",
+            "id": "b51bea4ebd86a717",
+            "update_time": "2026-03-30T01:02:49.206079",
+            "job_id": "193964820a3b9ea4",
+            "workflow_step_id": "85e1d262a8d1a583",
+            "subworkflow_invocation_id": null,
+            "state": "scheduled",
+            "action": null,
+            "order_index": 11,
+            "workflow_step_label": "MultiQC",
+            "workflow_step_uuid": "fb066848-43df-412a-9767-9613bac7d961",
+            "outputs": {},
+            "output_collections": {},
+            "jobs": [],
+            "implicit_collection_jobs_id": null
+        }
+    ],
+    "inputs": "chipseq-2g",
+    "input_step_parameters": {
+        "Reference genome": {
+            "parameter_value": "hg38",
+            "label": "Reference genome",
+            "workflow_step_id": "03e187f4cbdceaef"
+        },
+        "Effective genome size": {
+            "parameter_value": 2913022398,
+            "label": "Effective genome size",
+            "workflow_step_id": "c78a97347001366b"
+        },
+        "Normalize profile": {
+            "parameter_value": true,
+            "label": "Normalize profile",
+            "workflow_step_id": "7cd8e35c30807f99"
+        },
+        "Percentage of bad quality bases per read": {
+            "parameter_value": 70,
+            "label": "Percentage of bad quality bases per read",
+            "workflow_step_id": "9bf672101b929832"
+        }
+    },
+    "outputs": {
+        "MultiQC on input dataset(s): Stats": {
+            "id": "669aaa4d0ff74086",
+            "workflow_step_id": "85e1d262a8d1a583",
+            "src": "hda"
+        },
+        "MultiQC webpage": {
+            "id": "383071202d595134",
+            "workflow_step_id": "85e1d262a8d1a583",
+            "src": "hda"
+        }
+    },
+    "output_collections": {
+        "mapping stats": {
+            "id": "34969d46a56111cd",
+            "workflow_step_id": "b3b32eed160ec9df",
+            "src": "hdca"
+        },
+        "filtered BAM": {
+            "id": "6bfe280701bd7981",
+            "workflow_step_id": "fdcaca4e3c7cf3ee",
+            "src": "hdca"
+        },
+        "MACS2 peaks": {
+            "id": "d8f1f714904faf8f",
+            "workflow_step_id": "33e2fa3542332381",
+            "src": "hdca"
+        },
+        "MACS2 narrowPeak": {
+            "id": "b51bea4ebd86a717",
+            "workflow_step_id": "33e2fa3542332381",
+            "src": "hdca"
+        },
+        "MACS2 summits": {
+            "id": "d5bb14558a883e5a",
+            "workflow_step_id": "33e2fa3542332381",
+            "src": "hdca"
+        },
+        "MACS2 report": {
+            "id": "059c3fb8473690f1",
+            "workflow_step_id": "27209d48455bcc0b",
+            "src": "hdca"
+        },
+        "coverage from MACS2": {
+            "id": "12204202b963f0f4",
+            "workflow_step_id": "076df6169b6053ea",
+            "src": "hdca"
+        }
+    },
+    "output_values": {},
+    "messages": [],
+    "run": "1",
+    "cloud": "single",
+    "job_conf": "Default",
+    "output_dir": "metrics/Pulsar-vs-Batch-ChiPSeq",
+    "ref_data_size": [],
+    "input_data_size": [
+        0
+    ]
+}
