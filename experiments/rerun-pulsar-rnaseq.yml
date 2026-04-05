@@ -1,0 +1,8 @@
+# Run missing Pulsar RNASeq at 5GB and 10GB
+name: Pulsar-vs-Batch-Rerun
+runs: 1
+benchmark_confs:
+  - benchmarks/rnaseq-5g.yml
+  - benchmarks/rnaseq-10g.yml
+cloud:
+  - pulsar

@@ -54,7 +54,7 @@ function start() {
 	bin/launch_vm.sh $SERVER \
 	  --git-repo $REPO \
 	  --git-branch $BRANCH \
-	  --disk-size 256 \
+	  --disk-size 1024 \
 	  --enable-pulsar-gcp \
 	  -f values/values.yml \
 	  -f mixins/local.yml \

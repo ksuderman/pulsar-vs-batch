@@ -33,6 +33,8 @@ $(hi SYNOPSIS)
 $(hi OPTIONS)
     $(hi start)             start a Galaxy VM that uses the direct batch runner
     $(hi stop)              stop the Galaxy VM
+    $(hi bounce)            stop and then restart the Galaxy VM
+    $(hi kube)              download the kubeconfig file for the cluster
     $(hi -h)|$(hi --help)|$(hi help)    show this help message
 
 $(hi EXAMPLES)
@@ -54,7 +56,7 @@ function start() {
 	bin/launch_vm.sh $SERVER \
 	  --git-repo $REPO \
 	  --git-branch $BRANCH \
-	  --disk-size 256 \
+	  --disk-size 1024 \
 	  -f values/values.yml \
 	  -f mixins/local.yml \
 	  -f mixins/debug.yml \

@@ -58,7 +58,7 @@ function start() {
 	bin/launch_vm.sh $SERVER \
 	  --git-repo $REPO \
 	  --git-branch $BRANCH \
-	  --disk-size 512 \
+	  --disk-size 1024 \
 	  -f values/values.yml \
       -f mixins/multiuser.yml \
       -f mixins/single.yml \
