@@ -1,0 +1,106 @@
+{
+    "run": "1",
+    "cloud": "pulsar",
+    "job_conf": "Default",
+    "workflow_id": "a965afe3a7a615f9",
+    "history_id": "e81d67a6c5a2de40",
+    "inputs": "SRR24043307-full ucsc.hg38.knownGene.gtf",
+    "metrics": {
+        "model_class": "Job",
+        "id": "65513e3b4de7046b",
+        "history_id": "e81d67a6c5a2de40",
+        "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.2",
+        "state": "ok",
+        "exit_code": 0,
+        "create_time": "2026-04-06T00:50:32.362901",
+        "update_time": "2026-04-06T02:28:00.420750",
+        "galaxy_version": "26.1",
+        "external_id": "433",
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": "env -i $(which awk) --sandbox -v FS='\t' -v OFS='\t' --re-interval -f \"/mnt/disks/pulsar_staging/433/configs/tmpkrme0yuf\" \"/mnt/disks/pulsar_staging/433/inputs/dataset_06b01328-07f1-428b-a911-34398d098bcd.dat\" > \"/mnt/disks/pulsar_staging/433/working/dataset_4ad103cc-6dc5-4a9d-95cc-16ed6d41dd35.dat\"",
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "a965afe3a7a615f9",
+        "command_version": "GNU Awk 4.2.0, API: 2.0",
+        "params": {
+            "code": "\"NR>4{print $1\\\"\\\\t\\\"$3}\"",
+            "__workflow_invocation_uuid__": "\"815311ee315211f1a5c5bebd58c486e9\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/hg38.len\"",
+            "dbkey": "\"hg38\"",
+            "__input_ext": "\"tabular\""
+        },
+        "inputs": {
+            "infile": {
+                "id": "4cc4e69662d5ec0e",
+                "src": "hda",
+                "uuid": "06b01328-07f1-428b-a911-34398d098bcd"
+            }
+        },
+        "outputs": {
+            "outfile": {
+                "id": "a34513bfe79fef94",
+                "src": "hda",
+                "uuid": "4ad103cc-6dc5-4a9d-95cc-16ed6d41dd35"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {
+            "outfile": {
+                "src": "hdca",
+                "id": "083101f4263b1af7"
+            }
+        },
+        "tool_stdout": "",
+        "tool_stderr": "",
+        "job_stdout": "",
+        "job_stderr": "",
+        "stdout": "",
+        "stderr": "",
+        "job_messages": [],
+        "dependencies": [],
+        "job_metrics": [
+            {
+                "title": "Cores Allocated",
+                "value": "1",
+                "plugin": "core",
+                "name": "galaxy_slots",
+                "raw_value": "1.0000000"
+            },
+            {
+                "title": "Memory Allocated (MB)",
+                "value": "3891",
+                "plugin": "core",
+                "name": "galaxy_memory_mb",
+                "raw_value": "3891.0000000"
+            },
+            {
+                "title": "Job Start Time",
+                "value": "2026-04-06 02:21:41",
+                "plugin": "core",
+                "name": "start_epoch",
+                "raw_value": "1775442101.0000000"
+            },
+            {
+                "title": "Job End Time",
+                "value": "2026-04-06 02:21:42",
+                "plugin": "core",
+                "name": "end_epoch",
+                "raw_value": "1775442102.0000000"
+            },
+            {
+                "title": "Job Runtime (Wall Clock)",
+                "value": "1 second",
+                "plugin": "core",
+                "name": "runtime_seconds",
+                "raw_value": "1.0000000"
+            }
+        ]
+    },
+    "status": "ok",
+    "server": "http://35.188.245.115",
+    "ref_data_size": [],
+    "input_data_size": [
+        2824478,
+        503642961
+    ]
+}

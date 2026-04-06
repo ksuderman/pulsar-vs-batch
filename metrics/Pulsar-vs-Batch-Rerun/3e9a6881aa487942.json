@@ -1,0 +1,113 @@
+{
+    "run": "1",
+    "cloud": "pulsar",
+    "job_conf": "Default",
+    "workflow_id": "a965afe3a7a615f9",
+    "history_id": "e54f398a5da5080d",
+    "inputs": "SRR24043307-50 ucsc.hg38.knownGene.gtf",
+    "metrics": {
+        "model_class": "Job",
+        "id": "3e9a6881aa487942",
+        "history_id": "e54f398a5da5080d",
+        "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/bedtools/bedtools_genomecoveragebed/2.30.0",
+        "state": "ok",
+        "exit_code": 0,
+        "create_time": "2026-04-05T23:51:25.819353",
+        "update_time": "2026-04-06T00:36:07.600282",
+        "galaxy_version": "26.1",
+        "external_id": "415",
+        "handler": null,
+        "job_runner_name": null,
+        "command_line": "bedtools genomecov  -ibam '/mnt/disks/pulsar_staging/415/inputs/dataset_1f1ec8f2-fae1-44f6-8774-a60002ee938e.dat'   -split -strand +  -bg  -scale 0.0232417     > '/mnt/disks/pulsar_staging/415/working/dataset_dcdb224e-c3a7-463d-a5ff-5e3e308f0903.dat'",
+        "user_email": "default-user@galaxyproject.org",
+        "user_id": "a965afe3a7a615f9",
+        "command_version": "bedtools v2.30.0",
+        "params": {
+            "d": "false",
+            "dz": "false",
+            "five": "false",
+            "input_type": "{\"__current_case__\": 1, \"input\": {\"values\": [{\"id\": 707, \"src\": \"dce\"}]}, \"input_type_select\": \"bam\"}",
+            "report": "{\"__current_case__\": 0, \"report_select\": \"bg\", \"scale\": \"0.0232417\", \"zero_regions\": false}",
+            "split": "true",
+            "strand": "\"-strand +\"",
+            "three": "false",
+            "__workflow_invocation_uuid__": "\"d391898e314011f1b88bbebd58c486e9\"",
+            "chromInfo": "\"/cvmfs/data.galaxyproject.org/managed/len/ucsc/hg38.len\"",
+            "dbkey": "\"hg38\"",
+            "__input_ext": "\"input\""
+        },
+        "inputs": {
+            "input_type|input": {
+                "id": "552e67bfe4fcb445",
+                "src": "hda",
+                "uuid": "1f1ec8f2-fae1-44f6-8774-a60002ee938e"
+            }
+        },
+        "outputs": {
+            "output": {
+                "id": "c7371051500e47a2",
+                "src": "hda",
+                "uuid": "dcdb224e-c3a7-463d-a5ff-5e3e308f0903"
+            }
+        },
+        "copied_from_job_id": null,
+        "output_collections": {
+            "output": {
+                "src": "hdca",
+                "id": "f8c546b98ffd1b95"
+            }
+        },
+        "tool_stdout": "",
+        "tool_stderr": "",
+        "job_stdout": "",
+        "job_stderr": "",
+        "stdout": "",
+        "stderr": "",
+        "job_messages": [],
+        "dependencies": [],
+        "job_metrics": [
+            {
+                "title": "Cores Allocated",
+                "value": "1",
+                "plugin": "core",
+                "name": "galaxy_slots",
+                "raw_value": "1.0000000"
+            },
+            {
+                "title": "Memory Allocated (MB)",
+                "value": "3891",
+                "plugin": "core",
+                "name": "galaxy_memory_mb",
+                "raw_value": "3891.0000000"
+            },
+            {
+                "title": "Job Start Time",
+                "value": "2026-04-06 00:31:41",
+                "plugin": "core",
+                "name": "start_epoch",
+                "raw_value": "1775435501.0000000"
+            },
+            {
+                "title": "Job End Time",
+                "value": "2026-04-06 00:34:46",
+                "plugin": "core",
+                "name": "end_epoch",
+                "raw_value": "1775435686.0000000"
+            },
+            {
+                "title": "Job Runtime (Wall Clock)",
+                "value": "3 minutes",
+                "plugin": "core",
+                "name": "runtime_seconds",
+                "raw_value": "185.0000000"
+            }
+        ]
+    },
+    "status": "ok",
+    "server": "http://35.188.245.115",
+    "ref_data_size": [],
+    "input_data_size": [
+        5099543128,
+        503642961
+    ]
+}
