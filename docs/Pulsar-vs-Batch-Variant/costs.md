@@ -99,25 +99,24 @@ Per-job compute cost comparison against [Rainstone](https://rainstone.anvilproje
 | fastp | $0.0255 | $0.0267 | $0.0247 | $0.0249 | $0.0080 | $0.0020 | $0.0350 | 212,086 |
 | snpEff_build_gb | $0.0438 | $0.0076 | $0.0066 | $0.0313 | -- | -- | -- | -- |
 
+## K8s-Only Deployment Estimate
+
+Cost if all jobs ran on a GKE Standard cluster (n2-standard-16, 16 vCPU, 64 GB) without GCP Batch. Jobs run sequentially. Duration is the greater of the sum of compute times or the observed wallclock (for workflows that run tools concurrently).
+
+- **VM hourly rate:** $0.8769/hour (N2 compute $0.7769 + GKE management $0.10)
+- **Duration:** 17.1h
+- **Total cost:** $15.00
+
 ## Deployment Model Comparison
 
-GCP Batch approach (Galaxy + per-job VMs) vs traditional deployment (single n2-standard-20 VM running for the experiment duration).
-
-| Model | Runner | Duration | Job Cost | Galaxy VM | **Total** |
-|-------|--------|----------|----------|-----------|-----------|
-| **GCP Batch** | Batch | 17.8h | $16.97 | $2.44 | **$19.41** |
-| **Local VM** | Batch | 17.8h | -- | $17.27 | **$17.27** |
-| **GCP Batch** | Pulsar | 20.2h | $21.59 | $2.77 | **$24.36** |
-| **Local VM** | Pulsar | 20.2h | -- | $19.57 | **$19.57** |
-| **GCP Batch** | Pulsar+K8s | 20.2h | $18.40 | $2.77 | **$21.17** |
-| **Local VM** | Pulsar+K8s | 20.2h | -- | $19.57 | **$19.57** |
-| **GCP Batch** | Batch+K8s | 17.1h | $15.33 | $2.35 | **$17.68** |
-| **Local VM** | Batch+K8s | 17.1h | -- | $16.61 | **$16.61** |
-
-**Batch**: GCP Batch is **12% more expensive** than a local n2-standard-20 ($19.41 vs $17.27).
-**Pulsar**: GCP Batch is **24% more expensive** than a local n2-standard-20 ($24.36 vs $19.57).
-**Pulsar+K8s**: GCP Batch is **8% more expensive** than a local n2-standard-20 ($21.17 vs $19.57).
-**Batch+K8s**: GCP Batch is **6% more expensive** than a local n2-standard-20 ($17.68 vs $16.61).
+| Model | Duration | Cost |
+|-------|----------|------|
+| **K8s-Only** (GKE Standard, n2-standard-16) | 17.1h | **$15.00** |
+| **Batch** (GCP Batch + e2-standard-4) | 17.8h | **$19.41** |
+| **Pulsar** (GCP Batch + e2-standard-4) | 20.2h | **$24.36** |
+| **Pulsar+K8s** (GCP Batch + e2-standard-4) | 20.2h | **$21.17** |
+| **Batch+K8s** (GCP Batch + e2-standard-4) | 17.1h | **$17.68** |
+| **Local VM** (n2-standard-20, Batch duration) | 17.8h | **$17.27** |
 
 ## Pricing Assumptions
 
@@ -130,6 +129,8 @@ All costs estimated using GCP on-demand pricing for `us-east4`.
 | Local SSD | $5.4e-05/GB/hour |
 | Boot Disk (pd-balanced) | $0.1/GB/month |
 | Galaxy VM (e2-standard-4) | $0.1375/hour |
+| GKE Standard mgmt fee | $0.1/hour |
+| K8s-Only (16 vCPU, 64 GB + GKE) | $0.8769/hour |
 | Local n2-standard-20 | $0.9712/hour |
 
 Rainstone estimates are sourced from the [Rainstone Cost API](https://rainstone.anvilproject.org/api/docs) and reflect historical averages across usegalaxy.org production workloads.

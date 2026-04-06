@@ -41,6 +41,13 @@ LOCAL_VM_VCPUS = 20
 LOCAL_VM_MEM_GB = 80
 LOCAL_VM_HOURLY = LOCAL_VM_VCPUS * VCPU_PER_HOUR + LOCAL_VM_MEM_GB * MEM_PER_GB_HOUR
 
+# K8s-only deployment: GKE Standard with n2-standard-16 (16 vCPU, 64 GB)
+# GKE Standard adds $0.10/hour cluster management fee on top of Compute Engine pricing
+GKE_MGMT_FEE = 0.10
+K8S_ONLY_VCPUS = 16
+K8S_ONLY_MEM_GB = 64
+K8S_ONLY_HOURLY = K8S_ONLY_VCPUS * VCPU_PER_HOUR + K8S_ONLY_MEM_GB * MEM_PER_GB_HOUR + GKE_MGMT_FEE
+
 N2_STANDARD = {2: 8, 4: 16, 8: 32, 16: 64, 32: 128, 48: 192, 64: 256, 80: 320, 96: 384, 128: 512}
 
 INPUT_SIZE_MAP = {
@@ -420,7 +427,7 @@ def _runner_table(w, cloud_totals, clouds):
 
 def generate_markdown(compute_cloud, compute_tool, wall_cloud, wall_tool,
                       tool_order, rainstone, experiment_name, date_range,
-                      galaxy_vm, local_vm, clouds):
+                      galaxy_vm, local_vm, k8s_only, clouds):
     workflow_title = derive_experiment_title(experiment_name)
     total_jobs = sum(ct["jobs"] for ct in wall_cloud.values())
 
@@ -558,35 +565,51 @@ def generate_markdown(compute_cloud, compute_tool, wall_cloud, wall_tool,
         w("")
 
     # Deployment model comparison
-    if local_vm and galaxy_vm:
+    # K8s-Only estimate
+    if k8s_only:
+        w("## K8s-Only Deployment Estimate")
+        w("")
+        w(f"Cost if all jobs ran on a GKE Standard cluster ({k8s_only['vm_type']}, "
+          f"{K8S_ONLY_VCPUS} vCPU, {K8S_ONLY_MEM_GB} GB) without GCP Batch. "
+          f"Jobs run sequentially. Duration is the greater of the sum of compute "
+          f"times or the observed wallclock (for workflows that run tools concurrently).")
+        w("")
+        w(f"- **VM hourly rate:** ${k8s_only['hourly']:.4f}/hour "
+          f"(N2 compute ${k8s_only['hourly'] - GKE_MGMT_FEE:.4f} + "
+          f"GKE management ${GKE_MGMT_FEE:.2f})")
+        w(f"- **Duration:** {k8s_only['hours']:.1f}h")
+        w(f"- **Total cost:** ${k8s_only['cost']:.2f}")
+        w("")
+
+    # Deployment model comparison
+    if galaxy_vm:
         w("## Deployment Model Comparison")
         w("")
-        w("GCP Batch approach (Galaxy + per-job VMs) vs traditional deployment "
-          "(single n2-standard-20 VM running for the experiment duration).")
-        w("")
-        w("| Model | Runner | Duration | Job Cost | Galaxy VM | **Total** |")
-        w("|-------|--------|----------|----------|-----------|-----------|")
+        # Build comparison table with all models
+        w("| Model | Duration | Cost |")
+        w("|-------|----------|------|")
+        # K8s-only
+        if k8s_only:
+            w(f"| **K8s-Only** (GKE Standard, {k8s_only['vm_type']}) | "
+              f"{k8s_only['hours']:.1f}h | **${k8s_only['cost']:.2f}** |")
+        # Each GCP Batch runner + Galaxy VM
         for cloud in clouds:
             if cloud not in wall_cloud or cloud not in galaxy_vm:
                 continue
             jc = wall_cloud[cloud]["total_cost"]
             gc = galaxy_vm[cloud]["cost"]
-            lc = local_vm[cloud]["cost"]
             dur = galaxy_vm[cloud]["hours"]
-            w(f"| **GCP Batch** | {cloud_display(cloud)} | {dur:.1f}h | ${jc:.2f} | ${gc:.2f} | **${jc + gc:.2f}** |")
-            w(f"| **Local VM** | {cloud_display(cloud)} | {dur:.1f}h | -- | ${lc:.2f} | **${lc:.2f}** |")
-        w("")
-        for cloud in clouds:
-            if cloud not in wall_cloud or cloud not in galaxy_vm:
-                continue
-            batch_total = wall_cloud[cloud]["total_cost"] + galaxy_vm[cloud]["cost"]
-            lv = local_vm[cloud]["cost"]
-            if lv > 0:
-                ratio = batch_total / lv
-                cheaper = "cheaper" if ratio < 1 else "more expensive"
-                pct = abs(1 - ratio) * 100
-                w(f"**{cloud_display(cloud)}**: GCP Batch is **{pct:.0f}% {cheaper}** "
-                  f"than a local n2-standard-20 (${batch_total:.2f} vs ${lv:.2f}).")
+            w(f"| **{cloud_display(cloud)}** (GCP Batch + e2-standard-4) | "
+              f"{dur:.1f}h | **${jc + gc:.2f}** |")
+        # Local VM
+        if local_vm:
+            for cloud in clouds:
+                if cloud in local_vm and cloud in galaxy_vm:
+                    lc = local_vm[cloud]["cost"]
+                    dur = galaxy_vm[cloud]["hours"]
+                    w(f"| **Local VM** (n2-standard-20, {cloud_display(cloud)} duration) | "
+                      f"{dur:.1f}h | **${lc:.2f}** |")
+                    break  # Only show one local VM row
         w("")
 
     # Pricing assumptions
@@ -601,6 +624,8 @@ def generate_markdown(compute_cloud, compute_tool, wall_cloud, wall_tool,
     w(f"| Local SSD | ${SSD_PER_GB_HOUR}/GB/hour |")
     w(f"| Boot Disk (pd-balanced) | ${BOOT_DISK_PER_GB_MONTH}/GB/month |")
     w(f"| Galaxy VM (e2-standard-4) | ${GALAXY_VM_HOURLY:.4f}/hour |")
+    w(f"| GKE Standard mgmt fee | ${GKE_MGMT_FEE}/hour |")
+    w(f"| K8s-Only ({K8S_ONLY_VCPUS} vCPU, {K8S_ONLY_MEM_GB} GB + GKE) | ${K8S_ONLY_HOURLY:.4f}/hour |")
     w(f"| Local n2-standard-20 | ${LOCAL_VM_HOURLY:.4f}/hour |")
     w("")
     if rainstone:
@@ -883,6 +908,29 @@ def generate_experiment(jobs, experiment_name, docs_dir, no_rainstone=False):
             local_vm[cloud] = {"hours": galaxy_vm[cloud]["hours"],
                                "cost": galaxy_vm[cloud]["hours"] * LOCAL_VM_HOURLY}
 
+    # K8s-only estimate: GKE Standard with n2-standard-16, sequential execution.
+    # Duration per run = max(sum_of_compute_times, run_wallclock).
+    # Use the Batch+K8s (single) server data as the baseline.
+    k8s_only = {}
+    single_jobs = [j for j in ok_jobs if j["cloud"] == "single"]
+    if single_jobs:
+        by_history = defaultdict(list)
+        for j in single_jobs:
+            by_history[j.get("history_id", "")].append(j)
+        total_hours = 0
+        for hist_jobs in by_history.values():
+            sum_compute = sum(j["runtime"] for j in hist_jobs) / 3600
+            creates = [datetime.fromisoformat(j["create_time"]) for j in hist_jobs]
+            updates = [datetime.fromisoformat(j["update_time"]) for j in hist_jobs]
+            run_wall = (max(updates) - min(creates)).total_seconds() / 3600
+            total_hours += max(sum_compute, run_wall)
+        k8s_only = {
+            "hours": total_hours,
+            "cost": total_hours * K8S_ONLY_HOURLY,
+            "vm_type": f"n2-standard-{K8S_ONLY_VCPUS}",
+            "hourly": K8S_ONLY_HOURLY,
+        }
+
     # Rainstone
     rainstone = {}
     if not no_rainstone:
@@ -892,7 +940,7 @@ def generate_experiment(jobs, experiment_name, docs_dir, no_rainstone=False):
 
     md = generate_markdown(compute_cloud, compute_tool, wall_cloud, wall_tool,
                            tool_order, rainstone, experiment_name, date_range,
-                           galaxy_vm, local_vm, clouds)
+                           galaxy_vm, local_vm, k8s_only, clouds)
     md_path = os.path.join(docs_dir, "costs.md")
     with open(md_path, "w") as f:
         f.write(md)
