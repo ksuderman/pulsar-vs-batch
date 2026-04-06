@@ -28,7 +28,7 @@
 <body>
 
 <h1>Variant Benchmark</h1>
-<p class="subtitle">12 tool types &mdash; 9 runs &mdash; Batch, Pulsar, Single</p>
+<p class="subtitle">12 tool types &mdash; 9 runs &mdash; Batch, Pulsar, Batch+K8s</p>
 
 <div class="nav">
   <a href="../index.html">&larr; Home</a>
@@ -85,7 +85,7 @@
 </div>
 
 <div class="footer">
-  Galaxy 26.1 &middot; us-east4 &middot; 9 workflow runs &middot; Generated 2026-04-01 15:10</div>
+  Galaxy 26.1 &middot; us-east4 &middot; 9 workflow runs &middot; Generated 2026-04-06 12:36</div>
 
 <script>
 const tools = ["lofreq_call", "bwa_mem", "picard_MarkD", "snpEff_build", "lofreq_viter", "lofreq_indel", "fastp", "samtools_vie", "samtools_sta", "snpEff", "multiqc", "lofreq_filte"];
@@ -100,13 +100,13 @@ const data_single_2gb = [3973, 4409, 473, 857, 351, 223, 166, 140, 46, 6, 7, 1];
 const data_batch_5gb = [8479, 6437, 1258, 1095, 734, 406, 401, 318, 113, 6, 8, 1];
 const data_pulsar_5gb = [8383, 5704, 710, 176, 617, 304, 403, 237, 105, 11, 3, 0];
 const data_single_5gb = [8546, 6015, 1150, 832, 722, 400, 402, 379, 129, 7, 7, 1];
-const data_batch_10gb = [0, 0, 0, 998, 0, 0, 510, 0, 0, 0, 0, 0];
-const data_pulsar_10gb = [14387, 8253, 1365, 174, 1047, 491, 477, 457, 204, 7, 2, 0];
+const data_batch_10gb = [14723, 8952, 2375, 1113, 1178, 621, 514, 609, 220, 7, 9, 2];
+const data_pulsar_10gb = [14614, 8638, 1474, 176, 1049, 509, 482, 476, 205, 6, 2, 1];
 const data_single_10gb = [14641, 8545, 2297, 812, 1144, 617, 486, 709, 225, 7, 7, 2];
 
 const ovLabels = ["batch R1 2GB", "batch R1 5GB", "batch R1 10GB", "pulsar R1 2GB", "pulsar R1 5GB", "pulsar R1 10GB", "single R1 2GB", "single R1 5GB", "single R1 10GB"];
-const ovCompute = [186.2, 320.9, 25.1, 157.1, 277.6, 447.7, 177.5, 309.8, 491.5];
-const ovOverhead = [19.4, 16.7, 86.4, 78.9, 96.9, 131.8, 16.9, 13.6, 16.6];
+const ovCompute = [186.2, 320.9, 505.4, 157.1, 277.6, 460.5, 177.5, 309.8, 491.5];
+const ovOverhead = [19.4, 16.7, 18.1, 78.9, 96.9, 138.4, 16.9, 13.6, 16.6];
 const ovColors = ["#3b82f6", "#3b82f6", "#3b82f6", "#f59e0b", "#f59e0b", "#f59e0b", "#22c55e", "#22c55e", "#22c55e"];
 const ovOHColors = ["#93bbfd", "#93bbfd", "#93bbfd", "#fcd679", "#fcd679", "#fcd679", "#86efac", "#86efac", "#86efac"];
 
@@ -121,7 +121,7 @@ new Chart(document.getElementById("overviewStacked"), {
 
 new Chart(document.getElementById("overviewOHPerStep"), {
   type: "bar",
-  data: { labels: ["batch R1 2GB", "batch R1 5GB", "batch R1 10GB", "pulsar R1 2GB", "pulsar R1 5GB", "pulsar R1 10GB", "single R1 2GB", "single R1 5GB", "single R1 10GB"], datasets: [{ label: "Overhead per step", data: [1.6, 1.4, 6.2, 6.1, 8.1, 11.0, 1.4, 1.1, 1.4], backgroundColor: ["#3b82f6", "#3b82f6", "#3b82f6", "#f59e0b", "#f59e0b", "#f59e0b", "#22c55e", "#22c55e", "#22c55e"], borderRadius: 4 }] },
+  data: { labels: ["batch R1 2GB", "batch R1 5GB", "batch R1 10GB", "pulsar R1 2GB", "pulsar R1 5GB", "pulsar R1 10GB", "single R1 2GB", "single R1 5GB", "single R1 10GB"], datasets: [{ label: "Overhead per step", data: [1.6, 1.4, 1.5, 6.6, 8.1, 11.5, 1.4, 1.1, 1.4], backgroundColor: ["#3b82f6", "#3b82f6", "#3b82f6", "#f59e0b", "#f59e0b", "#f59e0b", "#22c55e", "#22c55e", "#22c55e"], borderRadius: 4 }] },
   options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { title: { display: true, text: "Minutes" }, beginAtZero: true }, x: { ticks: { maxRotation: 45, minRotation: 45 } } } }
 });
 
@@ -129,14 +129,14 @@ new Chart(document.getElementById("bar_tab-2gb"), {
   type: "bar", data: { labels: tools, datasets: [
     { label: "Batch", data: data_batch_2gb, backgroundColor: "#3b82f6", borderRadius: 4 },
     { label: "Pulsar", data: data_pulsar_2gb, backgroundColor: "#f59e0b", borderRadius: 4 },
-    { label: "Single", data: data_single_2gb, backgroundColor: "#22c55e", borderRadius: 4 },
+    { label: "Batch+K8s", data: data_single_2gb, backgroundColor: "#22c55e", borderRadius: 4 },
   ] }, options: { responsive: true, plugins: { legend: { position: "top" }, tooltip: { callbacks: { label: secTooltip } } }, scales: { y: { title: { display: true, text: "Seconds" }, beginAtZero: true }, x: { ticks: { maxRotation: 45, minRotation: 45 } } } }
 });
 new Chart(document.getElementById("cum_tab-2gb"), {
   type: "line", data: { labels: tools, datasets: [
     { label: "Batch", data: cumSum(data_batch_2gb).map(v => +(v/60).toFixed(1)), borderColor: "#3b82f6", backgroundColor: "#93bbfd33", fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: "#3b82f6" },
     { label: "Pulsar", data: cumSum(data_pulsar_2gb).map(v => +(v/60).toFixed(1)), borderColor: "#f59e0b", backgroundColor: "#fcd67933", fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: "#f59e0b" },
-    { label: "Single", data: cumSum(data_single_2gb).map(v => +(v/60).toFixed(1)), borderColor: "#22c55e", backgroundColor: "#86efac33", fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: "#22c55e" },
+    { label: "Batch+K8s", data: cumSum(data_single_2gb).map(v => +(v/60).toFixed(1)), borderColor: "#22c55e", backgroundColor: "#86efac33", fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: "#22c55e" },
   ] }, options: { responsive: true, plugins: { tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.raw} min` } } }, scales: { y: { title: { display: true, text: "Minutes" }, beginAtZero: true }, x: { ticks: { maxRotation: 45, minRotation: 45 } } } }
 });
 
@@ -144,14 +144,14 @@ new Chart(document.getElementById("bar_tab-5gb"), {
   type: "bar", data: { labels: tools, datasets: [
     { label: "Batch", data: data_batch_5gb, backgroundColor: "#3b82f6", borderRadius: 4 },
     { label: "Pulsar", data: data_pulsar_5gb, backgroundColor: "#f59e0b", borderRadius: 4 },
-    { label: "Single", data: data_single_5gb, backgroundColor: "#22c55e", borderRadius: 4 },
+    { label: "Batch+K8s", data: data_single_5gb, backgroundColor: "#22c55e", borderRadius: 4 },
   ] }, options: { responsive: true, plugins: { legend: { position: "top" }, tooltip: { callbacks: { label: secTooltip } } }, scales: { y: { title: { display: true, text: "Seconds" }, beginAtZero: true }, x: { ticks: { maxRotation: 45, minRotation: 45 } } } }
 });
 new Chart(document.getElementById("cum_tab-5gb"), {
   type: "line", data: { labels: tools, datasets: [
     { label: "Batch", data: cumSum(data_batch_5gb).map(v => +(v/60).toFixed(1)), borderColor: "#3b82f6", backgroundColor: "#93bbfd33", fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: "#3b82f6" },
     { label: "Pulsar", data: cumSum(data_pulsar_5gb).map(v => +(v/60).toFixed(1)), borderColor: "#f59e0b", backgroundColor: "#fcd67933", fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: "#f59e0b" },
-    { label: "Single", data: cumSum(data_single_5gb).map(v => +(v/60).toFixed(1)), borderColor: "#22c55e", backgroundColor: "#86efac33", fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: "#22c55e" },
+    { label: "Batch+K8s", data: cumSum(data_single_5gb).map(v => +(v/60).toFixed(1)), borderColor: "#22c55e", backgroundColor: "#86efac33", fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: "#22c55e" },
   ] }, options: { responsive: true, plugins: { tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.raw} min` } } }, scales: { y: { title: { display: true, text: "Minutes" }, beginAtZero: true }, x: { ticks: { maxRotation: 45, minRotation: 45 } } } }
 });
 
@@ -159,14 +159,14 @@ new Chart(document.getElementById("bar_tab-10gb"), {
   type: "bar", data: { labels: tools, datasets: [
     { label: "Batch", data: data_batch_10gb, backgroundColor: "#3b82f6", borderRadius: 4 },
     { label: "Pulsar", data: data_pulsar_10gb, backgroundColor: "#f59e0b", borderRadius: 4 },
-    { label: "Single", data: data_single_10gb, backgroundColor: "#22c55e", borderRadius: 4 },
+    { label: "Batch+K8s", data: data_single_10gb, backgroundColor: "#22c55e", borderRadius: 4 },
   ] }, options: { responsive: true, plugins: { legend: { position: "top" }, tooltip: { callbacks: { label: secTooltip } } }, scales: { y: { title: { display: true, text: "Seconds" }, beginAtZero: true }, x: { ticks: { maxRotation: 45, minRotation: 45 } } } }
 });
 new Chart(document.getElementById("cum_tab-10gb"), {
   type: "line", data: { labels: tools, datasets: [
     { label: "Batch", data: cumSum(data_batch_10gb).map(v => +(v/60).toFixed(1)), borderColor: "#3b82f6", backgroundColor: "#93bbfd33", fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: "#3b82f6" },
     { label: "Pulsar", data: cumSum(data_pulsar_10gb).map(v => +(v/60).toFixed(1)), borderColor: "#f59e0b", backgroundColor: "#fcd67933", fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: "#f59e0b" },
-    { label: "Single", data: cumSum(data_single_10gb).map(v => +(v/60).toFixed(1)), borderColor: "#22c55e", backgroundColor: "#86efac33", fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: "#22c55e" },
+    { label: "Batch+K8s", data: cumSum(data_single_10gb).map(v => +(v/60).toFixed(1)), borderColor: "#22c55e", backgroundColor: "#86efac33", fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: "#22c55e" },
   ] }, options: { responsive: true, plugins: { tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.raw} min` } } }, scales: { y: { title: { display: true, text: "Minutes" }, beginAtZero: true }, x: { ticks: { maxRotation: 45, minRotation: 45 } } } }
 });
 

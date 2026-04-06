@@ -49,11 +49,24 @@ INPUT_SIZE_MAP = {
 }
 
 CLOUD_COLORS = {
-    "batch":  ("#3b82f6", "#93bbfd"),
-    "pulsar": ("#f59e0b", "#fcd679"),
-    "single": ("#22c55e", "#86efac"),
+    "batch":      ("#3b82f6", "#93bbfd"),
+    "pulsar":     ("#f59e0b", "#fcd679"),
+    "pulsar+k8s": ("#8b5cf6", "#c4b5fd"),
+    "single":     ("#22c55e", "#86efac"),
 }
-_EXTRA_COLORS = [("#8b5cf6", "#c4b5fd"), ("#ef4444", "#fca5a5")]
+_EXTRA_COLORS = [("#ef4444", "#fca5a5"), ("#06b6d4", "#a5f3fc")]
+
+# Display names for cloud runners
+CLOUD_DISPLAY = {
+    "batch": "Batch",
+    "pulsar": "Pulsar",
+    "pulsar+k8s": "Pulsar+K8s",
+    "single": "Batch+K8s",
+}
+
+
+def cloud_display(cloud):
+    return CLOUD_DISPLAY.get(cloud, cloud.title())
 
 
 # ---------------------------------------------------------------------------
@@ -109,6 +122,134 @@ def load_metrics(metrics_dir):
             "job_runner": job_runner,
         })
     return jobs
+
+
+def load_metrics_multi(metrics_dirs):
+    """Load metrics from multiple directories."""
+    jobs = []
+    for d in metrics_dirs:
+        jobs.extend(load_metrics(d))
+    return jobs
+
+
+# Tools that the single server routes to the k8s runner.
+# These are lightweight single-core tools whose cost is covered by the cluster.
+K8S_TOOLS = {
+    "bedtools_genomecoveragebed",
+    "revertR2orientationInBam",
+    "samtools_view",
+    "tp_awk_tool",
+    "tp_grep_tool",
+}
+
+# Also include tools routed to the local runner (parameter tools)
+LOCAL_TOOLS = {
+    "compose_text_param",
+    "map_param_value",
+    "param_value_from_file",
+}
+
+ZERO_COST_TOOLS = K8S_TOOLS | LOCAL_TOOLS
+
+
+def deduplicate_jobs(jobs):
+    """Remove duplicate data from reruns.
+
+    Strategy: for each (cloud, size) group, if there are histories with
+    failures AND replacement histories where all jobs succeeded, exclude
+    the original failed histories entirely. For histories with retried
+    jobs (both ok and failed for the same tool), keep only the ok ones.
+    """
+    from collections import defaultdict
+
+    SIZE_ORDER_MAP = {"2GB": 0, "5GB": 1, "10GB": 2}
+    INPUT_SIZE_MAP_LOCAL = {
+        "SRR24043307-80": "2GB", "SRR24043307-50": "5GB", "SRR24043307-full": "10GB",
+        "chipseq-10g": "10GB", "chipseq-5g": "5GB", "chipseq-2g": "2GB",
+    }
+
+    def _get_size(inputs):
+        matched = [l for p, l in INPUT_SIZE_MAP_LOCAL.items() if p in inputs]
+        if matched:
+            return max(matched, key=lambda l: SIZE_ORDER_MAP.get(l, 999))
+        for s in ["10GB", "5GB", "2GB"]:
+            if s in inputs:
+                return s
+        return "unknown"
+
+    def _get_workflow(inputs):
+        if "gbff" in inputs:
+            return "variant"
+        elif "chipseq" in inputs:
+            return "chipseq"
+        elif "ucsc.hg38" in inputs:
+            return "rnaseq"
+        return "unknown"
+
+    # Group jobs by (cloud, workflow, size, history_id)
+    by_hist = defaultdict(lambda: {"ok": 0, "fail": 0, "jobs": []})
+    for j in jobs:
+        wf = _get_workflow(j.get("inputs", ""))
+        size = _get_size(j.get("inputs", ""))
+        key = (j["cloud"], wf, size, j.get("history_id", ""))
+        by_hist[key]["jobs"].append(j)
+        if j["state"] == "ok":
+            by_hist[key]["ok"] += 1
+        else:
+            by_hist[key]["fail"] += 1
+
+    # For each (cloud, workflow, size), find histories with failures
+    # and check if there's a clean replacement
+    by_group = defaultdict(list)
+    for (cloud, wf, size, hid), info in by_hist.items():
+        by_group[(cloud, wf, size)].append((hid, info))
+
+    exclude_histories = set()
+    for (cloud, wf, size), histories in by_group.items():
+        failed = [(hid, info) for hid, info in histories if info["fail"] > 0]
+        clean = [(hid, info) for hid, info in histories if info["fail"] == 0]
+        if failed and clean:
+            # Have clean replacements — exclude the failed originals
+            for hid, info in failed:
+                exclude_histories.add(hid)
+        if len(clean) > 1:
+            # Multiple clean histories (original + rerun both clean) — keep only one
+            # Keep the most recent (last in file order)
+            clean.sort(key=lambda x: max(j["create_time"] for j in x[1]["jobs"]))
+            for hid, info in clean[:-1]:
+                exclude_histories.add(hid)
+
+    if exclude_histories:
+        print(f"  Dedup: excluding {len(exclude_histories)} histories with failures/duplicates")
+
+    # Filter: exclude failed histories, and exclude failed duplicates within histories
+    result = []
+    for j in jobs:
+        hid = j.get("history_id", "")
+        if hid in exclude_histories:
+            continue
+        if j["state"] != "ok":
+            # Check if there's an ok version of this tool in the same history
+            # (i.e., a retry succeeded)
+            continue
+        result.append(j)
+
+    return result
+
+
+def create_pulsar_k8s_group(jobs):
+    """Create a virtual 'pulsar+k8s' cloud by cloning pulsar jobs and zeroing
+    costs for tools that would be routed to the k8s runner."""
+    import copy
+    pulsar_jobs = [j for j in jobs if j["cloud"] == "pulsar"]
+    k8s_jobs = []
+    for j in pulsar_jobs:
+        j2 = copy.deepcopy(j)
+        j2["cloud"] = "pulsar+k8s"
+        if j2["tool"] in ZERO_COST_TOOLS:
+            j2["job_runner"] = "k8s"
+        k8s_jobs.append(j2)
+    return k8s_jobs
 
 
 def discover_clouds(jobs):
@@ -264,7 +405,7 @@ def _runner_table(w, cloud_totals, clouds):
         if cloud not in cloud_totals:
             continue
         ct = cloud_totals[cloud]
-        w(f"| **{cloud.title()}** | {ct['jobs']} | {ct['vm_hours']:.1f}h | "
+        w(f"| **{cloud_display(cloud)}** | {ct['jobs']} | {ct['vm_hours']:.1f}h | "
           f"${ct['vcpu_cost']:.2f} | ${ct['mem_cost']:.2f} | "
           f"${ct['ssd_cost']:.2f} | ${ct['boot_cost']:.2f} | "
           f"**${ct['total_cost']:.2f}** |")
@@ -323,7 +464,7 @@ def generate_markdown(compute_cloud, compute_tool, wall_cloud, wall_tool,
         for cloud in clouds:
             if cloud in galaxy_vm:
                 gv = galaxy_vm[cloud]
-                w(f"| **{cloud.title()}** | {gv['hours']:.1f}h | ${gv['cost']:.2f} |")
+                w(f"| **{cloud_display(cloud)}** | {gv['hours']:.1f}h | ${gv['cost']:.2f} |")
         w("")
 
     # Total cost
@@ -336,7 +477,7 @@ def generate_markdown(compute_cloud, compute_tool, wall_cloud, wall_tool,
             if cloud in wall_cloud and cloud in galaxy_vm:
                 jc = wall_cloud[cloud]["total_cost"]
                 gc = galaxy_vm[cloud]["cost"]
-                w(f"| **{cloud.title()}** | ${jc:.2f} | ${gc:.2f} | **${jc + gc:.2f}** |")
+                w(f"| **{cloud_display(cloud)}** | ${jc:.2f} | ${gc:.2f} | **${jc + gc:.2f}** |")
         w("")
 
     # Compute-only costs
@@ -357,7 +498,7 @@ def generate_markdown(compute_cloud, compute_tool, wall_cloud, wall_tool,
             cc = compute_cloud[cloud]["total_cost"]
             wc = wall_cloud[cloud]["total_cost"]
             ratio = wc / cc if cc > 0 else 0
-            w(f"| **{cloud.title()}** | ${cc:.2f} | ${wc:.2f} | {ratio:.1f}x |")
+            w(f"| **{cloud_display(cloud)}** | ${cc:.2f} | ${wc:.2f} | {ratio:.1f}x |")
     w("")
 
     # Per-tool wallclock
@@ -366,7 +507,7 @@ def generate_markdown(compute_cloud, compute_tool, wall_cloud, wall_tool,
     header = "| Tool | vCPU |"
     sep = "|------|------|"
     for cloud in clouds:
-        header += f" {cloud.title()} Jobs | {cloud.title()} Cost | {cloud.title()} $/Job |"
+        header += f" {cloud_display(cloud)} Jobs | {cloud_display(cloud)} Cost | {cloud_display(cloud)} $/Job |"
         sep += " ---- | ---- | ---- |"
     header += " Rainstone Est. |"
     sep += " ---- |"
@@ -396,7 +537,7 @@ def generate_markdown(compute_cloud, compute_tool, wall_cloud, wall_tool,
         header = "| Tool |"
         sep = "|------|"
         for cloud in clouds:
-            header += f" {cloud.title()} $/Job |"
+            header += f" {cloud_display(cloud)} $/Job |"
             sep += " ---- |"
         header += " Rainstone Avg | Rainstone Median | Rainstone P95 | usegalaxy.org Jobs |"
         sep += " ---- | ---- | ---- | ---- |"
@@ -432,8 +573,8 @@ def generate_markdown(compute_cloud, compute_tool, wall_cloud, wall_tool,
             gc = galaxy_vm[cloud]["cost"]
             lc = local_vm[cloud]["cost"]
             dur = galaxy_vm[cloud]["hours"]
-            w(f"| **GCP Batch** | {cloud.title()} | {dur:.1f}h | ${jc:.2f} | ${gc:.2f} | **${jc + gc:.2f}** |")
-            w(f"| **Local VM** | {cloud.title()} | {dur:.1f}h | -- | ${lc:.2f} | **${lc:.2f}** |")
+            w(f"| **GCP Batch** | {cloud_display(cloud)} | {dur:.1f}h | ${jc:.2f} | ${gc:.2f} | **${jc + gc:.2f}** |")
+            w(f"| **Local VM** | {cloud_display(cloud)} | {dur:.1f}h | -- | ${lc:.2f} | **${lc:.2f}** |")
         w("")
         for cloud in clouds:
             if cloud not in wall_cloud or cloud not in galaxy_vm:
@@ -444,7 +585,7 @@ def generate_markdown(compute_cloud, compute_tool, wall_cloud, wall_tool,
                 ratio = batch_total / lv
                 cheaper = "cheaper" if ratio < 1 else "more expensive"
                 pct = abs(1 - ratio) * 100
-                w(f"**{cloud.title()}**: GCP Batch is **{pct:.0f}% {cheaper}** "
+                w(f"**{cloud_display(cloud)}**: GCP Batch is **{pct:.0f}% {cheaper}** "
                   f"than a local n2-standard-20 (${batch_total:.2f} vs ${lv:.2f}).")
         w("")
 
@@ -549,7 +690,7 @@ def generate_html(compute_cloud, compute_tool, wall_cloud, wall_tool,
     h('</style></head><body>')
     h('')
     h(f'<h1>{workflow_title}: Cost Analysis</h1>')
-    h(f'<p class="subtitle">{total_jobs} jobs &mdash; {len(tool_order)} tools &mdash; {", ".join(c.title() for c in clouds)}</p>')
+    h(f'<p class="subtitle">{total_jobs} jobs &mdash; {len(tool_order)} tools &mdash; {", ".join(cloud_display(c) for c in clouds)}</p>')
     h('<div class="nav">')
     h('  <a href="../index.html">&larr; Home</a>')
     h('  <a href="index.html">Results Report</a>')
@@ -574,7 +715,7 @@ def generate_html(compute_cloud, compute_tool, wall_cloud, wall_tool,
         wc = wall_cloud.get(cloud, _empty_ct)
         coc = compute_cloud.get(cloud, _empty_ct)
         color = cc[cloud][0]
-        h(f'    <div class="card"><div class="label" style="color:{color}">{cloud.title()}</div>'
+        h(f'    <div class="card"><div class="label" style="color:{color}">{cloud_display(cloud)}</div>'
           f'<div class="value" style="color:{color}">${wc["total_cost"]:.2f}</div>'
           f'<div class="detail">{wc["jobs"]} jobs &middot; compute: ${coc["total_cost"]:.2f}</div></div>')
     h('  </div>')
@@ -642,7 +783,7 @@ def generate_html(compute_cloud, compute_tool, wall_cloud, wall_tool,
     h('')
 
     # Wallclock vs Compute overview
-    cloud_labels = json.dumps([c.title() for c in clouds])
+    cloud_labels = json.dumps([cloud_display(c) for c in clouds])
     comp_vals = json.dumps([round(compute_cloud.get(c, _empty_ct)["total_cost"], 2) for c in clouds])
     wall_vals = json.dumps([round(wall_cloud.get(c, _empty_ct)["total_cost"], 2) for c in clouds])
     comp_colors = json.dumps([cc[c][1] for c in clouds])
@@ -658,7 +799,7 @@ def generate_html(compute_cloud, compute_tool, wall_cloud, wall_tool,
     for cloud in clouds:
         csafe = re.sub(r'[^a-zA-Z0-9]', '_', cloud)
         color = cc[cloud][0]
-        h(f'  {{ label: "{cloud.title()}", data: w_{csafe}_hrs, backgroundColor: "{color}", borderRadius: 4 }},')
+        h(f'  {{ label: "{cloud_display(cloud)}", data: w_{csafe}_hrs, backgroundColor: "{color}", borderRadius: 4 }},')
     h(f'] }}, options: {{ responsive: true, plugins: {{ legend: {{ position: "top" }} }}, scales: {{ y: {{ title: {{ display: true, text: "Hours" }}, beginAtZero: true }}, x: {{ ticks: {{ maxRotation: 45, minRotation: 45 }} }} }} }} }});')
     h('')
 
@@ -671,7 +812,7 @@ def generate_html(compute_cloud, compute_tool, wall_cloud, wall_tool,
             for cloud in clouds:
                 csafe = re.sub(r'[^a-zA-Z0-9]', '_', cloud)
                 color = cc[cloud][0]
-                h(f'  {{ label: "{cloud.title()}", data: {data_key}_{csafe}_{arr_suffix}, backgroundColor: "{color}", borderRadius: 4 }},')
+                h(f'  {{ label: "{cloud_display(cloud)}", data: {data_key}_{csafe}_{arr_suffix}, backgroundColor: "{color}", borderRadius: 4 }},')
             h(f'] }}, options: {{ responsive: true, plugins: {{ legend: {{ position: "top" }}, tooltip: {{ callbacks: {{ label: {tooltip} }} }} }}, scales: {{ y: {{ title: {{ display: true, text: "{ylabel}" }}, beginAtZero: true }}, x: {{ ticks: {{ maxRotation: 45, minRotation: 45 }} }} }} }} }});')
             h('')
 
@@ -681,7 +822,7 @@ def generate_html(compute_cloud, compute_tool, wall_cloud, wall_tool,
         for cloud in clouds:
             csafe = re.sub(r'[^a-zA-Z0-9]', '_', cloud)
             color = cc[cloud][0]
-            h(f'  {{ label: "{cloud.title()}", data: c_{csafe}_pj, backgroundColor: "{color}", borderRadius: 4 }},')
+            h(f'  {{ label: "{cloud_display(cloud)}", data: c_{csafe}_pj, backgroundColor: "{color}", borderRadius: 4 }},')
         h(f'  {{ label: "Rainstone Avg", data: rainstoneAvg, backgroundColor: "#8b5cf6", borderRadius: 4 }}')
         h(f'] }}, options: {{ responsive: true, plugins: {{ tooltip: {{ callbacks: {{ label: dollarFmt }} }} }}, scales: {{ y: {{ type: "logarithmic", title: {{ display: true, text: "USD per job (log)" }} }}, x: {{ ticks: {{ maxRotation: 45, minRotation: 45 }} }} }} }} }});')
     h('')
@@ -719,9 +860,11 @@ def generate_experiment(jobs, experiment_name, docs_dir, no_rainstone=False):
                   f"{max(all_updates)[:19].replace('T', ' ')} UTC")
 
     # Galaxy VM cost per cloud (summed per-run durations)
+    # For pulsar+k8s, use pulsar's history data (same experiment duration)
     galaxy_vm = {}
     for cloud in clouds:
-        cloud_jobs = [j for j in ok_jobs if j["cloud"] == cloud]
+        source_cloud = "pulsar" if cloud == "pulsar+k8s" else cloud
+        cloud_jobs = [j for j in ok_jobs if j["cloud"] == source_cloud]
         if not cloud_jobs:
             continue
         by_history = defaultdict(list)
@@ -766,25 +909,43 @@ def generate_experiment(jobs, experiment_name, docs_dir, no_rainstone=False):
         if cloud in wall_cloud:
             wc = wall_cloud[cloud]
             coc = compute_cloud.get(cloud, {"total_cost": 0})
-            print(f"  {cloud.title()}: ${wc['total_cost']:.2f} wallclock, "
+            print(f"  {cloud_display(cloud)}: ${wc['total_cost']:.2f} wallclock, "
                   f"${coc['total_cost']:.2f} compute ({wc['jobs']} jobs)")
 
 
 def main():
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     parser = argparse.ArgumentParser(description="Generate cost analysis from metrics.")
-    parser.add_argument("metrics_dir", nargs="?",
-                        default=os.path.join(base_dir, "metrics", "Pulsar-vs-Batch"),
-                        help="Directory containing metrics JSON files")
+    parser.add_argument("metrics_dir", nargs="*",
+                        help="Directories containing metrics JSON files (supports multiple)")
+    parser.add_argument("--name", help="Experiment name for output directory")
     parser.add_argument("--no-rainstone", action="store_true")
     parser.add_argument("--exclude", action="append", default=[])
+    parser.add_argument("--pulsar-k8s", action="store_true",
+                        help="Add extrapolated pulsar+k8s group")
+    parser.add_argument("--inputs-match", action="append", default=[],
+                        help="Only include jobs whose inputs contain this string (repeatable, any match)")
     args = parser.parse_args()
 
-    metrics_dir = args.metrics_dir
-    experiment_name = os.path.basename(metrics_dir)
+    metrics_dirs = args.metrics_dir
+    if not metrics_dirs:
+        metrics_dirs = [os.path.join(base_dir, "metrics", "Pulsar-vs-Batch")]
 
-    print(f"Loading metrics from {metrics_dir}...")
-    jobs = load_metrics(metrics_dir)
+    experiment_name = args.name or os.path.basename(metrics_dirs[0])
+
+    print(f"Loading metrics from {', '.join(metrics_dirs)}...")
+    if len(metrics_dirs) == 1:
+        jobs = load_metrics(metrics_dirs[0])
+    else:
+        jobs = load_metrics_multi(metrics_dirs)
+    print(f"  Loaded {len(jobs)} total jobs")
+
+    if args.inputs_match:
+        before = len(jobs)
+        jobs = [j for j in jobs if any(pat in j.get("inputs", "") for pat in args.inputs_match)]
+        filtered = before - len(jobs)
+        if filtered:
+            print(f"  Filtered to inputs matching: {', '.join(args.inputs_match)} ({filtered} removed)")
 
     if args.exclude:
         before = len(jobs)
@@ -792,6 +953,16 @@ def main():
         excluded = before - len(jobs)
         if excluded:
             print(f"  Excluded {excluded} jobs matching: {', '.join(args.exclude)}")
+
+    # Deduplicate: remove failed histories replaced by clean reruns
+    jobs = deduplicate_jobs(jobs)
+    print(f"  After dedup: {len(jobs)} ok jobs")
+
+    # Add extrapolated pulsar+k8s group
+    if args.pulsar_k8s:
+        k8s_jobs = create_pulsar_k8s_group(jobs)
+        jobs.extend(k8s_jobs)
+        print(f"  Added pulsar+k8s group: {len(k8s_jobs)} extrapolated jobs")
 
     docs_dir = os.path.join(base_dir, "docs", experiment_name)
     print(f"\n[{experiment_name}]")

@@ -38,6 +38,18 @@ INPUT_SIZE_MAP = {
     "chipseq-2g": "2GB",
 }
 
+CLOUD_DISPLAY = {
+    "batch": "Batch",
+    "pulsar": "Pulsar",
+    "pulsar+k8s": "Pulsar+K8s",
+    "single": "Batch+K8s",
+}
+
+
+def cloud_display(cloud):
+    return CLOUD_DISPLAY.get(cloud, cloud.title())
+
+
 CLOUD_COLORS = {
     "batch":  ("#3b82f6", "#93bbfd"),
     "pulsar": ("#f59e0b", "#fcd679"),
@@ -281,7 +293,7 @@ def generate_markdown(all_stats, matchups, experiment_name, tool_order, tool_sho
     w(f"- **Runners:** {', '.join(clouds)}")
     for c in clouds:
         if c in servers:
-            w(f"- **{c.title()} server:** {servers[c]}")
+            w(f"- **{cloud_display(c)} server:** {servers[c]}")
     w(f"- **Date:** {min(all_dates)} to {max(all_dates)}")
     w("")
 
@@ -338,7 +350,7 @@ def generate_markdown(all_stats, matchups, experiment_name, tool_order, tool_sho
         sep = "|--------|"
         for c in present:
             n = len(size_clouds[c])
-            label = f"{c.title()} (avg of {n})" if n > 1 else c.title()
+            label = f"{cloud_display(c)} (avg of {n})" if n > 1 else cloud_display(c)
             header += f" {label} |"
             sep += f" {'-' * max(len(label), 5)} |"
         w(header)
@@ -376,7 +388,7 @@ def generate_markdown(all_stats, matchups, experiment_name, tool_order, tool_sho
         header = "| Tool |"
         sep = "|------|"
         for c in present:
-            header += f" {c.title()} |"
+            header += f" {cloud_display(c)} |"
             sep += " ------- |"
         w(header)
         w(sep)
@@ -413,7 +425,7 @@ def generate_markdown(all_stats, matchups, experiment_name, tool_order, tool_sho
                              key=lambda x: size_sort_key(x["size"]))
         sizes = list(dict.fromkeys(s["size"] for s in cloud_stats))
         if len(sizes) > 1:
-            w(f"## {cloud.title()} Scaling Analysis")
+            w(f"## {cloud_display(cloud)} Scaling Analysis")
             w("")
             by_size = defaultdict(list)
             for s in cloud_stats:
@@ -445,9 +457,9 @@ def generate_markdown(all_stats, matchups, experiment_name, tool_order, tool_sho
         w("")
         for c in present:
             if c == fastest:
-                w(f"- **{c.title()}**: {fmt_min(walls[c])}m (fastest)")
+                w(f"- **{cloud_display(c)}**: {fmt_min(walls[c])}m (fastest)")
             else:
-                w(f"- **{c.title()}**: {fmt_min(walls[c])}m ({fmt_pct(walls[c] - walls[fastest], walls[fastest])})")
+                w(f"- **{cloud_display(c)}**: {fmt_min(walls[c])}m ({fmt_pct(walls[c] - walls[fastest], walls[fastest])})")
         w("")
         finding_num += 1
 
@@ -459,7 +471,7 @@ def generate_markdown(all_stats, matchups, experiment_name, tool_order, tool_sho
         if cloud_stats:
             oh = [s["overhead"] / s["steps"] for s in cloud_stats if s["steps"] > 0]
             if oh:
-                w(f"- **{cloud.title()}**: {sum(oh)/len(oh)/60:.1f} min/step avg")
+                w(f"- **{cloud_display(cloud)}**: {sum(oh)/len(oh)/60:.1f} min/step avg")
     w("")
 
     return "\n".join(lines)
@@ -553,7 +565,7 @@ def generate_html(all_stats, matchups, experiment_name, tool_order, tool_short):
     h('<body>')
     h('')
     h(f'<h1>{workflow_title} Benchmark</h1>')
-    h(f'<p class="subtitle">{len(all_tools)} tool types &mdash; {len(all_stats)} runs &mdash; {", ".join(c.title() for c in clouds)}</p>')
+    h(f'<p class="subtitle">{len(all_tools)} tool types &mdash; {len(all_stats)} runs &mdash; {", ".join(cloud_display(c) for c in clouds)}</p>')
     h('')
     h('<div class="nav">')
     h('  <a href="../index.html">&larr; Home</a>')
@@ -669,7 +681,7 @@ def generate_html(all_stats, matchups, experiment_name, tool_order, tool_short):
         for cloud in present:
             csafe = re.sub(r'[^a-zA-Z0-9]', '_', cloud)
             color = cc[cloud][0]
-            h(f'    {{ label: "{cloud.title()}", data: data_{csafe}_{safe}, backgroundColor: "{color}", borderRadius: 4 }},')
+            h(f'    {{ label: "{cloud_display(cloud)}", data: data_{csafe}_{safe}, backgroundColor: "{color}", borderRadius: 4 }},')
         h(f'  ] }}, options: {{ responsive: true, plugins: {{ legend: {{ position: "top" }}, tooltip: {{ callbacks: {{ label: secTooltip }} }} }}, scales: {{ y: {{ title: {{ display: true, text: "Seconds" }}, beginAtZero: true }}, x: {{ ticks: {{ maxRotation: 45, minRotation: 45 }} }} }} }}')
         h('});')
 
@@ -680,7 +692,7 @@ def generate_html(all_stats, matchups, experiment_name, tool_order, tool_short):
             csafe = re.sub(r'[^a-zA-Z0-9]', '_', cloud)
             color = cc[cloud][0]
             light = cc[cloud][1]
-            h(f'    {{ label: "{cloud.title()}", data: cumSum(data_{csafe}_{safe}).map(v => +(v/60).toFixed(1)), borderColor: "{color}", backgroundColor: "{light}33", fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: "{color}" }},')
+            h(f'    {{ label: "{cloud_display(cloud)}", data: cumSum(data_{csafe}_{safe}).map(v => +(v/60).toFixed(1)), borderColor: "{color}", backgroundColor: "{light}33", fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: "{color}" }},')
         h(f'  ] }}, options: {{ responsive: true, plugins: {{ tooltip: {{ callbacks: {{ label: ctx => `${{ctx.dataset.label}}: ${{ctx.raw}} min` }} }} }}, scales: {{ y: {{ title: {{ display: true, text: "Minutes" }}, beginAtZero: true }}, x: {{ ticks: {{ maxRotation: 45, minRotation: 45 }} }} }} }}')
         h('});')
         h('')
@@ -734,28 +746,79 @@ def generate_experiment(jobs, experiment_name, docs_dir):
     print(f"  Wrote {html_path}")
 
 
+def deduplicate_jobs(jobs):
+    """Remove duplicate/failed data from reruns, keeping only ok jobs."""
+    by_hist = defaultdict(lambda: {"ok": 0, "fail": 0, "jobs": []})
+    for j in jobs:
+        key = (j["cloud"], j.get("history_id", ""))
+        by_hist[key]["jobs"].append(j)
+        if j["state"] == "ok":
+            by_hist[key]["ok"] += 1
+        else:
+            by_hist[key]["fail"] += 1
+
+    # Group histories by (cloud, size) to find duplicates
+    by_group = defaultdict(list)
+    for (cloud, hid), info in by_hist.items():
+        size = get_size_label(info["jobs"][0].get("inputs", ""))
+        by_group[(cloud, size)].append((hid, info))
+
+    exclude_histories = set()
+    for (cloud, size), histories in by_group.items():
+        failed = [(hid, info) for hid, info in histories if info["fail"] > 0]
+        clean = [(hid, info) for hid, info in histories if info["fail"] == 0]
+        if failed and clean:
+            for hid, info in failed:
+                exclude_histories.add(hid)
+        if len(clean) > 1:
+            clean.sort(key=lambda x: max(j["create_time"] for j in x[1]["jobs"]))
+            for hid, info in clean[:-1]:
+                exclude_histories.add(hid)
+
+    if exclude_histories:
+        print(f"  Dedup: excluding {len(exclude_histories)} histories")
+
+    return [j for j in jobs if j.get("history_id", "") not in exclude_histories
+            and j["state"] == "ok"]
+
+
 def main():
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     parser = argparse.ArgumentParser(description="Generate docs from metrics JSON files.")
-    parser.add_argument("metrics_dir", nargs="?",
-                        default=os.path.join(base_dir, "metrics", "Pulsar-vs-Batch"),
-                        help="Directory containing metrics JSON files")
+    parser.add_argument("metrics_dir", nargs="*",
+                        help="Directories containing metrics JSON files")
+    parser.add_argument("--name", help="Experiment name for output directory")
+    parser.add_argument("--inputs-match", action="append", default=[],
+                        help="Only include jobs whose inputs contain this string")
     parser.add_argument("--exclude", action="append", default=[],
                         help="Exclude workflow runs whose inputs contain this string (repeatable)")
     args = parser.parse_args()
 
-    metrics_dir = args.metrics_dir
-    experiment_name = os.path.basename(metrics_dir)
+    metrics_dirs = args.metrics_dir
+    if not metrics_dirs:
+        metrics_dirs = [os.path.join(base_dir, "metrics", "Pulsar-vs-Batch")]
 
-    print(f"Loading metrics from {metrics_dir}...")
-    jobs = load_metrics(metrics_dir)
+    experiment_name = args.name or os.path.basename(metrics_dirs[0])
+
+    print(f"Loading metrics from {', '.join(metrics_dirs)}...")
+    jobs = []
+    for d in metrics_dirs:
+        jobs.extend(load_metrics(d))
+    print(f"  Loaded {len(jobs)} total jobs")
+
+    if args.inputs_match:
+        before = len(jobs)
+        jobs = [j for j in jobs if any(pat in j.get("inputs", "") for pat in args.inputs_match)]
+        print(f"  Filtered to inputs matching: {', '.join(args.inputs_match)} ({before - len(jobs)} removed)")
 
     if args.exclude:
         before = len(jobs)
         jobs = [j for j in jobs if not any(pat in j["inputs"] for pat in args.exclude)]
-        excluded = before - len(jobs)
-        if excluded:
-            print(f"  Excluded {excluded} jobs matching: {', '.join(args.exclude)}")
+        if before - len(jobs):
+            print(f"  Excluded {before - len(jobs)} jobs matching: {', '.join(args.exclude)}")
+
+    jobs = deduplicate_jobs(jobs)
+    print(f"  After dedup: {len(jobs)} ok jobs")
 
     docs_dir = os.path.join(base_dir, "docs", experiment_name)
     print(f"\n[{experiment_name}]")
