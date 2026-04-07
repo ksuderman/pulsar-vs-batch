@@ -39,10 +39,10 @@ INPUT_SIZE_MAP = {
 }
 
 CLOUD_DISPLAY = {
-    "batch": "Batch",
+    "batch": "Direct",
     "pulsar": "Pulsar",
     "pulsar+k8s": "Pulsar+K8s",
-    "single": "Batch+K8s",
+    "single": "Direct+K8s",
 }
 
 

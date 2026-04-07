@@ -28,7 +28,7 @@
 <body>
 
 <h1>RNASeq Benchmark</h1>
-<p class="subtitle">12 tool types &mdash; 9 runs &mdash; Batch, Pulsar, Batch+K8s</p>
+<p class="subtitle">12 tool types &mdash; 9 runs &mdash; Direct, Pulsar, Direct+K8s</p>
 
 <div class="nav">
   <a href="../index.html">&larr; Home</a>
@@ -85,7 +85,7 @@
 </div>
 
 <div class="footer">
-  Galaxy 26.1 &middot; us-east4 &middot; 9 workflow runs &middot; Generated 2026-04-06 12:36</div>
+  Galaxy 26.1 &middot; us-east4 &middot; 9 workflow runs &middot; Generated 2026-04-06 21:33</div>
 
 <script>
 const tools = ["cufflinks", "rna_star", "bamFilter", "revertR2orie", "cutadapt", "bedtools_gen", "compose_text", "map_param_va", "wig_to_bigWi", "param_value_", "multiqc", "tp_awk_tool"];
@@ -127,46 +127,46 @@ new Chart(document.getElementById("overviewOHPerStep"), {
 
 new Chart(document.getElementById("bar_tab-2gb"), {
   type: "bar", data: { labels: tools, datasets: [
-    { label: "Batch", data: data_batch_2gb, backgroundColor: "#3b82f6", borderRadius: 4 },
+    { label: "Direct", data: data_batch_2gb, backgroundColor: "#3b82f6", borderRadius: 4 },
     { label: "Pulsar", data: data_pulsar_2gb, backgroundColor: "#f59e0b", borderRadius: 4 },
-    { label: "Batch+K8s", data: data_single_2gb, backgroundColor: "#22c55e", borderRadius: 4 },
+    { label: "Direct+K8s", data: data_single_2gb, backgroundColor: "#22c55e", borderRadius: 4 },
   ] }, options: { responsive: true, plugins: { legend: { position: "top" }, tooltip: { callbacks: { label: secTooltip } } }, scales: { y: { title: { display: true, text: "Seconds" }, beginAtZero: true }, x: { ticks: { maxRotation: 45, minRotation: 45 } } } }
 });
 new Chart(document.getElementById("cum_tab-2gb"), {
   type: "line", data: { labels: tools, datasets: [
-    { label: "Batch", data: cumSum(data_batch_2gb).map(v => +(v/60).toFixed(1)), borderColor: "#3b82f6", backgroundColor: "#93bbfd33", fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: "#3b82f6" },
+    { label: "Direct", data: cumSum(data_batch_2gb).map(v => +(v/60).toFixed(1)), borderColor: "#3b82f6", backgroundColor: "#93bbfd33", fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: "#3b82f6" },
     { label: "Pulsar", data: cumSum(data_pulsar_2gb).map(v => +(v/60).toFixed(1)), borderColor: "#f59e0b", backgroundColor: "#fcd67933", fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: "#f59e0b" },
-    { label: "Batch+K8s", data: cumSum(data_single_2gb).map(v => +(v/60).toFixed(1)), borderColor: "#22c55e", backgroundColor: "#86efac33", fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: "#22c55e" },
+    { label: "Direct+K8s", data: cumSum(data_single_2gb).map(v => +(v/60).toFixed(1)), borderColor: "#22c55e", backgroundColor: "#86efac33", fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: "#22c55e" },
   ] }, options: { responsive: true, plugins: { tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.raw} min` } } }, scales: { y: { title: { display: true, text: "Minutes" }, beginAtZero: true }, x: { ticks: { maxRotation: 45, minRotation: 45 } } } }
 });
 
 new Chart(document.getElementById("bar_tab-5gb"), {
   type: "bar", data: { labels: tools, datasets: [
-    { label: "Batch", data: data_batch_5gb, backgroundColor: "#3b82f6", borderRadius: 4 },
+    { label: "Direct", data: data_batch_5gb, backgroundColor: "#3b82f6", borderRadius: 4 },
     { label: "Pulsar", data: data_pulsar_5gb, backgroundColor: "#f59e0b", borderRadius: 4 },
-    { label: "Batch+K8s", data: data_single_5gb, backgroundColor: "#22c55e", borderRadius: 4 },
+    { label: "Direct+K8s", data: data_single_5gb, backgroundColor: "#22c55e", borderRadius: 4 },
   ] }, options: { responsive: true, plugins: { legend: { position: "top" }, tooltip: { callbacks: { label: secTooltip } } }, scales: { y: { title: { display: true, text: "Seconds" }, beginAtZero: true }, x: { ticks: { maxRotation: 45, minRotation: 45 } } } }
 });
 new Chart(document.getElementById("cum_tab-5gb"), {
   type: "line", data: { labels: tools, datasets: [
-    { label: "Batch", data: cumSum(data_batch_5gb).map(v => +(v/60).toFixed(1)), borderColor: "#3b82f6", backgroundColor: "#93bbfd33", fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: "#3b82f6" },
+    { label: "Direct", data: cumSum(data_batch_5gb).map(v => +(v/60).toFixed(1)), borderColor: "#3b82f6", backgroundColor: "#93bbfd33", fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: "#3b82f6" },
     { label: "Pulsar", data: cumSum(data_pulsar_5gb).map(v => +(v/60).toFixed(1)), borderColor: "#f59e0b", backgroundColor: "#fcd67933", fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: "#f59e0b" },
-    { label: "Batch+K8s", data: cumSum(data_single_5gb).map(v => +(v/60).toFixed(1)), borderColor: "#22c55e", backgroundColor: "#86efac33", fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: "#22c55e" },
+    { label: "Direct+K8s", data: cumSum(data_single_5gb).map(v => +(v/60).toFixed(1)), borderColor: "#22c55e", backgroundColor: "#86efac33", fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: "#22c55e" },
   ] }, options: { responsive: true, plugins: { tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.raw} min` } } }, scales: { y: { title: { display: true, text: "Minutes" }, beginAtZero: true }, x: { ticks: { maxRotation: 45, minRotation: 45 } } } }
 });
 
 new Chart(document.getElementById("bar_tab-10gb"), {
   type: "bar", data: { labels: tools, datasets: [
-    { label: "Batch", data: data_batch_10gb, backgroundColor: "#3b82f6", borderRadius: 4 },
+    { label: "Direct", data: data_batch_10gb, backgroundColor: "#3b82f6", borderRadius: 4 },
     { label: "Pulsar", data: data_pulsar_10gb, backgroundColor: "#f59e0b", borderRadius: 4 },
-    { label: "Batch+K8s", data: data_single_10gb, backgroundColor: "#22c55e", borderRadius: 4 },
+    { label: "Direct+K8s", data: data_single_10gb, backgroundColor: "#22c55e", borderRadius: 4 },
   ] }, options: { responsive: true, plugins: { legend: { position: "top" }, tooltip: { callbacks: { label: secTooltip } } }, scales: { y: { title: { display: true, text: "Seconds" }, beginAtZero: true }, x: { ticks: { maxRotation: 45, minRotation: 45 } } } }
 });
 new Chart(document.getElementById("cum_tab-10gb"), {
   type: "line", data: { labels: tools, datasets: [
-    { label: "Batch", data: cumSum(data_batch_10gb).map(v => +(v/60).toFixed(1)), borderColor: "#3b82f6", backgroundColor: "#93bbfd33", fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: "#3b82f6" },
+    { label: "Direct", data: cumSum(data_batch_10gb).map(v => +(v/60).toFixed(1)), borderColor: "#3b82f6", backgroundColor: "#93bbfd33", fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: "#3b82f6" },
     { label: "Pulsar", data: cumSum(data_pulsar_10gb).map(v => +(v/60).toFixed(1)), borderColor: "#f59e0b", backgroundColor: "#fcd67933", fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: "#f59e0b" },
-    { label: "Batch+K8s", data: cumSum(data_single_10gb).map(v => +(v/60).toFixed(1)), borderColor: "#22c55e", backgroundColor: "#86efac33", fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: "#22c55e" },
+    { label: "Direct+K8s", data: cumSum(data_single_10gb).map(v => +(v/60).toFixed(1)), borderColor: "#22c55e", backgroundColor: "#86efac33", fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: "#22c55e" },
   ] }, options: { responsive: true, plugins: { tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.raw} min` } } }, scales: { y: { title: { display: true, text: "Minutes" }, beginAtZero: true }, x: { ticks: { maxRotation: 45, minRotation: 45 } } } }
 });
 

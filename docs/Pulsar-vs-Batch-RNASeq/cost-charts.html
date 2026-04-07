@@ -28,7 +28,7 @@ h1 { font-size: 1.8rem; margin-bottom: 0.3rem; }
 </style></head><body>
 
 <h1>RNASeq: Cost Analysis</h1>
-<p class="subtitle">240 jobs &mdash; 12 tools &mdash; Batch, Pulsar, Pulsar+K8s, Batch+K8s</p>
+<p class="subtitle">240 jobs &mdash; 12 tools &mdash; Direct, Pulsar, Pulsar+K8s, Direct+K8s</p>
 <div class="nav">
   <a href="../index.html">&larr; Home</a>
   <a href="index.html">Results Report</a>
@@ -45,10 +45,10 @@ h1 { font-size: 1.8rem; margin-bottom: 0.3rem; }
 
 <div class="tab-content active" id="overview">
   <div class="summary-cards">
-    <div class="card"><div class="label" style="color:#3b82f6">Batch</div><div class="value" style="color:#3b82f6">$9.48</div><div class="detail">60 jobs &middot; compute: $3.99</div></div>
+    <div class="card"><div class="label" style="color:#3b82f6">Direct</div><div class="value" style="color:#3b82f6">$9.48</div><div class="detail">60 jobs &middot; compute: $3.99</div></div>
     <div class="card"><div class="label" style="color:#f59e0b">Pulsar</div><div class="value" style="color:#f59e0b">$11.03</div><div class="detail">60 jobs &middot; compute: $3.09</div></div>
     <div class="card"><div class="label" style="color:#8b5cf6">Pulsar+K8s</div><div class="value" style="color:#8b5cf6">$7.63</div><div class="detail">60 jobs &middot; compute: $2.82</div></div>
-    <div class="card"><div class="label" style="color:#22c55e">Batch+K8s</div><div class="value" style="color:#22c55e">$6.94</div><div class="detail">60 jobs &middot; compute: $3.28</div></div>
+    <div class="card"><div class="label" style="color:#22c55e">Direct+K8s</div><div class="value" style="color:#22c55e">$6.94</div><div class="detail">60 jobs &middot; compute: $3.28</div></div>
   </div>
   <div class="chart-container">
     <h2>Wallclock vs Compute Cost</h2>
@@ -82,7 +82,7 @@ h1 { font-size: 1.8rem; margin-bottom: 0.3rem; }
     <p class="chart-desc">Per-job compute cost vs Rainstone historical averages. Log scale.</p>
     <canvas id="rainstoneChart" height="120"></canvas></div>
 </div>
-<div class="footer">Galaxy 26.1 &middot; us-east4 &middot; 240 jobs &middot; Generated 2026-04-06 15:10</div>
+<div class="footer">Galaxy 26.1 &middot; us-east4 &middot; 240 jobs &middot; Generated 2026-04-06 21:33</div>
 <script>
 Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
 Chart.defaults.font.size = 12;
@@ -112,51 +112,51 @@ const c_single_cost = [2.28, 0.73, 0.01, 0.0, 0.11, 0, 0, 0, 0.15, 0, 0, 0];
 const c_single_pj = [0.7604, 0.2441, 0.0009, 0.0005, 0.036, 0.0, 0.0, 0.0, 0.0503, 0.0, 0.0, 0.0];
 const rainstoneAvg = [0.9108, 0.2317, 0, 0.0013, 0, 0.0017, 0.0016, 0, 0.0182, 0.0003, 0, 0];
 
-new Chart(document.getElementById("wallVsCompute"), { type: "bar", data: { labels: ["Batch", "Pulsar", "Pulsar+K8s", "Batch+K8s"], datasets: [
+new Chart(document.getElementById("wallVsCompute"), { type: "bar", data: { labels: ["Direct", "Pulsar", "Pulsar+K8s", "Direct+K8s"], datasets: [
   { label: "Compute", data: [3.99, 3.09, 2.82, 3.28], backgroundColor: ["#93bbfd", "#fcd679", "#c4b5fd", "#86efac"], borderRadius: 4 },
   { label: "Wallclock", data: [9.48, 11.03, 7.63, 6.94], backgroundColor: ["#3b82f6", "#f59e0b", "#8b5cf6", "#22c55e"], borderRadius: 4 }
 ] }, options: { responsive: true, plugins: { tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: $${ctx.raw.toFixed(2)}` } } }, scales: { y: { title: { display: true, text: "USD" }, beginAtZero: true } } } });
 
 new Chart(document.getElementById("vmHoursChart"), { type: "bar", data: { labels: toolsShort, datasets: [
-  { label: "Batch", data: w_batch_hrs, backgroundColor: "#3b82f6", borderRadius: 4 },
+  { label: "Direct", data: w_batch_hrs, backgroundColor: "#3b82f6", borderRadius: 4 },
   { label: "Pulsar", data: w_pulsar_hrs, backgroundColor: "#f59e0b", borderRadius: 4 },
   { label: "Pulsar+K8s", data: w_pulsar_k8s_hrs, backgroundColor: "#8b5cf6", borderRadius: 4 },
-  { label: "Batch+K8s", data: w_single_hrs, backgroundColor: "#22c55e", borderRadius: 4 },
+  { label: "Direct+K8s", data: w_single_hrs, backgroundColor: "#22c55e", borderRadius: 4 },
 ] }, options: { responsive: true, plugins: { legend: { position: "top" } }, scales: { y: { title: { display: true, text: "Hours" }, beginAtZero: true }, x: { ticks: { maxRotation: 45, minRotation: 45 } } } } });
 
 new Chart(document.getElementById("perToolWall"), { type: "bar", data: { labels: toolsShort, datasets: [
-  { label: "Batch", data: w_batch_cost, backgroundColor: "#3b82f6", borderRadius: 4 },
+  { label: "Direct", data: w_batch_cost, backgroundColor: "#3b82f6", borderRadius: 4 },
   { label: "Pulsar", data: w_pulsar_cost, backgroundColor: "#f59e0b", borderRadius: 4 },
   { label: "Pulsar+K8s", data: w_pulsar_k8s_cost, backgroundColor: "#8b5cf6", borderRadius: 4 },
-  { label: "Batch+K8s", data: w_single_cost, backgroundColor: "#22c55e", borderRadius: 4 },
+  { label: "Direct+K8s", data: w_single_cost, backgroundColor: "#22c55e", borderRadius: 4 },
 ] }, options: { responsive: true, plugins: { legend: { position: "top" }, tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: $${ctx.raw.toFixed(2)}` } } }, scales: { y: { title: { display: true, text: "USD" }, beginAtZero: true }, x: { ticks: { maxRotation: 45, minRotation: 45 } } } } });
 
 new Chart(document.getElementById("perJobWall"), { type: "bar", data: { labels: toolsShort, datasets: [
-  { label: "Batch", data: w_batch_pj, backgroundColor: "#3b82f6", borderRadius: 4 },
+  { label: "Direct", data: w_batch_pj, backgroundColor: "#3b82f6", borderRadius: 4 },
   { label: "Pulsar", data: w_pulsar_pj, backgroundColor: "#f59e0b", borderRadius: 4 },
   { label: "Pulsar+K8s", data: w_pulsar_k8s_pj, backgroundColor: "#8b5cf6", borderRadius: 4 },
-  { label: "Batch+K8s", data: w_single_pj, backgroundColor: "#22c55e", borderRadius: 4 },
+  { label: "Direct+K8s", data: w_single_pj, backgroundColor: "#22c55e", borderRadius: 4 },
 ] }, options: { responsive: true, plugins: { legend: { position: "top" }, tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: $${ctx.raw.toFixed(4)}` } } }, scales: { y: { title: { display: true, text: "USD per job" }, beginAtZero: true }, x: { ticks: { maxRotation: 45, minRotation: 45 } } } } });
 
 new Chart(document.getElementById("perToolComp"), { type: "bar", data: { labels: toolsShort, datasets: [
-  { label: "Batch", data: c_batch_cost, backgroundColor: "#3b82f6", borderRadius: 4 },
+  { label: "Direct", data: c_batch_cost, backgroundColor: "#3b82f6", borderRadius: 4 },
   { label: "Pulsar", data: c_pulsar_cost, backgroundColor: "#f59e0b", borderRadius: 4 },
   { label: "Pulsar+K8s", data: c_pulsar_k8s_cost, backgroundColor: "#8b5cf6", borderRadius: 4 },
-  { label: "Batch+K8s", data: c_single_cost, backgroundColor: "#22c55e", borderRadius: 4 },
+  { label: "Direct+K8s", data: c_single_cost, backgroundColor: "#22c55e", borderRadius: 4 },
 ] }, options: { responsive: true, plugins: { legend: { position: "top" }, tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: $${ctx.raw.toFixed(2)}` } } }, scales: { y: { title: { display: true, text: "USD" }, beginAtZero: true }, x: { ticks: { maxRotation: 45, minRotation: 45 } } } } });
 
 new Chart(document.getElementById("perJobComp"), { type: "bar", data: { labels: toolsShort, datasets: [
-  { label: "Batch", data: c_batch_pj, backgroundColor: "#3b82f6", borderRadius: 4 },
+  { label: "Direct", data: c_batch_pj, backgroundColor: "#3b82f6", borderRadius: 4 },
   { label: "Pulsar", data: c_pulsar_pj, backgroundColor: "#f59e0b", borderRadius: 4 },
   { label: "Pulsar+K8s", data: c_pulsar_k8s_pj, backgroundColor: "#8b5cf6", borderRadius: 4 },
-  { label: "Batch+K8s", data: c_single_pj, backgroundColor: "#22c55e", borderRadius: 4 },
+  { label: "Direct+K8s", data: c_single_pj, backgroundColor: "#22c55e", borderRadius: 4 },
 ] }, options: { responsive: true, plugins: { legend: { position: "top" }, tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: $${ctx.raw.toFixed(4)}` } } }, scales: { y: { title: { display: true, text: "USD per job" }, beginAtZero: true }, x: { ticks: { maxRotation: 45, minRotation: 45 } } } } });
 
 new Chart(document.getElementById("rainstoneChart"), { type: "bar", data: { labels: toolsShort, datasets: [
-  { label: "Batch", data: c_batch_pj, backgroundColor: "#3b82f6", borderRadius: 4 },
+  { label: "Direct", data: c_batch_pj, backgroundColor: "#3b82f6", borderRadius: 4 },
   { label: "Pulsar", data: c_pulsar_pj, backgroundColor: "#f59e0b", borderRadius: 4 },
   { label: "Pulsar+K8s", data: c_pulsar_k8s_pj, backgroundColor: "#8b5cf6", borderRadius: 4 },
-  { label: "Batch+K8s", data: c_single_pj, backgroundColor: "#22c55e", borderRadius: 4 },
+  { label: "Direct+K8s", data: c_single_pj, backgroundColor: "#22c55e", borderRadius: 4 },
   { label: "Rainstone Avg", data: rainstoneAvg, backgroundColor: "#8b5cf6", borderRadius: 4 }
 ] }, options: { responsive: true, plugins: { tooltip: { callbacks: { label: dollarFmt } } }, scales: { y: { type: "logarithmic", title: { display: true, text: "USD per job (log)" } }, x: { ticks: { maxRotation: 45, minRotation: 45 } } } } });
 

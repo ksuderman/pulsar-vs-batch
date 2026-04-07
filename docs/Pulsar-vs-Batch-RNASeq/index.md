@@ -12,9 +12,9 @@ title: RNASeq Benchmark
 - **Galaxy version:** 26.1
 - **Infrastructure:** GCE VM on RKE2 Kubernetes (us-east4)
 - **Runners:** batch, pulsar, single
-- **Batch server:** http://34.11.12.196
+- **Direct server:** http://34.11.12.196
 - **Pulsar server:** http://35.188.245.115
-- **Batch+K8s server:** http://35.194.88.166
+- **Direct+K8s server:** http://35.194.88.166
 - **Date:** 2026-03-31 to 2026-04-06
 
 ### Workflow Runs
@@ -39,8 +39,8 @@ title: RNASeq Benchmark
 
 ### Comparison: 2GB
 
-| Metric | Batch | Pulsar | Batch+K8s |
-|--------| ----- | ------ | --------- |
+| Metric | Direct | Pulsar | Direct+K8s |
+|--------| ------ | ------ | ---------- |
 | **Wall clock** | 94.9 min | 95.1 min | 95.1 min |
 | **Compute time** | 106.1 min | 96.3 min | 112.5 min |
 | **Scheduling overhead** | -11.3 min | -1.2 min | -17.4 min |
@@ -48,8 +48,8 @@ title: RNASeq Benchmark
 
 ### Comparison: 5GB
 
-| Metric | Batch | Pulsar | Batch+K8s |
-|--------| ----- | ------ | --------- |
+| Metric | Direct | Pulsar | Direct+K8s |
+|--------| ------ | ------ | ---------- |
 | **Wall clock** | 152.0 min | 126.1 min | 149.5 min |
 | **Compute time** | 184.9 min | 136.1 min | 190.8 min |
 | **Scheduling overhead** | -32.9 min | -10.0 min | -41.3 min |
@@ -57,8 +57,8 @@ title: RNASeq Benchmark
 
 ### Comparison: 10GB
 
-| Metric | Batch | Pulsar | Batch+K8s |
-|--------| ----- | ------ | --------- |
+| Metric | Direct | Pulsar | Direct+K8s |
+|--------| ------ | ------ | ---------- |
 | **Wall clock** | 190.6 min | 182.1 min | 202.0 min |
 | **Compute time** | 257.4 min | 201.3 min | 171.8 min |
 | **Scheduling overhead** | -66.8 min | -19.2 min | 30.2 min |
@@ -68,7 +68,7 @@ title: RNASeq Benchmark
 
 ### 2GB
 
-| Tool | Batch | Pulsar | Batch+K8s |
+| Tool | Direct | Pulsar | Direct+K8s |
 |------| ------- | ------- | ------- |
 | cufflinks | 2501s | 2130s | 2527s |
 | rna_star | 2618s | 2332s | 2600s |
@@ -86,7 +86,7 @@ title: RNASeq Benchmark
 
 ### 5GB
 
-| Tool | Batch | Pulsar | Batch+K8s |
+| Tool | Direct | Pulsar | Direct+K8s |
 |------| ------- | ------- | ------- |
 | cufflinks | 4277s | 3481s | 4188s |
 | rna_star | 3918s | 2029s | 3903s |
@@ -104,7 +104,7 @@ title: RNASeq Benchmark
 
 ### 10GB
 
-| Tool | Batch | Pulsar | Batch+K8s |
+| Tool | Direct | Pulsar | Direct+K8s |
 |------| ------- | ------- | ------- |
 | cufflinks | 6818s | 4999s | 0s |
 | rna_star | 3226s | 2266s | 4011s |
@@ -134,7 +134,7 @@ title: RNASeq Benchmark
 | single R1 | 5GB | 149.5m | 190.8m | -41.3m | -28% |
 | single R1 | 10GB | 202.0m | 171.8m | 30.2m | 15% |
 
-## Batch Scaling Analysis
+## Direct Scaling Analysis
 
 | Input | Wall Clock | Compute |
 |-------|-----------|---------|
@@ -150,7 +150,7 @@ title: RNASeq Benchmark
 | 5GB | 126.1m | 136.1m |
 | 10GB | 182.1m | 201.3m |
 
-## Batch+K8s Scaling Analysis
+## Direct+K8s Scaling Analysis
 
 | Input | Wall Clock | Compute |
 |-------|-----------|---------|
@@ -162,24 +162,24 @@ title: RNASeq Benchmark
 
 ### 1. 2GB: Wall clock comparison
 
-- **Batch**: 94.9m (fastest)
+- **Direct**: 94.9m (fastest)
 - **Pulsar**: 95.1m (+0%)
-- **Batch+K8s**: 95.1m (+0%)
+- **Direct+K8s**: 95.1m (+0%)
 
 ### 2. 5GB: Wall clock comparison
 
-- **Batch**: 152.0m (+21%)
+- **Direct**: 152.0m (+21%)
 - **Pulsar**: 126.1m (fastest)
-- **Batch+K8s**: 149.5m (+19%)
+- **Direct+K8s**: 149.5m (+19%)
 
 ### 3. 10GB: Wall clock comparison
 
-- **Batch**: 190.6m (+5%)
+- **Direct**: 190.6m (+5%)
 - **Pulsar**: 182.1m (fastest)
-- **Batch+K8s**: 202.0m (+11%)
+- **Direct+K8s**: 202.0m (+11%)
 
 ### 4. Scheduling overhead per step
 
-- **Batch**: -1.8 min/step avg
+- **Direct**: -1.8 min/step avg
 - **Pulsar**: -0.5 min/step avg
-- **Batch+K8s**: -0.5 min/step avg
+- **Direct+K8s**: -0.5 min/step avg

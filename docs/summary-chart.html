@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Galaxy GCP Batch Benchmarks: Summary Charts</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f5f7fa; color: #1a1a2e; padding: 2rem; max-width: 1200px; margin: 0 auto; }
+h1 { font-size: 1.8rem; margin-bottom: 0.3rem; }
+.subtitle { color: #666; font-size: 0.95rem; margin-bottom: 1.5rem; }
+.nav { display: flex; gap: 1.5rem; margin-bottom: 1.5rem; font-size: 0.9rem; }
+.nav a { color: #3b82f6; text-decoration: none; }
+.nav a:hover { text-decoration: underline; }
+.chart-container { background: #fff; border-radius: 10px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+.chart-container h2 { font-size: 1.2rem; margin-bottom: 0.3rem; }
+.chart-container .chart-desc { font-size: 0.9rem; color: #888; margin-bottom: 1rem; }
+.footer { text-align: center; color: #aaa; font-size: 0.8rem; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #e5e7eb; }
+</style>
+</head>
+<body>
+
+<h1>Galaxy GCP Batch Benchmarks: Summary Charts</h1>
+<p class="subtitle">Total wallclock cost comparison across five deployment approaches and three workflows.</p>
+
+<div class="nav">
+  <a href="index.html">&larr; Home</a>
+</div>
+
+<div class="chart-container">
+  <h2>Total Cost by Approach (Stacked by Workflow)</h2>
+  <p class="chart-desc">Each bar shows the total cost for one deployment approach across all three workflows. Segments represent the contribution of each workflow.</p>
+  <canvas id="stackedChart" height="100"></canvas>
+</div>
+
+<div class="chart-container">
+  <h2>Cost by Workflow (Grouped by Approach)</h2>
+  <p class="chart-desc">For each workflow, shows the cost of all five deployment approaches side by side.</p>
+  <canvas id="groupedChart" height="100"></canvas>
+</div>
+
+<div class="footer">
+  Galaxy 26.1 &middot; us-east4 &middot; GCP N2 on-demand pricing
+</div>
+
+<script>
+// Cost data: [Variant, RNASeq, ChIPSeq] for each approach
+const approaches = ["Direct", "Pulsar", "Direct+K8s", "Pulsar+K8s", "K8s-Only"];
+const variantCosts = [16.97, 21.59, 15.33, 18.40, 15.00];
+const rnaseqCosts  = [9.48,  11.03, 6.94,  7.63,  7.39];
+const chipseqCosts = [6.15,  8.77,  5.55,  6.96,  5.73];
+
+// Color palette matching the per-experiment charts
+const variantColor = "#3b82f6";  // blue
+const rnaseqColor  = "#f59e0b";  // amber
+const chipseqColor = "#22c55e";  // green
+
+// Approach colors (for grouped chart)
+const approachColors = {
+  "Direct":      "#3b82f6",
+  "Pulsar":      "#f59e0b",
+  "Direct+K8s":  "#22c55e",
+  "Pulsar+K8s":  "#8b5cf6",
+  "K8s-Only":    "#ef4444",
+};
+
+Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+Chart.defaults.font.size = 12;
+
+// ===== Stacked Chart: one bar per approach, stacked by workflow =====
+new Chart(document.getElementById("stackedChart"), {
+  type: "bar",
+  data: {
+    labels: approaches,
+    datasets: [
+      { label: "Variant Calling", data: variantCosts, backgroundColor: variantColor, borderRadius: 4 },
+      { label: "RNASeq",          data: rnaseqCosts,  backgroundColor: rnaseqColor,  borderRadius: 4 },
+      { label: "ChIP-seq",        data: chipseqCosts, backgroundColor: chipseqColor, borderRadius: 4 },
+    ],
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { position: "top" },
+      tooltip: {
+        callbacks: {
+          label: ctx => `${ctx.dataset.label}: $${ctx.raw.toFixed(2)}`,
+          footer: items => {
+            const total = items.reduce((sum, item) => sum + item.raw, 0);
+            return `Total: $${total.toFixed(2)}`;
+          },
+        },
+      },
+    },
+    scales: {
+      x: { stacked: true, title: { display: true, text: "Deployment Approach" } },
+      y: {
+        stacked: true,
+        title: { display: true, text: "Total Cost (USD)" },
+        beginAtZero: true,
+        ticks: { callback: v => "$" + v },
+      },
+    },
+  },
+});
+
+// ===== Grouped Chart: one group per workflow, bars per approach =====
+const workflows = ["Variant Calling", "RNASeq", "ChIP-seq"];
+const approachData = {
+  "Direct":     [variantCosts[0], rnaseqCosts[0], chipseqCosts[0]],
+  "Pulsar":     [variantCosts[1], rnaseqCosts[1], chipseqCosts[1]],
+  "Direct+K8s": [variantCosts[2], rnaseqCosts[2], chipseqCosts[2]],
+  "Pulsar+K8s": [variantCosts[3], rnaseqCosts[3], chipseqCosts[3]],
+  "K8s-Only":   [variantCosts[4], rnaseqCosts[4], chipseqCosts[4]],
+};
+
+new Chart(document.getElementById("groupedChart"), {
+  type: "bar",
+  data: {
+    labels: workflows,
+    datasets: approaches.map(a => ({
+      label: a,
+      data: approachData[a],
+      backgroundColor: approachColors[a],
+      borderRadius: 4,
+    })),
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { position: "top" },
+      tooltip: {
+        callbacks: {
+          label: ctx => `${ctx.dataset.label}: $${ctx.raw.toFixed(2)}`,
+        },
+      },
+    },
+    scales: {
+      x: { title: { display: true, text: "Workflow" } },
+      y: {
+        title: { display: true, text: "Cost (USD)" },
+        beginAtZero: true,
+        ticks: { callback: v => "$" + v },
+      },
+    },
+  },
+});
+</script>
+</body>
+</html>

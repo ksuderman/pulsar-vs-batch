@@ -65,10 +65,10 @@ _EXTRA_COLORS = [("#ef4444", "#fca5a5"), ("#06b6d4", "#a5f3fc")]
 
 # Display names for cloud runners
 CLOUD_DISPLAY = {
-    "batch": "Batch",
+    "batch": "Direct",
     "pulsar": "Pulsar",
     "pulsar+k8s": "Pulsar+K8s",
-    "single": "Batch+K8s",
+    "single": "Direct+K8s",
 }
 
 

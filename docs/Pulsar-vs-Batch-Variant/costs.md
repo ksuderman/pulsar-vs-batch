@@ -16,10 +16,10 @@ Cost based on total VM lifetime per job (Galaxy create_time to update_time), inc
 
 | Runner | Jobs | VM-Hours | vCPU Cost | Memory Cost | SSD Cost | Boot Disk | Total Cost |
 |--------|------|----------|-----------|-------------|----------|-----------|------------|
-| **Batch** | 36 | 112.7h | $9.58 | $6.91 | $0.00 | $0.47 | **$16.97** |
+| **Direct** | 36 | 112.7h | $9.58 | $6.91 | $0.00 | $0.47 | **$16.97** |
 | **Pulsar** | 36 | 125.3h | $10.65 | $7.88 | $2.54 | $0.52 | **$21.59** |
 | **Pulsar+K8s** | 36 | 118.9h | $10.25 | $7.66 | $0.00 | $0.50 | **$18.40** |
-| **Batch+K8s** | 36 | 99.3h | $8.55 | $6.37 | $0.00 | $0.41 | **$15.33** |
+| **Direct+K8s** | 36 | 99.3h | $8.55 | $6.37 | $0.00 | $0.41 | **$15.33** |
 | **Total** | 144 | 456.3h | $39.03 | $28.82 | $2.54 | $1.90 | **$72.29** |
 
 ### Galaxy Host VM Cost
@@ -28,19 +28,19 @@ Each runner requires a Galaxy host VM (e2-standard-4, 4 vCPU, 16 GB). Duration i
 
 | Runner | Duration | Galaxy VM Cost |
 |--------|----------|----------------|
-| **Batch** | 17.8h | $2.44 |
+| **Direct** | 17.8h | $2.44 |
 | **Pulsar** | 20.2h | $2.77 |
 | **Pulsar+K8s** | 20.2h | $2.77 |
-| **Batch+K8s** | 17.1h | $2.35 |
+| **Direct+K8s** | 17.1h | $2.35 |
 
 ### Total Estimated Cost (Batch Jobs + Galaxy VM)
 
 | Runner | Job Cost | Galaxy VM Cost | **Total** |
 |--------|----------|----------------|-----------|
-| **Batch** | $16.97 | $2.44 | **$19.41** |
+| **Direct** | $16.97 | $2.44 | **$19.41** |
 | **Pulsar** | $21.59 | $2.77 | **$24.36** |
 | **Pulsar+K8s** | $18.40 | $2.77 | **$21.17** |
-| **Batch+K8s** | $15.33 | $2.35 | **$17.68** |
+| **Direct+K8s** | $15.33 | $2.35 | **$17.68** |
 
 ## Compute-Only Cost (cgroups)
 
@@ -48,24 +48,24 @@ Cost based on cgroups `runtime_seconds` — actual CPU time inside the container
 
 | Runner | Jobs | VM-Hours | vCPU Cost | Memory Cost | SSD Cost | Boot Disk | Total Cost |
 |--------|------|----------|-----------|-------------|----------|-----------|------------|
-| **Batch** | 36 | 16.9h | $2.25 | $1.27 | $0.00 | $0.07 | **$3.58** |
+| **Direct** | 36 | 16.9h | $2.25 | $1.27 | $0.00 | $0.07 | **$3.58** |
 | **Pulsar** | 36 | 14.9h | $2.02 | $1.12 | $0.30 | $0.06 | **$3.50** |
 | **Pulsar+K8s** | 36 | 14.7h | $2.01 | $1.11 | $0.00 | $0.06 | **$3.18** |
-| **Batch+K8s** | 36 | 16.0h | $2.14 | $1.20 | $0.00 | $0.07 | **$3.40** |
+| **Direct+K8s** | 36 | 16.0h | $2.14 | $1.20 | $0.00 | $0.07 | **$3.40** |
 | **Total** | 144 | 62.5h | $8.41 | $4.69 | $0.30 | $0.26 | **$13.66** |
 
 ### Wallclock vs Compute Overhead
 
 | Runner | Compute Cost | Wallclock Cost | Overhead Ratio |
 |--------|-------------|----------------|----------------|
-| **Batch** | $3.58 | $16.97 | 4.7x |
+| **Direct** | $3.58 | $16.97 | 4.7x |
 | **Pulsar** | $3.50 | $21.59 | 6.2x |
 | **Pulsar+K8s** | $3.18 | $18.40 | 5.8x |
-| **Batch+K8s** | $3.40 | $15.33 | 4.5x |
+| **Direct+K8s** | $3.40 | $15.33 | 4.5x |
 
 ## Per-Tool Cost Comparison (Wallclock)
 
-| Tool | vCPU | Batch Jobs | Batch Cost | Batch $/Job | Pulsar Jobs | Pulsar Cost | Pulsar $/Job | Pulsar+K8s Jobs | Pulsar+K8s Cost | Pulsar+K8s $/Job | Batch+K8s Jobs | Batch+K8s Cost | Batch+K8s $/Job | Rainstone Est. |
+| Tool | vCPU | Direct Jobs | Direct Cost | Direct $/Job | Pulsar Jobs | Pulsar Cost | Pulsar $/Job | Pulsar+K8s Jobs | Pulsar+K8s Cost | Pulsar+K8s $/Job | Direct+K8s Jobs | Direct+K8s Cost | Direct+K8s $/Job | Rainstone Est. |
 |------|------| ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
 | bwa_mem | 8 | 3 | $2.68 | $0.8927 | 3 | $3.04 | $1.0146 | 3 | $2.89 | $0.9648 | 3 | $2.46 | $0.8199 | $0.1313 |
 | lofreq_filter | 2 | 3 | $2.39 | $0.7956 | 3 | $3.11 | $1.0360 | 3 | $2.70 | $0.9011 | 3 | $2.30 | $0.7652 | $0.0002 |
@@ -84,7 +84,7 @@ Cost based on cgroups `runtime_seconds` — actual CPU time inside the container
 
 Per-job compute cost comparison against [Rainstone](https://rainstone.anvilproject.org) historical averages from usegalaxy.org. Rainstone data reflects median costs across thousands of production runs.
 
-| Tool | Batch $/Job | Pulsar $/Job | Pulsar+K8s $/Job | Batch+K8s $/Job | Rainstone Avg | Rainstone Median | Rainstone P95 | usegalaxy.org Jobs |
+| Tool | Direct $/Job | Pulsar $/Job | Pulsar+K8s $/Job | Direct+K8s $/Job | Rainstone Avg | Rainstone Median | Rainstone P95 | usegalaxy.org Jobs |
 |------| ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
 | bwa_mem | $0.7229 | $0.7134 | $0.6784 | $0.6896 | $0.1313 | $0.0097 | $0.5610 | 158,991 |
 | lofreq_filter | $0.0001 | $0.0000 | $0.0000 | $0.0001 | $0.0002 | $0.0001 | $0.0004 | 60,578 |
@@ -112,11 +112,11 @@ Cost if all jobs ran on a GKE Standard cluster (n2-standard-16, 16 vCPU, 64 GB) 
 | Model | Duration | Cost |
 |-------|----------|------|
 | **K8s-Only** (GKE Standard, n2-standard-16) | 17.1h | **$15.00** |
-| **Batch** (GCP Batch + e2-standard-4) | 17.8h | **$19.41** |
+| **Direct** (GCP Batch + e2-standard-4) | 17.8h | **$19.41** |
 | **Pulsar** (GCP Batch + e2-standard-4) | 20.2h | **$24.36** |
 | **Pulsar+K8s** (GCP Batch + e2-standard-4) | 20.2h | **$21.17** |
-| **Batch+K8s** (GCP Batch + e2-standard-4) | 17.1h | **$17.68** |
-| **Local VM** (n2-standard-20, Batch duration) | 17.8h | **$17.27** |
+| **Direct+K8s** (GCP Batch + e2-standard-4) | 17.1h | **$17.68** |
+| **Local VM** (n2-standard-20, Direct duration) | 17.8h | **$17.27** |
 
 ## Pricing Assumptions
 

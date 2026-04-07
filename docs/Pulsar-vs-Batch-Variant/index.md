@@ -12,9 +12,9 @@ title: Variant Benchmark
 - **Galaxy version:** 26.1
 - **Infrastructure:** GCE VM on RKE2 Kubernetes (us-east4)
 - **Runners:** batch, pulsar, single
-- **Batch server:** http://34.11.12.196
+- **Direct server:** http://34.11.12.196
 - **Pulsar server:** http://35.188.245.115
-- **Batch+K8s server:** http://35.194.88.166
+- **Direct+K8s server:** http://35.194.88.166
 - **Date:** 2026-03-31 to 2026-04-04
 
 ### Workflow Runs
@@ -39,8 +39,8 @@ title: Variant Benchmark
 
 ### Comparison: 2GB
 
-| Metric | Batch | Pulsar | Batch+K8s |
-|--------| ----- | ------ | --------- |
+| Metric | Direct | Pulsar | Direct+K8s |
+|--------| ------ | ------ | ---------- |
 | **Wall clock** | 205.6 min | 236.0 min | 194.5 min |
 | **Compute time** | 186.2 min | 157.1 min | 177.5 min |
 | **Scheduling overhead** | 19.4 min | 78.9 min | 16.9 min |
@@ -48,8 +48,8 @@ title: Variant Benchmark
 
 ### Comparison: 5GB
 
-| Metric | Batch | Pulsar | Batch+K8s |
-|--------| ----- | ------ | --------- |
+| Metric | Direct | Pulsar | Direct+K8s |
+|--------| ------ | ------ | ---------- |
 | **Wall clock** | 337.6 min | 374.4 min | 323.5 min |
 | **Compute time** | 320.9 min | 277.6 min | 309.8 min |
 | **Scheduling overhead** | 16.7 min | 96.9 min | 13.6 min |
@@ -57,8 +57,8 @@ title: Variant Benchmark
 
 ### Comparison: 10GB
 
-| Metric | Batch | Pulsar | Batch+K8s |
-|--------| ----- | ------ | --------- |
+| Metric | Direct | Pulsar | Direct+K8s |
+|--------| ------ | ------ | ---------- |
 | **Wall clock** | 523.5 min | 598.9 min | 508.1 min |
 | **Compute time** | 505.4 min | 460.5 min | 491.5 min |
 | **Scheduling overhead** | 18.1 min | 138.4 min | 16.6 min |
@@ -68,7 +68,7 @@ title: Variant Benchmark
 
 ### 2GB
 
-| Tool | Batch | Pulsar | Batch+K8s |
+| Tool | Direct | Pulsar | Direct+K8s |
 |------| ------- | ------- | ------- |
 | lofreq_call | 3948s | 3872s | 3973s |
 | bwa_mem | 4496s | 4319s | 4409s |
@@ -86,7 +86,7 @@ title: Variant Benchmark
 
 ### 5GB
 
-| Tool | Batch | Pulsar | Batch+K8s |
+| Tool | Direct | Pulsar | Direct+K8s |
 |------| ------- | ------- | ------- |
 | lofreq_call | 8479s | 8383s | 8546s |
 | bwa_mem | 6437s | 5704s | 6015s |
@@ -104,7 +104,7 @@ title: Variant Benchmark
 
 ### 10GB
 
-| Tool | Batch | Pulsar | Batch+K8s |
+| Tool | Direct | Pulsar | Direct+K8s |
 |------| ------- | ------- | ------- |
 | lofreq_call | 14723s | 14614s | 14641s |
 | bwa_mem | 8952s | 8638s | 8545s |
@@ -134,7 +134,7 @@ title: Variant Benchmark
 | single R1 | 5GB | 323.5m | 309.8m | 13.6m | 4% |
 | single R1 | 10GB | 508.1m | 491.5m | 16.6m | 3% |
 
-## Batch Scaling Analysis
+## Direct Scaling Analysis
 
 | Input | Wall Clock | Compute |
 |-------|-----------|---------|
@@ -150,7 +150,7 @@ title: Variant Benchmark
 | 5GB | 374.4m | 277.6m |
 | 10GB | 598.9m | 460.5m |
 
-## Batch+K8s Scaling Analysis
+## Direct+K8s Scaling Analysis
 
 | Input | Wall Clock | Compute |
 |-------|-----------|---------|
@@ -162,24 +162,24 @@ title: Variant Benchmark
 
 ### 1. 2GB: Wall clock comparison
 
-- **Batch**: 205.6m (+6%)
+- **Direct**: 205.6m (+6%)
 - **Pulsar**: 236.0m (+21%)
-- **Batch+K8s**: 194.5m (fastest)
+- **Direct+K8s**: 194.5m (fastest)
 
 ### 2. 5GB: Wall clock comparison
 
-- **Batch**: 337.6m (+4%)
+- **Direct**: 337.6m (+4%)
 - **Pulsar**: 374.4m (+16%)
-- **Batch+K8s**: 323.5m (fastest)
+- **Direct+K8s**: 323.5m (fastest)
 
 ### 3. 10GB: Wall clock comparison
 
-- **Batch**: 523.5m (+3%)
+- **Direct**: 523.5m (+3%)
 - **Pulsar**: 598.9m (+18%)
-- **Batch+K8s**: 508.1m (fastest)
+- **Direct+K8s**: 508.1m (fastest)
 
 ### 4. Scheduling overhead per step
 
-- **Batch**: 1.5 min/step avg
+- **Direct**: 1.5 min/step avg
 - **Pulsar**: 8.7 min/step avg
-- **Batch+K8s**: 1.3 min/step avg
+- **Direct+K8s**: 1.3 min/step avg

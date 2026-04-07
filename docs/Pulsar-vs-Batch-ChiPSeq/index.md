@@ -12,9 +12,9 @@ title: ChiPSeq Benchmark
 - **Galaxy version:** 26.1
 - **Infrastructure:** GCE VM on RKE2 Kubernetes (us-east4)
 - **Runners:** batch, pulsar, single
-- **Batch server:** http://34.11.12.196
+- **Direct server:** http://34.11.12.196
 - **Pulsar server:** http://35.188.245.115
-- **Batch+K8s server:** http://35.194.88.166
+- **Direct+K8s server:** http://35.194.88.166
 - **Date:** 2026-03-30 to 2026-03-30
 
 ### Workflow Runs
@@ -39,8 +39,8 @@ title: ChiPSeq Benchmark
 
 ### Comparison: 2GB
 
-| Metric | Batch | Pulsar | Batch+K8s |
-|--------| ----- | ------ | --------- |
+| Metric | Direct | Pulsar | Direct+K8s |
+|--------| ------ | ------ | ---------- |
 | **Wall clock** | 56.6 min | 74.0 min | 55.8 min |
 | **Compute time** | 44.3 min | 40.1 min | 44.2 min |
 | **Scheduling overhead** | 12.2 min | 33.8 min | 11.6 min |
@@ -48,8 +48,8 @@ title: ChiPSeq Benchmark
 
 ### Comparison: 5GB
 
-| Metric | Batch | Pulsar | Batch+K8s |
-|--------| ----- | ------ | --------- |
+| Metric | Direct | Pulsar | Direct+K8s |
+|--------| ------ | ------ | ---------- |
 | **Wall clock** | 120.5 min | 154.7 min | 120.2 min |
 | **Compute time** | 107.2 min | 98.3 min | 106.9 min |
 | **Scheduling overhead** | 13.3 min | 56.3 min | 13.3 min |
@@ -57,8 +57,8 @@ title: ChiPSeq Benchmark
 
 ### Comparison: 10GB
 
-| Metric | Batch | Pulsar | Batch+K8s |
-|--------| ----- | ------ | --------- |
+| Metric | Direct | Pulsar | Direct+K8s |
+|--------| ------ | ------ | ---------- |
 | **Wall clock** | 212.6 min | 281.2 min | 215.9 min |
 | **Compute time** | 196.8 min | 187.6 min | 198.8 min |
 | **Scheduling overhead** | 15.8 min | 93.6 min | 17.1 min |
@@ -68,7 +68,7 @@ title: ChiPSeq Benchmark
 
 ### 2GB
 
-| Tool | Batch | Pulsar | Batch+K8s |
+| Tool | Direct | Pulsar | Direct+K8s |
 |------| ------- | ------- | ------- |
 | bowtie2 | 2053s | 1898s | 2061s |
 | macs2_callpeak | 231s | 190s | 225s |
@@ -81,7 +81,7 @@ title: ChiPSeq Benchmark
 
 ### 5GB
 
-| Tool | Batch | Pulsar | Batch+K8s |
+| Tool | Direct | Pulsar | Direct+K8s |
 |------| ------- | ------- | ------- |
 | bowtie2 | 5087s | 4753s | 5048s |
 | macs2_callpeak | 496s | 409s | 526s |
@@ -94,7 +94,7 @@ title: ChiPSeq Benchmark
 
 ### 10GB
 
-| Tool | Batch | Pulsar | Batch+K8s |
+| Tool | Direct | Pulsar | Direct+K8s |
 |------| ------- | ------- | ------- |
 | bowtie2 | 9638s | 9380s | 9795s |
 | macs2_callpeak | 857s | 751s | 845s |
@@ -119,7 +119,7 @@ title: ChiPSeq Benchmark
 | single R1 | 5GB | 120.2m | 106.9m | 13.3m | 11% |
 | single R1 | 10GB | 215.9m | 198.8m | 17.1m | 8% |
 
-## Batch Scaling Analysis
+## Direct Scaling Analysis
 
 | Input | Wall Clock | Compute |
 |-------|-----------|---------|
@@ -135,7 +135,7 @@ title: ChiPSeq Benchmark
 | 5GB | 154.7m | 98.3m |
 | 10GB | 281.2m | 187.6m |
 
-## Batch+K8s Scaling Analysis
+## Direct+K8s Scaling Analysis
 
 | Input | Wall Clock | Compute |
 |-------|-----------|---------|
@@ -147,24 +147,24 @@ title: ChiPSeq Benchmark
 
 ### 1. 2GB: Wall clock comparison
 
-- **Batch**: 56.6m (+1%)
+- **Direct**: 56.6m (+1%)
 - **Pulsar**: 74.0m (+32%)
-- **Batch+K8s**: 55.8m (fastest)
+- **Direct+K8s**: 55.8m (fastest)
 
 ### 2. 5GB: Wall clock comparison
 
-- **Batch**: 120.5m (+0%)
+- **Direct**: 120.5m (+0%)
 - **Pulsar**: 154.7m (+29%)
-- **Batch+K8s**: 120.2m (fastest)
+- **Direct+K8s**: 120.2m (fastest)
 
 ### 3. 10GB: Wall clock comparison
 
-- **Batch**: 212.6m (fastest)
+- **Direct**: 212.6m (fastest)
 - **Pulsar**: 281.2m (+32%)
-- **Batch+K8s**: 215.9m (+2%)
+- **Direct+K8s**: 215.9m (+2%)
 
 ### 4. Scheduling overhead per step
 
-- **Batch**: 2.0 min/step avg
+- **Direct**: 2.0 min/step avg
 - **Pulsar**: 8.7 min/step avg
-- **Batch+K8s**: 2.0 min/step avg
+- **Direct+K8s**: 2.0 min/step avg
