@@ -46,7 +46,7 @@ h1 { font-size: 1.8rem; margin-bottom: 0.3rem; }
 
 <script>
 // Cost data: [Variant, RNASeq, ChIPSeq] for each approach
-const approaches = ["Direct", "Pulsar", "Direct+K8s", "Pulsar+K8s", "K8s-Only"];
+const approaches = ["Direct", "Pulsar", "Direct+K8s", "Pulsar+K8s", "GKE"];
 const variantCosts = [16.97, 21.59, 15.33, 18.40, 15.00];
 const rnaseqCosts  = [9.48,  11.03, 6.94,  7.63,  7.39];
 const chipseqCosts = [6.15,  8.77,  5.55,  6.96,  5.73];
@@ -62,7 +62,7 @@ const approachColors = {
   "Pulsar":      "#f59e0b",
   "Direct+K8s":  "#22c55e",
   "Pulsar+K8s":  "#8b5cf6",
-  "K8s-Only":    "#ef4444",
+  "GKE":    "#ef4444",
 };
 
 Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
@@ -112,7 +112,7 @@ const approachData = {
   "Pulsar":     [variantCosts[1], rnaseqCosts[1], chipseqCosts[1]],
   "Direct+K8s": [variantCosts[2], rnaseqCosts[2], chipseqCosts[2]],
   "Pulsar+K8s": [variantCosts[3], rnaseqCosts[3], chipseqCosts[3]],
-  "K8s-Only":   [variantCosts[4], rnaseqCosts[4], chipseqCosts[4]],
+  "GKE":   [variantCosts[4], rnaseqCosts[4], chipseqCosts[4]],
 };
 
 new Chart(document.getElementById("groupedChart"), {
